@@ -321,6 +321,8 @@ HurtSonic:
 	@hasgshield:
 		cmpi.b	#1,(v_gshield).w     ; does sonic have a Gray Shield?
 		bne.s	@hurtcont             ; if yes, make him invulnerable to metal objects
+		cmpi.b	#$15,(a2)	; was damage caused by SBZ Spiked Ball?
+		beq.w 	isflashing
 		cmpi.b	#$16,(a2)	; was damage caused by LZ Harpoon?
 		beq.w 	isflashing
 		cmpi.b	#$31,(a2)	; was damage caused by Chained Stompers?

@@ -587,7 +587,7 @@ NormalMode:
 		rts
 
 PinchMode:
-		move.w	#$93,d0
+		move.w	#$94,d0
 		jsr	(PlaySound_Special).l
 		move.w	#$E2,d0
 		jsr	(PlaySound).l

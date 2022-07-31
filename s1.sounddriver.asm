@@ -77,6 +77,7 @@ ptr_mus90:	dc.l Music90
 ptr_mus91:	dc.l Music91
 ptr_mus92:	dc.l Music92
 ptr_mus93:	dc.l Music93
+ptr_mus94:	dc.l Music94
 ptr_musend
 ; ---------------------------------------------------------------------------
 ; Priority of sound. New music or SFX must have a priority higher than or equal
@@ -2494,7 +2495,7 @@ Music86:	incbin	"sound/music/Mus86 - SBZ.bin"
 		even
 Music87:	incbin	"sound/music/Mus87 - Invincibility.bin"
 		even
-Music88:	include	"sound/music/burning force clear.asm"
+Music88:	include	"sound/music/Mus88 - Extra Life.asm"
 		even
 Music89:	incbin	"sound/music/Mus89 - Special Stage.bin"
 		even
@@ -2517,6 +2518,8 @@ Music91:	incbin	"sound/music/Mus91 - Credits.bin"
 Music92:	incbin	"sound/music/Mus92 - Drowning.bin"
 		even
 Music93:	incbin	"sound/music/Mus93 - Get Emerald.bin"
+		even
+Music94:	incbin	"sound/music/Mus94 - Final Boss Pinch.bin"
 		even
 ; ---------------------------------------------------------------------------
 ; Sound	effect pointers
