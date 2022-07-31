@@ -2494,7 +2494,7 @@ Music86:	incbin	"sound/music/Mus86 - SBZ.bin"
 		even
 Music87:	incbin	"sound/music/Mus87 - Invincibility.bin"
 		even
-Music88:	incbin	"sound/music/Mus88 - Extra Life.bin"
+Music88:	include	"sound/music/burning force clear.asm"
 		even
 Music89:	incbin	"sound/music/Mus89 - Special Stage.bin"
 		even
