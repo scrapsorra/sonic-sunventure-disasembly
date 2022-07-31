@@ -2299,6 +2299,7 @@ GM_Title:
 		move.w	#$8720,(a6)	; set background colour (palette line 2, entry 0)
 		clr.b	(f_wtr_state).w
 		bsr.w	ClearScreen
+		;jsr	SHC2022 
 
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
@@ -2339,10 +2340,10 @@ GM_Title:
 		locVRAM	$4000
 		lea	(Nem_TitleFg).l,a0 ; load title	screen patterns
 		bsr.w	NemDec
-		locVRAM	$6000
+		locVRAM	$6900
 		lea	(Nem_TitleSonic).l,a0 ;	load Sonic title screen	patterns
 		bsr.w	NemDec
-		locVRAM	$A200
+		locVRAM	$B000
 		lea	(Nem_TitleTM).l,a0 ; load "TM" patterns
 		bsr.w	NemDec
 		lea	(vdp_data_port).l,a6
@@ -9013,6 +9014,8 @@ Nem_SyzSparkle:	incbin	"artnem\Unused - SYZ Sparkles.bin"
 		even
 		else
 		endc
+Unc_GShield:	incbin	"artunc\Gray Shield.bin"
+		even
 Unc_RedShield:	incbin	"artunc\Red Shield.bin"
 		even
 Unc_Shield:	incbin	"artunc\Shield.bin"
@@ -9752,7 +9755,7 @@ ObjPos_Null:	dc.b $FF, $FF, 0, 0, 0,	0
 
 SoundDriver:	include "s1.sounddriver.asm"
 
-;SHC2021:    incbin "SHC21_Lite_Sonic12.bin"
+;SHC2022:    incbin "SHC22 .bin"
                ; even
 
 Art_Dust	incbin	artunc\spindust.bin

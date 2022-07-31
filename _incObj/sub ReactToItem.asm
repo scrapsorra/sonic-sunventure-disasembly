@@ -187,7 +187,7 @@ React_Enemy:
 
 	@donthurtsonic:
 		tst.b	obColProp(a1)
-		beq.s	@breakenemy
+		beq.s	breakenemy
 
 		neg.w	obVelX(a0)	; repel Sonic
 		neg.w	obVelY(a0)
@@ -202,7 +202,7 @@ React_Enemy:
 		rts	
 ; ===========================================================================
 
-@breakenemy:
+breakenemy:
 		bset	#7,obStatus(a1)
 		moveq	#0,d0
 		move.w	(v_itembonus).w,d0
@@ -291,12 +291,14 @@ HurtSonic:
 	@hasshield:
 		cmpi.b	#1,(v_shield).w     ; does sonic have a Shield?
 		bne.s	@hasrshield        ; if no, check for red shield
-		cmpi.b	#$6E,(a2)     ; was damage caused by lava ball?
+		cmpi.b	#$6E,(a2)     ; was damage caused by electrocuter?
+		beq.w	isflashing
+		cmpi.b	#$86,(a2)     ; was damage caused by Plasma Ball Launcher?
 		beq.w	isflashing
 
 	@hasrshield:
 		cmpi.b	#1,(v_rshield).w     ; does sonic have a Red Shield?
-		bne.s	@hurtcont             ; if yes, make him invulnerable to fire-y objects!
+		bne.s	@hasgshield          ; if no, check for gray shield
 		cmpi.b	#$14,(a2)	; was damage caused by lava ball?
 		beq.w 	isflashing
 		cmpi.b	#$4C,(a2)	; was damage caused by lava geyser?
@@ -315,6 +317,37 @@ HurtSonic:
 		beq.w 	isflashing
 		cmpi.b	#$54,(a2)	; was damage caused by Lava Tag/Magma?
 		beq.w 	isflashing
+		
+	@hasgshield:
+		cmpi.b	#1,(v_gshield).w     ; does sonic have a Gray Shield?
+		bne.s	@hurtcont             ; if yes, make him invulnerable to metal objects
+		cmpi.b	#$16,(a2)	; was damage caused by LZ Harpoon?
+		beq.w 	isflashing
+		cmpi.b	#$31,(a2)	; was damage caused by Chained Stompers?
+		beq.w 	isflashing
+		cmpi.b	#$36,(a2)	; was damage caused by Spikes?
+		beq.w 	isflashing
+		cmpi.b	#$7B,(a2)	; was damage caused by SLZ boss spikeball?
+		beq.w 	isflashing
+		cmpi.b	#$57,(a2)	; was damage caused by Spiked Ball & Chain?
+		beq.w 	isflashing
+		cmpi.b	#$58,(a2)	; was damage caused by Big Spiked Ball?
+		beq.w 	isflashing
+		cmpi.b	#$6A,(a2)	; was damage caused by Saws?
+		beq.w 	isflashing
+		cmpi.b	#$5E,(a2)	; was damage caused by Seesaw ball?
+		beq.w 	isflashing
+		cmpi.b	#$06,(a2)	; was damage caused by Mozzietron?
+		beq.w 	breakenemy
+		cmpi.b	#$50,(a2)	; was damage caused by Yadrin?
+		beq.w 	breakenemy
+		cmpi.b	#$60,(a2)	; was damage caused by Orbinaut?
+		beq.w 	breakenemy
+		cmpi.b	#$78,(a2)	; was damage caused by Catterkiller?
+		beq.w 	breakenemy
+		cmpi.b	#$5F,(a2)	; was damage caused by Bomb enemy?
+		beq.w 	breakenemy
+
 
 	@hurtcont:
 		move.b	#0,(v_shield).w		; remove shield
@@ -388,7 +421,7 @@ KillSonic:
 		move.b  #0,(v_shoes).w
 		move.b  #0,(f_emeraldm).w
 		move.b	#6,obRoutine(a0)
-		bsr.w	Sonic_ResetOnFloor
+		jsr		Sonic_ResetOnFloor
 		bset	#1,obStatus(a0)
 		move.w	#-$700,obVelY(a0)
 		move.w	#0,obVelX(a0)

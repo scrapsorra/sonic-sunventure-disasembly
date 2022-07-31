@@ -315,6 +315,7 @@ v_ani2_frame:	equ $FFFFFEC5	; synchronised sprite animation 2 - current frame
 v_ani3_time:	equ $FFFFFEC6	; synchronised sprite animation 3 - time until next frame
 v_ani3_frame:	equ $FFFFFEC7	; synchronised sprite animation 3 - current frame
 v_ani3_buf:	equ $FFFFFEC8	; synchronised sprite animation 3 - info buffer (2 bytes)
+v_ani4_frame:	equ $FFFFFEC9	; synchronised sprite animation 4 - current frame
 v_limittopdb:	equ $FFFFFEF0	; level upper boundary, buffered for debug mode (2 bytes)
 v_limitbtmdb:	equ $FFFFFEF2	; level bottom boundary, buffered for debug mode (2 bytes)
 

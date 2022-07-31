@@ -198,25 +198,14 @@ Pow_ChkRShield:
 
 Pow_ChkGShield:
 		cmpi.b	#11,d0		; does monitor contain a gold shield?
-		bne.s	Pow_ChkGShield
+		bne.s	Pow_ChkEnd
 
 
 		move.b	#0,(v_shield).w ; remove shield
-		move.b	#1,(v_shield).w ; give Sonic a red shield
-		move.b	#id_GShieldItem,(v_objspace+$180).w ; load red shield object ($38)
-		addi.w	#10,(v_rings).w	; add 10 rings to the number of rings you have
-		ori.b	#1,(f_ringcount).w ; update the ring counter
-		cmpi.w	#100,(v_rings).w ; check if you have 100 rings
-		bcs.s	Pow_GShieldSound
-		bset	#1,(v_lifecount).w
-		beq.w	ExtraLife
-		cmpi.w	#200,(v_rings).w ; check if you have 200 rings
-		bcs.s	Pow_GShieldSound
-		bset	#2,(v_lifecount).w
-		beq.w	ExtraLife
-
-Pow_GShieldSound:		
-		music	sfx_GiantRing,1,0,0	; play shield sound
+		move.b	#0,(v_rshield).w ; remove gold shield
+		move.b	#1,(v_gshield).w ; give Sonic a red shield
+		move.b	#id_GShieldItem,(v_objspace+$180).w ; load red shield object ($38)	
+		music	sfx_Shield,1,0,0	; play shield sound
 
 Pow_ChkEnd:
 		rts

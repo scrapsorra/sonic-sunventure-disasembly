@@ -1,31 +1,31 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - rings
-; ---------------------------------------------------------------------------
-Map_Ring_internal:
-		dc.w @front-Map_Ring_internal
-		dc.w @angle1-Map_Ring_internal
-		dc.w @edge-Map_Ring_internal
-		dc.w @angle2-Map_Ring_internal
-		dc.w @sparkle1-Map_Ring_internal
-		dc.w @sparkle2-Map_Ring_internal
-		dc.w @sparkle3-Map_Ring_internal
-		dc.w @sparkle4-Map_Ring_internal
-		dc.w @blank-Map_Ring_internal
-@front:		dc.b 1
-		dc.b $F8, 5, 0,	0, $F8	; ring front
-@angle1:	dc.b 1
-		dc.b $F8, 5, 0,	4, $F8	; ring angle
-@edge:		dc.b 1
-		dc.b $F8, 1, 0,	8, $FC	; ring perpendicular
-@angle2:	dc.b 1
-		dc.b $F8, 5, 8,	4, $F8	; ring angle
-@sparkle1:	dc.b 1
-		dc.b $F8, 5, 0,	$A, $F8	; sparkle
-@sparkle2:	dc.b 1
-		dc.b $F8, 5, $18, $A, $F8 ; sparkle
-@sparkle3:	dc.b 1
-		dc.b $F8, 5, 8,	$A, $F8	;sparkle
-@sparkle4:	dc.b 1
-		dc.b $F8, 5, $10, $A, $F8 ; sparkle
-@blank:		dc.b 0
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 1 format
+; --------------------------------------------------------------------------------
+
+SME_aSMQh:	
+		dc.w SME_aSMQh_14-SME_aSMQh, SME_aSMQh_1A-SME_aSMQh	
+		dc.w SME_aSMQh_20-SME_aSMQh, SME_aSMQh_26-SME_aSMQh	
+		dc.w SME_aSMQh_2C-SME_aSMQh, SME_aSMQh_32-SME_aSMQh	
+		dc.w SME_aSMQh_38-SME_aSMQh, SME_aSMQh_3E-SME_aSMQh	
+		dc.w SME_aSMQh_44-SME_aSMQh, SME_aSMQh_4A-SME_aSMQh	
+SME_aSMQh_14:	dc.b 1	
+		dc.b $F8, 5, 0, 0, $F8	
+SME_aSMQh_1A:	dc.b 1	
+		dc.b $F8, 5, 0, 4, $F8	
+SME_aSMQh_20:	dc.b 1	
+		dc.b $F8, 5, 0, $A, $F8	
+SME_aSMQh_26:	dc.b 1	
+		dc.b $F8, 1, 0, 8, $FC	
+SME_aSMQh_2C:	dc.b 1	
+		dc.b $F8, 5, 8, $A, $F8	
+SME_aSMQh_32:	dc.b 1	
+		dc.b $F8, 5, 8, 4, $F8	
+SME_aSMQh_38:	dc.b 1	
+		dc.b $F8, 5, 0, $10, $F8	
+SME_aSMQh_3E:	dc.b 1	
+		dc.b $F8, 5, $18, $10, $F8	
+SME_aSMQh_44:	dc.b 1	
+		dc.b $F8, 5, 8, $10, $F8	
+SME_aSMQh_4A:	dc.b 1	
+		dc.b $F8, 5, $10, $10, $F8	
 		even

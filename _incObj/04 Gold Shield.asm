@@ -3,7 +3,7 @@
 ; ---------------------------------------------------------------------------
 
 GShieldItem:
-		move.l #Unc_RedShield,d1 ; Call for Red Shield Art
+		move.l #Unc_GShield,d1 ; Call for Red Shield Art
 		move.w #$A820,d2 ; Load Art from this location (VRAM location*20)
 		; In this case, VRAM = $541*20
 		move.w #$200,d3
@@ -21,7 +21,7 @@ GShield_Index:
 ; ===========================================================================
 GShield_Init:
 		addq.b #2,$24(a0)
-		move.l #Map_GShield,$4(A0) ; Load Shield Map into place
+		move.l #Map_Shield,$4(A0) ; Load Shield Map into place
 		move.b #4,1(a0)
 		move.b #1,$18(a0)
 		move.b #$18,$19(a0)
