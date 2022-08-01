@@ -379,6 +379,8 @@ HurtSonic:
 		move.w	#$120,$30(a0)
 		cmpi.b	#$6E,(a2)    ; check if you were hurt by Electrocuter
 		beq.s	@hurtelec       ; if yes, branch
+		cmpi.b	#$86,(a2)    ; check if you were hurt by FZ plasma
+		beq.s	@hurtelec       ; if yes, branch
 		move.w	#0,obInertia(a0)
 		move.b	#id_Hurt,obAnim(a0)
 		move.w	#120,$30(a0)	; set temp invincible time to 2 seconds
