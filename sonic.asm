@@ -2154,7 +2154,7 @@ PalLoad4_Continue:
 Pal_SegaBG:	incbin	"palette\Sega Background.bin"
 Pal_Title:	incbin	"palette\Title Screen.bin"
 Pal_LevelSel:	incbin	"palette\Level Select.bin"
-Pal_Sonic:	incbin	"palette\Sonic Pal\01 Default.bin"
+Pal_Sonic:	incbin	"palette\Sonic Pal\10 Dark.bin"
 Pal_GHZ:	incbin	"palette\Green Hill Zone.bin"
 Pal_GHZ2:	incbin	"palette\Green Hill Zone2.bin"
 Pal_LZ:		incbin	"palette\Labyrinth Zone.bin"
