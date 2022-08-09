@@ -385,7 +385,7 @@ Slide_Speeds:
 		even
 
 Slide_Chunks:
-		dc.b 2, 7, 3, $4C, $4B, 8, 4
+		dc.b $54 ;2, 7, 3, $4C, $4B, 8, 4
 ; byte_3FCF
 Slide_Chunks_End
 		even

@@ -2343,7 +2343,7 @@ GM_Title:
 		locVRAM	$6900
 		lea	(Nem_TitleSonic).l,a0 ;	load Sonic title screen	patterns
 		bsr.w	NemDec
-		locVRAM	$B000
+		locVRAM	$A200
 		lea	(Nem_TitleTM).l,a0 ; load "TM" patterns
 		bsr.w	NemDec
 		lea	(vdp_data_port).l,a6
@@ -2924,12 +2924,12 @@ LevelMenuText:	if Revision=0
 MusicList:
 		dc.b bgm_GHZ    ; GHZ1
         	dc.b bgm_LZ    ; GHZ2
-        	dc.b bgm_LZ   ; GHZ3
+        	dc.b bgm_Seaside   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
         	dc.b bgm_Stop    ; LZ1
         	dc.b bgm_Stop   ; LZ2
         	dc.b bgm_Stop    ; LZ3
-        	dc.b bgm_SBZ    ; LZ4
+        	dc.b bgm_SBZ3    ; LZ4
         	dc.b bgm_MZ    ; MZ1
         	dc.b bgm_SBZ    ; MZ2
         	dc.b bgm_SBZ    ; MZ3
@@ -2944,7 +2944,7 @@ MusicList:
         	dc.b bgm_SLZ    ; SYZ4
         	dc.b bgm_SBZ    ; SBZ1
         	dc.b bgm_SBZ    ; SBZ2
-        	dc.b bgm_FZ	; SBZ3
+        	dc.b bgm_FZ		; SBZ3
         	dc.b bgm_SBZ    ; SBZ4
         	dc.b bgm_GHZ    ; GHZ1
         	dc.b bgm_GHZ    ; GHZ1
@@ -7432,6 +7432,7 @@ MusicList2:
 		include	"_incObj\Sonic Display.asm"
 		include	"_incObj\Sonic RecordPosition.asm"
 		include	"_incObj\Sonic Water.asm"
+		include "_incObj\03 Hangable Sprite.asm"
 
 ; ===========================================================================
 ; ---------------------------------------------------------------------------

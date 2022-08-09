@@ -1,44 +1,42 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - water surface (LZ)
-; ---------------------------------------------------------------------------
-Map_Surf_internal:
-		dc.w @normal1-Map_Surf_internal
-		dc.w @normal2-Map_Surf_internal
-		dc.w @normal3-Map_Surf_internal
-		dc.w @paused1-Map_Surf_internal
-		dc.w @paused2-Map_Surf_internal
-		dc.w @paused3-Map_Surf_internal
-@normal1:	dc.b 3
-		dc.b $FD, $D, 0, 0, $A0
-		dc.b $FD, $D, 0, 0, $E0
-		dc.b $FD, $D, 0, 0, $20
-@normal2:	dc.b 3
-		dc.b $FD, $D, 0, 8, $A0
-		dc.b $FD, $D, 0, 8, $E0
-		dc.b $FD, $D, 0, 8, $20
-@normal3:	dc.b 3
-		dc.b $FD, $D, 8, 0, $A0
-		dc.b $FD, $D, 8, 0, $E0
-		dc.b $FD, $D, 8, 0, $20
-@paused1:	dc.b 6
-		dc.b $FD, $D, 0, 0, $A0
-		dc.b $FD, $D, 0, 0, $C0
-		dc.b $FD, $D, 0, 0, $E0
-		dc.b $FD, $D, 0, 0, 0
-		dc.b $FD, $D, 0, 0, $20
-		dc.b $FD, $D, 0, 0, $40
-@paused2:	dc.b 6
-		dc.b $FD, $D, 0, 8, $A0
-		dc.b $FD, $D, 0, 8, $C0
-		dc.b $FD, $D, 0, 8, $E0
-		dc.b $FD, $D, 0, 8, 0
-		dc.b $FD, $D, 0, 8, $20
-		dc.b $FD, $D, 0, 8, $40
-@paused3:	dc.b 6
-		dc.b $FD, $D, 8, 0, $A0
-		dc.b $FD, $D, 8, 0, $C0
-		dc.b $FD, $D, 8, 0, $E0
-		dc.b $FD, $D, 8, 0, 0
-		dc.b $FD, $D, 8, 0, $20
-		dc.b $FD, $D, 8, 0, $40
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 1 format
+; --------------------------------------------------------------------------------
+
+SME_LGSi8:	
+		dc.w SME_LGSi8_C-SME_LGSi8, SME_LGSi8_1C-SME_LGSi8	
+		dc.w SME_LGSi8_2C-SME_LGSi8, SME_LGSi8_3C-SME_LGSi8	
+		dc.w SME_LGSi8_5B-SME_LGSi8, SME_LGSi8_7A-SME_LGSi8	
+SME_LGSi8_C:	dc.b 3	
+		dc.b $F8, $D, 0, 0, $A0	
+		dc.b $F8, $D, 0, 0, $E0	
+		dc.b $F8, $D, 0, 0, $20	
+SME_LGSi8_1C:	dc.b 3	
+		dc.b $F8, $D, 0, 8, $A0	
+		dc.b $F8, $D, 0, 8, $E0	
+		dc.b $F8, $D, 0, 8, $20	
+SME_LGSi8_2C:	dc.b 3	
+		dc.b $F8, $D, 8, 0, $A0	
+		dc.b $F8, $D, 8, 0, $E0	
+		dc.b $F8, $D, 8, 0, $20	
+SME_LGSi8_3C:	dc.b 6	
+		dc.b $F8, $D, 0, 0, $A0	
+		dc.b $F8, $D, 0, 0, $C0	
+		dc.b $F8, $D, 0, 0, $E0	
+		dc.b $F8, $D, 0, 0, 0	
+		dc.b $F8, $D, 0, 0, $20	
+		dc.b $F8, $D, 0, 0, $40	
+SME_LGSi8_5B:	dc.b 6	
+		dc.b $F8, $D, 0, 8, $A0	
+		dc.b $F8, $D, 0, 8, $C0	
+		dc.b $F8, $D, 0, 8, $E0	
+		dc.b $F8, $D, 0, 8, 0	
+		dc.b $F8, $D, 0, 8, $20	
+		dc.b $F8, $D, 0, 8, $40	
+SME_LGSi8_7A:	dc.b 6	
+		dc.b $F8, $D, 8, 0, $A0	
+		dc.b $F8, $D, 8, 0, $C0	
+		dc.b $F8, $D, 8, 0, $E0	
+		dc.b $F8, $D, 8, 0, 0	
+		dc.b $F8, $D, 8, 0, $20	
+		dc.b $F8, $D, 8, 0, $40	
 		even

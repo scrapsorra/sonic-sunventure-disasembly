@@ -210,6 +210,10 @@ bgm_Continue:	equ ((ptr_mus90-MusicIndex)/4)+bgm__First
 bgm_Credits:	equ ((ptr_mus91-MusicIndex)/4)+bgm__First
 bgm_Drowning:	equ ((ptr_mus92-MusicIndex)/4)+bgm__First
 bgm_Emerald:	equ ((ptr_mus93-MusicIndex)/4)+bgm__First
+bgm_Pinch:		equ ((ptr_mus94-MusicIndex)/4)+bgm__First
+bgm_Seaside:	equ ((ptr_mus95-MusicIndex)/4)+bgm__First
+bgm_SBZ3:		equ ((ptr_mus96-MusicIndex)/4)+bgm__First
+bgm_Granada:	equ ((ptr_mus97-MusicIndex)/4)+bgm__First
 bgm__Last:	equ ((ptr_musend-MusicIndex-4)/4)+bgm__First
 
 ; Sound effects
@@ -397,10 +401,10 @@ fr_Balance2:	equ $73
 fr_Balance3:	equ $74
 fr_Balance4:	equ $75
 fr_Balance5:	equ $76
-fr_Balance21:	equ $77
-fr_Balance22:	equ $78
-fr_Balance23:	equ $79
-fr_Balance24:	equ $7A
+fr_Blank:		equ $77
+fr_VHang1:		equ $78
+fr_VHang2:		equ $79
+fr_VHang3:		equ $7A
 
 fr_Float1:	equ $7C
 fr_Float2:	equ $7E
@@ -433,9 +437,10 @@ fr_Injury:	equ $96
 fr_WaterSlide:	equ $97
 fr_skele1:	equ $98
 fr_skele2:	equ $99
-fr_Spindash1	equ $9A
-fr_Spindash2	equ $9B
-fr_Spindash3	equ $9C
-fr_Spindash4	equ $9D
-fr_Spindash5	equ $9E
-fr_Spindash6	equ $9F
+fr_skele3:	equ $9A
+fr_Spindash1	equ $9B
+fr_Spindash2	equ $9C
+fr_Spindash3	equ $9D
+fr_Spindash4	equ $9E
+fr_Spindash5	equ $9F
+fr_Spindash6	equ $A0

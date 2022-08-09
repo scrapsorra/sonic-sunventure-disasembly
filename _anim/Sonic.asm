@@ -40,6 +40,7 @@ ptr_GetUp:	dc.w SonAni_GetUp-Ani_Sonic
 ptr_Blink:	dc.w SonAni_Blink-Ani_Sonic
 ptr_Sit:	dc.w SonAni_Sit-Ani_Sonic
 ptr_Peelout:	dc.w SonAni_Peelout-Ani_Sonic
+ptr_Hang2:	dc.w SonAni_Hang2-Ani_Sonic
 
 SonAni_Walk:	dc.b $FF, fr_walk13, fr_walk14,	fr_walk15, fr_walk16, fr_walk17, fr_walk18, fr_walk11, fr_walk12, afEnd, afEnd, afEnd, afEnd
 		even
@@ -80,7 +81,7 @@ SonAni_Warp4:	dc.b $3F, fr_warp4, afEnd
 		even
 SonAni_Stop:	dc.b 2,	fr_stop1, fr_stop2, fr_stop2, fr_stop3, fr_stop3, fr_stop4, fr_stop4, $FD,  0
 		even
-SonAni_Float1:	dc.b 7,	fr_float1, fr_float4, afEnd
+SonAni_Float1:	dc.b 7,	fr_float1, fr_float4, afBack, 2
 		even
 SonAni_Float2:	dc.b 3,	fr_float1, fr_float7, fr_float2, fr_float8, fr_float5, fr_float3, fr_float6, afEnd
 		even
@@ -117,7 +118,7 @@ SonAni_MaxRun:  dc.b $FF, fr_peelout11, fr_peelout12, fr_peelout13, fr_peelout14
 		even
 SonAni_SpinDash: dc.b 0, fr_Spindash1, fr_spindash2, fr_spindash1, fr_spindash3, fr_spindash1, fr_spindash4, fr_spindash1, fr_spindash5, fr_spindash1, fr_spindash6, afEnd
 		even
-SonAni_Hurt2:	dc.b 2, fr_skele1, fr_injury, fr_skele2, afEnd	
+SonAni_Hurt2:	dc.b 2, fr_skele1, fr_skele2, afEnd	
 		even
 SonAni_GetUp:	dc.b 3, $B,$FD,  0
 		even
@@ -130,6 +131,8 @@ SonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		dc.b	$14, $15, $2E, $2F, $30, $31, $32
 		dc.b	$33, $34, $35
 		dc.b	$4E, $4F, $50,  $51, -2, 4, $FE
+		even
+SonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
 		even
 
 
@@ -170,3 +173,4 @@ id_GetUp:	equ (ptr_GetUp-Ani_Sonic)/2	; $22
 id_Blink:	equ (ptr_Blink-Ani_Sonic)/2	; $23
 id_Sit:		equ (ptr_Sit-Ani_Sonic)/2	; $24
 id_Peelout:	equ (ptr_Peelout-Ani_Sonic)/2	; $25
+id_Hang2:		equ	(ptr_Hang2-Ani_Sonic)/2

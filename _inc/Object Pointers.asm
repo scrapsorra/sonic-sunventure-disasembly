@@ -2,8 +2,8 @@
 ; Object pointers
 ; ---------------------------------------------------------------------------
 ptr_SonicPlayer:	dc.l SonicPlayer	; $01
-ptr_Obj02:		dc.l ObjectFall
-ptr_Obj03:		dc.l ObjectFall
+ptr_Obj02:			dc.l ObjectFall
+ptr_Obj03:			dc.l Obj03
 ptr_GShieldItem:	dc.l GShieldItem
 ptr_Obj05:		dc.l Spindash_dust
 ptr_Mozzietron:		dc.l Mozzietron

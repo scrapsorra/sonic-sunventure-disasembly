@@ -80,6 +80,11 @@ loc_138C2:
 		music	bgm_GameOver,0,0,0	; play game over music
 		moveq	#3,d0
 		jmp	(AddPLC).l	; load game over patterns
+		
+loc_138C3:
+		music	bgm_Granada,0,0,0	; play time over music
+		moveq	#3,d0
+		jmp	(AddPLC).l	; load game over patterns
 ; ===========================================================================
 
 loc_138D4:
@@ -92,6 +97,8 @@ loc_138D4:
 		move.b	#2,(v_objspace+$80+obFrame).w
 		move.b	#3,(v_objspace+$C0+obFrame).w
 		bra.s	loc_138C2
+		
+
 ; ===========================================================================
 
 locret_13900:

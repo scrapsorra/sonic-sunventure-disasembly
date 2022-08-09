@@ -23,16 +23,16 @@ Bonus_Main:	; Routine 0
 		sub.w	obX(a0),d0
 		add.w	d2,d0
 		cmp.w	d3,d0
-		bcc.s	@chkdel
+		bcc.s	bonu_chkdel
 		move.w	obY(a1),d1
 		sub.w	obY(a0),d1
 		add.w	d2,d1
 		cmp.w	d3,d1
-		bcc.s	@chkdel
+		bcc.s	bonu_chkdel
 		tst.w	(v_debuguse).w
-		bne.s	@chkdel
+		bne.s	bonu_chkdel
 		tst.b	(f_bigring).w
-		bne.s	@chkdel
+		bne.s	bonu_chkdel
 		addq.b	#2,obRoutine(a0)
 		move.l	#Map_Bonus,obMap(a0)
 		move.w	#$84B6,obGfx(a0)
@@ -45,10 +45,10 @@ Bonus_Main:	; Routine 0
 		moveq	#0,d0
 		move.b	obSubtype(a0),d0
 		add.w	d0,d0
-		move.w	@points(pc,d0.w),d0 ; load bonus points array
+		move.w	obj7d_points(pc,d0.w),d0 ; load bonus points array
 		jsr	(AddPoints).l
 
-	@chkdel:
+bonu_chkdel:
 		out_of_range.s	@delete
 		rts	
 
@@ -56,7 +56,7 @@ Bonus_Main:	; Routine 0
 		jmp	(DeleteObject).l
 
 ; ===========================================================================
-@points:	dc.w 0			; Bonus	points array
+obj7d_points:	dc.w 0			; Bonus	points array
 		dc.w 1000
 		dc.w 100
 		dc.w 10
