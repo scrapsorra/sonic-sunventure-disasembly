@@ -119,7 +119,7 @@ ReactToItem:
 
 @withiny:
 	@chktype:
-        	cmpi.b	#5,(v_zone).w    ;TIS is level GHZZ?
+        	cmpi.b	#id_SYZ,(v_zone).w   ;TIS is level GHZZ?
         	bne	NotGHZReact  ;TIS
         	move.b	obColType(a1),d1 ;TIS load collision type
         	cmpi.b	#$96,d1        ;TIS - is collision type $96?
