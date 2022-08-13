@@ -2299,7 +2299,7 @@ GM_Title:
 		move.w	#$8720,(a6)	; set background colour (palette line 2, entry 0)
 		clr.b	(f_wtr_state).w
 		bsr.w	ClearScreen
-		jsr	SHC2022 
+		jsr		SHC2022 
 
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
@@ -9747,7 +9747,7 @@ ObjPos_Null:	dc.b $FF, $FF, 0, 0, 0,	0
 SoundDriver:	include "s1.sounddriver.asm"
 
 SHC2022:    incbin "SHC22_Full_Sonic12.bin"
-               ; even
+            even
 
 Art_Dust	incbin	artunc\spindust.bin
 

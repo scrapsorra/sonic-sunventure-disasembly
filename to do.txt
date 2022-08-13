@@ -1,0 +1,4 @@
+-finish future bay chunks
+-finish editing robotnik sprites
+-change shield placements in GHZ 1 & 2
+-fix title screen vram issue
