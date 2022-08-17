@@ -160,7 +160,7 @@ Got_ChkSS:
 		beq.s	VBla_08A	; if not, branch
 		move.b	#id_Special,(v_gamemode).w ; set game mode to Special Stage (10)
 		bra.s	Got_Display2
-		move.b  #0,(f_emeraldm).w
+		;move.b  #0,(v_emeraldm).w
 ; ===========================================================================
 
 VBla_08A:
@@ -200,7 +200,7 @@ LevelOrder:
 		; Spring Yard Zone
 		dc.b id_SYZ, 2	; Act 1
 		dc.b id_SYZ, 2	; Act 2
-		dc.b id_SBZ, 2	; Act 3
+		dc.b id_MZ,	 0	; Act 3
 		dc.b 0, 0
 
 		; Scrap Brain Zone

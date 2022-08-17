@@ -2924,7 +2924,7 @@ LevelMenuText:	if Revision=0
 MusicList:
 		dc.b bgm_GHZ    ; GHZ1
         	dc.b bgm_LZ    ; GHZ2
-        	dc.b bgm_Seaside   ; GHZ3
+        	dc.b bgm_LZ   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
         	dc.b bgm_Stop    ; LZ1
         	dc.b bgm_Stop   ; LZ2

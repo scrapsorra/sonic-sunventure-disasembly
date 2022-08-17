@@ -23,8 +23,8 @@ GRing_Main:    ; Routine 0
 		bpl.s	GRing_Animate
 		cmpi.b	#6,(v_emeralds).w ; do you have 6 emeralds?
 		beq.w	GRing_Delete    ; if yes, branch
-		cmpi.b	#1,(f_emeraldm).w    ;TIS Did you hit the S-Monitor?
-		beq	GRing_Okay    ; if yes, branch
+		;cmpi.b	#0,(v_emeraldm).w    ;TIS Did you not hit the S-Monitor?
+		;bne.s	GRing_Okay    ; if no, branch
 
 		rts    
 ; ===========================================================================
@@ -54,7 +54,7 @@ GRing_Collect:	; Routine 4
 		cmp.w	obX(a0),d0	; has Sonic come from the left?
 		bcs.s	GRing_PlaySnd	; if yes, branch
 		bset	#0,obRender(a1)	; reverse flash	object	
-		move.b  #0,(f_emeraldm).w
+		move.b  #0,(v_emeraldm).w
 		
 GRing_PlaySnd:
 		sfx	sfx_GiantRing,0,0,0	; play giant ring sound

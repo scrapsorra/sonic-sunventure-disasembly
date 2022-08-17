@@ -187,8 +187,8 @@ PLC_SLZ2:	dc.w ((PLC_SLZ2end-PLC_SLZ2-2)/6)-1
 ; ---------------------------------------------------------------------------
 PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_SYZ,0		; SYZ main patterns
-		plcm	Nem_Stomper, $5800	; moving platform and stomper
-		plcm	Nem_SbzDoor1, $5D00	; door
+		;plcm	Nem_Stomper, $5800	; moving platform and stomper
+		plcm	Nem_SbzDoor1, $5D40	; door
 		plcm	Nem_Buzz, $8880		; buzz bomber enemy
 		plcm	Nem_Yadrin, $8F60	; yadrin enemy
 		plcm	Nem_Roller, $9700	; roller enemy
@@ -197,7 +197,7 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_SbzBlock, $9860	; vanishing block
 
 PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
-		plcm	Nem_Cater, $5600	; caterkiller enemy
+		;plcm	Nem_Cater, $5600	; caterkiller enemy
 		plcm	Nem_Bumper, $7000	; bumper
 		plcm	Nem_SyzSpike1, $72C0	; large	spikeball
 		plcm	Nem_SyzSpike2, $7740	; small	spikeball

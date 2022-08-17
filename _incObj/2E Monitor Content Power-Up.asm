@@ -92,7 +92,7 @@ Pow_ChkShield:
 		bne.s	Pow_ChkInvinc
 
 		move.b	#0,(v_rshield).w ; remove red shield
-		move.b	#0,(v_gshield).w ; remove gold shield
+		move.b	#0,(v_gshield).w ; remove g shield
 		move.b	#1,(v_shield).w	; give Sonic a shield
 		move.b	#id_ShieldItem,(v_objspace+$180).w ; load shield object ($38)
 		music	sfx_Shield,1,0,0	; play shield sound
@@ -149,18 +149,28 @@ Pow_ChkS:
 		cmpi.b	#7,d0		; does monitor contain 'S'?
 		bne.s	Pow_ChkSRing
 		
+		cmpi.b	#6,(v_emeralds).w ; do you have all the emeralds?
+		beq.s	PowS2	; if yes, branch
+		cmpi.b	#6,(v_emeraldm).w
+		beq.s	PowS2
+		subi.b	#$3B,d4
+		moveq	#0,d0
+		move.b	#1,(v_emeraldm).w
+		bra.s	PowSPlay
+
+PowS2:
 		addi.w	#50,(v_rings).w	; add 50 rings to the number of rings you have
 		ori.b	#5,(f_ringcount).w ; update the ring counter
 		cmpi.w	#100,(v_rings).w ; check if you have 100 rings
-		bcs.s	@sringsound
+		bcs.s	PowSPlay
 		bset	#1,(v_lifecount).w
 		beq.w	ExtraLife
 		cmpi.w	#200,(v_rings).w ; check if you have 200 rings
-		bcs.s	@sringsound
+		bcs.s	PowSPlay
 		bset	#2,(v_lifecount).w
-		beq.w	ExtraLife
+		beq.w	ExtraLife	
 
-	@sringsound:	
+PowSPlay:
 		sfx	sfx_GiantRing,1,0,0	; play giant ring sound
 
 		
@@ -187,22 +197,22 @@ Pow_ChkSRingSound:
 
 
 Pow_ChkRShield:
-		cmpi.b	#10,d0		; does monitor contain a gold shield?
+		cmpi.b	#10,d0		; does monitor contain a g shield?
 		bne.s	Pow_ChkGShield
 
 		move.b	#0,(v_shield).w ; remove shield
-		move.b	#0,(v_gshield).w ; remove gold shield
+		move.b	#0,(v_gshield).w ; remove g shield
 		move.b	#1,(v_rshield).w ; give Sonic a red shield
 		move.b	#id_RShieldItem,(v_objspace+$180).w ; load red shield object ($38)
 		music	sfx_FireShield,1,0,0	; play shield sound
 
 Pow_ChkGShield:
-		cmpi.b	#11,d0		; does monitor contain a gold shield?
+		cmpi.b	#11,d0		; does monitor contain a g shield?
 		bne.s	Pow_ChkEnd
 
 
 		move.b	#0,(v_shield).w ; remove shield
-		move.b	#0,(v_rshield).w ; remove gold shield
+		move.b	#0,(v_rshield).w ; remove g shield
 		move.b	#1,(v_gshield).w ; give Sonic a red shield
 		move.b	#id_GShieldItem,(v_objspace+$180).w ; load red shield object ($38)	
 		music	sfx_Shield,1,0,0	; play shield sound

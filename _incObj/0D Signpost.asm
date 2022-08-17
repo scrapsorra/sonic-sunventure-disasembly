@@ -135,10 +135,11 @@ GotThroughAct:
 		divu.w	#15,d0		; divide by 15
 		moveq	#$14,d1
 		cmp.w	d1,d0		; is time 5 minutes or higher?
-		bcs.s	@hastimebonus	; if not, branch
+		bcs.s	hastimebonus	; if not, branch
 		move.w	d1,d0		; use minimum time bonus (0)
+		jsr		CheckEmeraldM
 
-	@hastimebonus:
+	hastimebonus:
 		add.w	d0,d0
 		move.w	TimeBonuses(pc,d0.w),(v_timebonus).w ; set time bonus
 		move.w	(v_rings).w,d0	; load number of rings
@@ -187,10 +188,10 @@ GotThroughAct1:
 		divu.w	#15,d0		; divide by 15
 		moveq	#$14,d1
 		cmp.w	d1,d0		; is time 5 minutes or higher?
-		bcs.s	@hastimebonus	; if not, branch
+		bcs.w	hastimebonus2	; if not, branch
 		move.w	d1,d0		; use minimum time bonus (0)
 
-	@hastimebonus:
+	hastimebonus2:
 		add.w	d0,d0
 		move.w	TimeBonuses1(pc,d0.w),(v_timebonus).w ; set time bonus
 		move.w	(v_rings).w,d0	; load number of rings
@@ -206,3 +207,50 @@ locret_ECEE1:
 
 TimeBonuses1:	dc.w 5000, 5000, 1000, 500, 400, 400, 300, 300,	200, 200
 		dc.w 200, 200, 100, 100, 100, 100, 50, 50, 50, 50, 0
+		
+CheckEmeraldM:
+		cmpi.b	#0,(v_emeraldm).w
+		beq.w	hastimebonus
+		cmpi.b	#1,(v_emeraldm).w
+		beq.s	@give1
+		cmpi.b	#2,(v_emeraldm).w
+		beq.s	@give2
+		cmpi.b	#3,(v_emeraldm).w
+		beq.s	@give3
+		cmpi.b	#4,(v_emeraldm).w
+		beq.s	@give4
+		cmpi.b	#5,(v_emeraldm).w
+		beq.s	@give5
+		cmpi.b	#6,(v_emeraldm).w
+		beq.s	@give6
+		jmp		hastimebonus
+
+	@give1:
+		move.b	#1,(v_emeralds).w
+		move.b	#0,(v_emeraldm).w
+		jmp		hastimebonus
+		
+	@give2:
+		move.b	#2,(v_emeralds).w
+		move.b	#0,(v_emeraldm).w
+		jmp		hastimebonus
+		
+	@give3:
+		move.b	#3,(v_emeralds).w
+		move.b	#0,(v_emeraldm).w
+		jmp		hastimebonus
+		
+	@give4:
+		move.b	#4,(v_emeralds).w
+		move.b	#0,(v_emeraldm).w
+		jmp		hastimebonus
+		
+	@give5:
+		move.b	#5,(v_emeralds).w
+		move.b	#0,(v_emeraldm).w
+		jmp		hastimebonus
+		
+	@give6:
+		move.b	#6,(v_emeralds).w
+		move.b	#0,(v_emeraldm).w
+		jmp		hastimebonus

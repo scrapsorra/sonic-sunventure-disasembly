@@ -423,7 +423,7 @@ KillSonic:
 		move.w	#0,(v_rings).w ; clear rings
 		move.b	#0,(v_invinc).w	; remove invincibility
 		move.b  #0,(v_shoes).w
-		move.b  #0,(f_emeraldm).w
+		move.b  #0,(v_emeraldm).w
 		move.b	#6,obRoutine(a0)
 		jsr		Sonic_ResetOnFloor
 		bset	#1,obStatus(a0)
