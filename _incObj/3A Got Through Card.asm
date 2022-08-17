@@ -198,7 +198,7 @@ LevelOrder:
 		dc.b 0, 0
 
 		; Spring Yard Zone
-		dc.b id_SYZ, 2	; Act 1
+		dc.b id_SBZ, 2	; Act 1
 		dc.b id_SYZ, 2	; Act 2
 		dc.b id_MZ,	 0	; Act 3
 		dc.b 0, 0
