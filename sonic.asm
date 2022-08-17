@@ -2178,7 +2178,7 @@ Pal_SBZ3SonWat:	incbin	"palette\Sonic - SBZ3 Underwater.bin"
 Pal_SSResult:	incbin	"palette\Special Stage Results.bin"
 Pal_Continue:	incbin	"palette\Special Stage Continue Bonus.bin"
 Pal_Ending:	incbin	"palette\Ending.bin"
-
+Pal_Options:	incbin	"palette\Options.bin"
 ; ---------------------------------------------------------------------------
 ; Subroutine to	wait for VBlank routines to complete
 ; ---------------------------------------------------------------------------
@@ -2495,7 +2495,7 @@ Tit_CountC:
 		move.b	(v_jpadpress1).w,d0
 		andi.b	#btnC,d0	; is C button pressed?
 		beq.s	loc_3230	; if not, branch
-		addq.w	#1,(v_title_ccount).w ; increment C counter
+		jmp		MenuScreen
 
 loc_3230:
 		tst.w	(v_demolength).w
@@ -9745,6 +9745,8 @@ ObjPos_Null:	dc.b $FF, $FF, 0, 0, 0,	0
 		;dcb.b ($10000-(*%$10000))-(EndOfRom-SoundDriver),$FF
 
 SoundDriver:	include "s1.sounddriver.asm"
+
+			include "_inc\Sonic 2 Options.asm"
 
 SHC2022:    incbin "SHC22_Full_Sonic12.bin"
             even

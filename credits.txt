@@ -1,8 +1,8 @@
 inferno - air roll guide
 luigixhero - sonic cd art test spindash & skid sfx
 mrjoker27 music productions - music
-deltawooloo - coding, sfx porting
+deltawooloo - coding, music and sfx porting
 projectfm - coding help
-invisiblesun - coding
-nattheporcupine - cd extended camera guide
+theinvisiblesun - coding
+naoto - cd extended camera guide
 konrad - mozzietron ported to sonic 1

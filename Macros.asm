@@ -1,4 +1,44 @@
 ; ---------------------------------------------------------------------------
+; reads ASCII strings and passes them to character generator
+; ---------------------------------------------------------------------------
+asc        macro str
+ct =    0                            ; accumulates the total num of characters
+    rept narg                        ; repeat for every argumeny
+lc =        0                        ; the position in the string
+
+    dc.b strlen(\str)-1                    ; put the string length before the string itself
+    rept strlen(\str)                    ; repeat for each character in string
+cc         substr lc+1,lc+1,\str                ; get a single character into cc
+arg =        '\cc'                        ; convert it to a character
+            char.b arg                ; put the character into the ROM (as byte)
+
+lc =        lc+1                        ; go to the next character
+ct =        ct+1                        ; increment character count
+        endr
+    shift
+    endr
+    endm
+
+; translates ASCII character to proper hex value
+char        macro c
+    if c=' '
+        dc.\0 0                        ; example 1: single letters
+
+    elseif c='*'
+        dc.\0 $1A                        ; example 1: single letters
+
+    elseif (c>='0')&(c<='9')
+        dc.\0 \c-'0'+$20                ; example 2: range of letters ; gem note: '0' = $30. it's the ascii representation
+
+    elseif (c>='A')&(c<='Z')
+        dc.\0 \c-$41+$1E                ; example 2: range of letters ; gem note: '0' = $30. it's the ascii representation
+
+    else
+        dc.\0 \c                    ; example 3: any other character
+    endif
+    endm	
+
+; ---------------------------------------------------------------------------
 ; Align and pad
 ; input: length to align to, value to use as padding (default is 0)
 ; ---------------------------------------------------------------------------
