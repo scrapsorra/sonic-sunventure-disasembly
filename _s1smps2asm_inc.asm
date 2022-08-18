@@ -1,7 +1,7 @@
 ; =============================================================================================
 ; Created by Flamewing, based on S1SMPS2ASM version 1.1 by Marc Gordon (AKA Cinossu)
 ; =============================================================================================
-
+SourceDriver = 1 ; Please don't modify the value.
 ; PSG conversion to S3/S&K/S3D drivers require a tone shift of 12 semi-tones.
 psgdelta	EQU 12
 ; ---------------------------------------------------------------------------------------------
@@ -129,9 +129,15 @@ nBb7		EQU	$DF
 ; nMaxPSG1 and nMaxPSG2 are used only for songs from S3/S&K/S3D drivers.
 ; The use of psgdelta is intended to undo the effects of PSGPitchConvert
 ; and ensure that the ending note is indeed the maximum PSG frequency.
+	if SourceDriver<=2
+nMaxPSG				EQU nA5
+nMaxPSG1			EQU nA5+psgdelta
+nMaxPSG2			EQU nA5+psgdelta
+	else
 nMaxPSG				EQU nBb6-psgdelta
 nMaxPSG1			EQU nBb6
 nMaxPSG2			EQU nB6
+	endif
 ; ---------------------------------------------------------------------------------------------
 ; PSG Flutter Equates
 fTone_00	EQU	$00
@@ -190,93 +196,13 @@ sTone_27	EQU	$03
 ;sTone_28	EQU	$09
 ; ---------------------------------------------------------------------------------------------
 ; DAC Equates
-dSnareS3 equ $82
-dSnare equ dSnareS3
-dHighTom equ $82
-dHiTom	equ	dHighTom
-dMidTomS3 equ $83
-dMidTom equ dMidTomS3
-dLowTomS3 equ $84
-dLowTom	equ dLowTomS3
-dFloorTomS3 equ $85
-dKickS3 equ $81
-dKick equ dKickS3
-dMuffledSnare equ $87
-dCrashCymbal equ dMuffledSnare+1
-dRideCymbal equ $89
-dLowMetalHit equ $8A
-dMetalHit equ $8B
-dHighMetalHit equ $8C
-dHigherMetalHit equ dHighMetalHit+1
-dMidMetalHit equ $8E
-dClapS3 equ $8F
-dElectricHighTom equ $90
-dElectricMidTom equ dElectricHighTom+1
-dElectricLowTom equ $92
-dElectricFloorTom equ $93
-dTightSnare equ dElectricFloorTom+1
-dMidpitchSnare equ $95
-dLooseSnare equ $96
-dLooserSnare equ $97
-dHiTimpaniS3 equ dLooserSnare+1
-dHiTimpani equ dHiTimpaniS3
-dLowTimpaniS3 equ $99
-dLowTimpani equ dLowTimpaniS3
-dMidTimpaniS3 equ $9A
-dMidTimpani equ dMidTimpaniS3
-dQuickLooseSnare equ $9B
-dClick equ dQuickLooseSnare+1
-dPowerKick equ $9D
-dQuickGlassCrash equ $9E
-dGlassCrashSnare equ dQuickGlassCrash+1
-dGlassCrash equ $A0
-dGlassCrashKick equ $A1
-dQuietGlassCrash equ $A2
-dOddSnareKick equ dQuietGlassCrash+1
-dKickExtraBass equ $A4
-dComeOn equ $A5
-dDanceSnare equ $A6
-dLooseKick equ $A7
-dModLooseKick equ dLooseKick+1
-dWoo equ $A9
-dGo equ $AA
-dSnareGo equ $AB
-dPowerTom equ $AC
-dHiWoodBlock equ $AD
-dLowWoodBlock equ $AE
-dHiHitDrum equ dLowWoodBlock+1
-dLowHitDrum equ $B0
-dMetalCrashHit equ $B1
-dEchoedClapHit equ $B2
-dEchoedClapHit_S3 equ dEchoedClapHit
-dLowerEchoedClapHit equ dEchoedClapHit+1
-dLowerEchoedClapHit_S3 equ	dLowerEchoedClapHit
-dHipHopHitKick equ $B4
-dHipHopHitPowerKick equ $B5
-dBassHey equ dHipHopHitPowerKick+1
-dDanceStyleKick equ $B7
-dHipHopHitKick2 equ $B8
-dHipHopHitKick3 equ $B9
-dReverseFadingWind equ dHipHopHitKick3+1
-dScratchS3 equ $BB
-dLooseSnareNoise equ $BC
-dPowerKick2 equ $BD
-dCrashingNoiseWoo equ dPowerKick2+1
-dQuickHit equ $BF
-dKickHey equ $C0
-dPowerKickHit equ $C1
-dLowPowerKickHit equ dPowerKickHit+1
-dLowerPowerKickHit equ $C3
-dLowestPowerKickHit equ $C4
-dKickS1 equ $C5
-dSnareS1 equ $C6
-dTimpaniS1	EQU	$C7
-dHiTimpaniS1 equ $CC
-dMidTimpaniS1 equ $CD
-dLowTimpaniS1 equ $CE
-dVLowTimpani equ $CF
-dSAVSnare equ $D6
-dSAVSnare2 equ $D7
+dKick equ $81
+dSnare equ $82
+dCrashCymbal equ $85
+dHiTimpani equ $88
+dMidTimpani equ $89
+dLowTimpani equ $8A
+dVLowTimpani equ $8B
 ; ---------------------------------------------------------------------------------------------
 ; Channel IDs for SFX
 cPSG1				EQU $80

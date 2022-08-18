@@ -2495,7 +2495,7 @@ Tit_CountC:
 		move.b	(v_jpadpress1).w,d0
 		andi.b	#btnC,d0	; is C button pressed?
 		beq.s	loc_3230	; if not, branch
-		jmp		MenuScreen
+		jmp		MenuScreen ; increment C counter
 
 loc_3230:
 		tst.w	(v_demolength).w

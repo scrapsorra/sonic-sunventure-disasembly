@@ -26,9 +26,9 @@ MenuScreen:
 		move.w	#$9001,(a6)
 
 
-		lea	($FFFFAC00).w,a1
-		moveq	#$00,d0
-		move.w	#$07FF*2+$FF,d1
+		lea	(v_objspace).w,a1
+		moveq	#0,d0
+		move.w	#$7FF,d1
 
 MenuScreen_ClrObjRam:
 		move.l	d0,(a1)+
@@ -36,8 +36,8 @@ MenuScreen_ClrObjRam:
 
 ; ===========================================================================
 
-		clr.w	($FFFFDC00).w
-		move.l	#$FFFFDC00,($FFFFDCFC).w
+		clr.w	($FFFFC800).w
+		move.l	#$FFFFC800,($FFFFC8FC).w
 		move.l	#$42000000,(vdp_control_port).l
 		lea		(Nem_MenuFont).l,a0
 		jsr	NemDec
@@ -53,8 +53,7 @@ MenuScreen_ClrObjRam:
 		moveq	#$27,d1
 		moveq	#$1B,d2
 		jsr	TilemapToVRAM	; fullscreen background
-		tst.b	($FFFFFFF7).w		; is menu option?
-		beq.w	MenuScreen_Options	; if yes, branch
+		bsr.w	MenuScreen_Options	; if yes, branch
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -81,22 +80,23 @@ MenuScreen_Options:
 		lea	(Eni_MenuBox).l,a0
 		move.w	#$2070,d0
 		jsr	EniDec
-		clr.b	($FFFFF5CC).w
+		clr.b	(Options_menu_box).w
 		bsr.w	OptionScreen_DrawSelected
-		addq.b	#1,($FFFFF5CC).w
+		addq.b	#1,(Options_menu_box).w
 		bsr.w	OptionScreen_DrawUnselected
-		addq.b	#1,($FFFFF5CC).w
+		addq.b	#1,(Options_menu_box).w
 		bsr.w	OptionScreen_DrawUnselected
-		clr.b	($FFFFF5CC).w
-		clr.w	(v_scroll_block_1_size).w
+		clr.b	(Options_menu_box).w
+		clr.b	($FFFFF711).w		
 		clr.w	($FFFFF7F0).w					 
 ;-------------------------------------------------------------------------------
-		move.l	#$0000,(v_lani4_frame).w
+		clr.l ($FFFFF7B8).w ; clear RAM adresses $F7B8 to $F7BA
 		bsr.w	Dynamic_Menu
 ;-------------------------------------------------------------------------------
 		moveq	#palid_Options,d0
 		jsr		PalLoad1
-		;music	mus_CharacterSelect
+		move.b	#$98,d0
+		jsr	PlaySound_Special ; play options music
 		clr.l	(v_screenposx).w
 		clr.l	(v_screenposy).w
 		move.b	#$16,(v_vbla_routine).w
@@ -109,20 +109,21 @@ MenuScreen_Options:
 OptionScreen_Main:
 		move.b	#$16,(v_vbla_routine).w
 		jsr	WaitForVBla
+		jsr	ReadJoypads			
 		move	#$2700,sr
 		bsr.w	OptionScreen_DrawUnselected
-		bsr.w	OptionScreen_Controls
+		bsr.w	OptionScreen_Controls			
 		bsr.w	OptionScreen_DrawSelected
 		move	#$2300,sr
 		bsr.w	Dynamic_Menu
 		move.b	(v_jpadpress1).w,d0
-		andi.b	#$80,d0	; is Start button pressed?
+		andi.b	#-$80,d0 ; check if Start is pressed
 		bne.s	OptionScreen_Select		; if yes, branch
 		bra.s	OptionScreen_Main
 ; ===========================================================================
 ; loc_909A:
 OptionScreen_Select:
-		move.b	($FFFFF5CC).w,d0
+		move.b	(Options_menu_box).w,d0
 		bne.s	OptionScreen_Select_Not1P
 		moveq	#0,d0
 		move.w	d0,($FFFFFE10).w	; green_hill_zone_act_1
@@ -149,79 +150,69 @@ OptionScreen_Select_Other:
 
 ;sub_90E0:
 OptionScreen_Controls:
-		moveq	#0,d2
-		move.b	($FFFFF5CC).w,d2
-		move.b	(v_jpadpress1).w,d0		; Ctrl_1_Press
-		andi.b	#0,d0			; is up pressed?
-		beq.s	Option_Controls_Down	; if not, branch
-		subq.b	#1,d2					; move up 1 selection
-		bcc.s	Option_Controls_Down
-		move.b	#2,d2
+	moveq	#0,d2
+	move.b	(Options_menu_box).w,d2
+	move.b	(v_jpadpress1).w,d0
+	btst	#0,d0
+	beq.s	@cont
+	subq.b	#1,d2	; Up 1 box
+	bcc.s	@cont
+	move.b	#2,d2	; if you go below 0, wrap back to 2
 
-Option_Controls_Down:
-		andi.b	#1,d0			; is down pressed?
-		beq.s	Option_Controls_Refresh	; if not, branch
-		addq.b	#1,d2					; move down 1 selection
-		cmpi.b	#3,d2
-		blo.s	Option_Controls_Refresh
-		moveq	#0,d2
+@cont:
+	btst	#1,d0
+	beq.s	@cont2
+	addq.b	#1,d2	; down 1 box
+	cmpi.b	#3,d2	; if you go above 2,
+	blo.s	@cont2
+	moveq	#0,d2	; wrap back around to 0
 
-Option_Controls_Refresh:
-		move.b	d2,($FFFFF5CC).w
-		lsl.w	#2,d2
-		move.b	OptionScreen_Choices(pc,d2.w),d3 ; number of choices for the option
-		movea.l	OptionScreen_Choices(pc,d2.w),a1 ; location where the choice is stored (in RAM)
-		move.w	(a1),d2
-		andi.b	#2,d0				; is left pressed?
-		beq.s	Option_Controls_Right		; if not, branch
-		subq.b	#1,d2						; subtract 1 from sound test
-		bcc.s	Option_Controls_Right
-		move.b	d3,d2
+@cont2:
+	move.b	d2,(Options_menu_box).w
+	lsl.w	#2,d2
+	move.b	OptionScreen_Choices(pc,d2.w),d3 ; number of choices for the option
+	movea.l	OptionScreen_Choices(pc,d2.w),a1 ; location where the choice is stored (in RAM)
+	move.w	(a1),d2
+	btst	#2,d0
+	beq.s	@cont3	; didn't press Left
+	subq.b	#1,d2	; subtract 1
+	bcc.s	@cont3	; wrap back around...? (branch carry clear...)
+	move.b	d3,d2	; move d3 to d2. wait, this is the number of choices for the option. so, this is wrapping back around?
 
-Option_Controls_Right:
-		andi.b	#3,d0			; is right pressed?
-		beq.s	Option_Controls_Button_A	; if not, branch
-		addq.b	#1,d2						; add 1 to sound test
-		cmp.b	d3,d2
-		bls.s	Option_Controls_Button_A
-		moveq	#0,d2
+@cont3:
+	btst	#3,d0
+	beq.s	@cont4
+	addq.b	#1,d2
+	cmp.b	d3,d2
+	bls.s	@cont4
+	moveq	#0,d2
 
-Option_Controls_Button_A:
-		andi.b	#6,d0				; is button A pressed?
-		beq.s	Option_Controls_Refresh2	; if not, branch
-		addi.b	#$10,d2						; add $10 to sound test
-		cmp.b	d3,d2
-		bls.s	Option_Controls_Refresh2
-		moveq	#0,d2
+@cont4:
+	btst	#6,d0
+	beq.s	@cont5
+	addi.b	#$10,d2
+	cmp.b	d3,d2
+	bls.s	@cont5
+	moveq	#0,d2
 
-Option_Controls_Refresh2:
-		move.w	d2,(a1)
-		cmpi.b	#2,($FFFFF5CC).w
-		bne.s	Option_Controls_NoMove	; rts
-		andi.w	#$10+$20,d0	; B or C pressed?
-		beq.s	Option_Controls_NoMove	; if not, branch
-		move.w	(v_levselsound).w,d0	; get sound selected
-		addi.w	#$80,d0					; add $80 to sound selected
-		jmp		PlaySound
-
-Option_Controls_NoMove:
+@cont5:
 		rts
 ; End of function OptionScreen_Controls
 
 ; ===========================================================================
 ; word_917A:
 OptionScreen_Choices:
-		dc.l (1-1)<<24|($FFFF8A&$FFFFFF)
-		dc.l (1-1)<<24|($FFFFBE&$FFFFFF)
-		dc.l ($7F)<<24|($FFFF84&$FFFFFF)
-
+		dc.l (3-1)<<24|($FFFF8A&$FFFFFF)
+		dc.l (2-1)<<24|($FFFFBE&$FFFFFF)
+		dc.l (2-1)<<24|($FFFF84&$FFFFFF)
+		even
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
 
 OptionScreen_DrawSelected:
 		bsr.w	loc_9268
 		moveq	#0,d1
-		move.b	($FFFFF5CC).w,d1
+		move.b	(Options_menu_box).w,d1
 		lsl.w	#3,d1
 		lea	(OptScrBoxData).l,a3
 		lea	(a3,d1.w),a3
@@ -231,24 +222,8 @@ OptionScreen_DrawSelected:
 		bsr.w	MenuScreenTextToRAM
 		lea	($FFFF00B6).l,a2
 		moveq	#0,d1
-		cmpi.b	#2,($FFFFF5CC).w
-		beq.s	loc_9186
-		move.b	($FFFFF5CC).w,d1
-		lsl.w	#2,d1
-		lea	OptionScreen_Choices(pc),a1
-		movea.l	(a1,d1.w),a1
-		move.w	(a1),d1
-		lsl.w	#2,d1
-
-loc_9186:
 		movea.l	(a4,d1.w),a1
 		bsr.w	MenuScreenTextToRAM
-		cmpi.b	#2,($FFFFF5CC).w
-		bne.s	loc2_9186
-		lea	($FFFF00C2).l,a2
-		bsr.w	loc_9296
-
-loc2_9186:
 		lea	(v_256x256).l,a1
 		move.l	(a3)+,d0
 		moveq	#$15,d1
@@ -259,7 +234,7 @@ loc2_9186:
 OptionScreen_DrawUnselected:
 		bsr.w	loc_9268
 		moveq	#0,d1
-		move.b	($FFFFF5CC).w,d1
+		move.b	(Options_menu_box).w,d1
 		lsl.w	#3,d1
 		lea	(OptScrBoxData).l,a3
 		lea	(a3,d1.w),a3
@@ -269,24 +244,8 @@ OptionScreen_DrawUnselected:
 		bsr.w	MenuScreenTextToRAM
 		lea	($FFFF0216).l,a2
 		moveq	#0,d1
-		cmpi.b	#2,($FFFFF5CC).w
-		beq.s	loc2_91F8
-		move.b	($FFFFF5CC).w,d1
-		lsl.w	#2,d1
-		lea	OptionScreen_Choices(pc),a1
-		movea.l	(a1,d1.w),a1
-		move.w	(a1),d1
-		lsl.w	#2,d1
-
-loc2_91F8
 		movea.l	(a4,d1.w),a1
 		bsr.w	MenuScreenTextToRAM
-		cmpi.b	#2,($FFFFF5CC).w
-		bne.s	loc3_91F8
-		lea	($FFFF0222).l,a2
-		bsr.w	loc_9296
-
-loc3_91F8
 		lea	($FFFF0160).l,a1
 		move.l	(a3)+,d0
 		moveq	#$15,d1
@@ -301,12 +260,12 @@ loc_9268:
 		lea	(off_92DE).l,a4
 
 loc2_9268:
-		tst.b	($FFFFF5CC).w
+		tst.b	(Options_menu_box).w
 		beq.s	loc3_9268
 		lea	(off_92EA).l,a4
 
 loc3_9268:
-		cmpi.b	#2,($FFFFF5CC).w
+		cmpi.b	#2,(Options_menu_box).w
 		bne.s	loc4_9268		; rts
 		lea	(off_92F2).l,a4
 
@@ -391,7 +350,8 @@ off_92EA:
 		dc.l TextOptScr_On
 		dc.l TextOptScr_Off
 off_92F2:
-		dc.l TextOptScr_0
+		dc.l TextOptScr_Null
+		dc.l TextOptScr_Null2
 ; ===========================================================================
 
 TextOptScr_PlayerSelect:	asc	"* PLAYER SELECT *"	; byte_97CA:
@@ -399,12 +359,12 @@ TextOptScr_Sonic:			asc	"SONIC          "	; byte_97FC:
 TextOptScr_Miles:			asc	"MILES          "	; byte_980C:
 TextOptScr_Tails:			asc	"TAILS          "	; byte_981C:
 TextOptScr_Knux:			asc "KNUCKLES       "
-TextOptScr_LivesSystem:		asc	"* 	  TEST	    *"	; byte_982C:
-TextOptScr_On:				asc	"      ON       "	; byte_984E:
-TextOptScr_Off:				asc	"      OFF      "	; byte_984E:
-TextOptScr_SoundTest:		asc	"*  SOUND TEST   *"	; byte_985E:
-TextOptScr_0:				asc	"      00       "	; byte_9870:
-
+TextOptScr_LivesSystem:		asc	"*EXTENDED CAMERA*"	; byte_982C:
+TextOptScr_On:				asc	"      OFF       "	; byte_984E:
+TextOptScr_Off:				asc	"      ON      "	; byte_984E:
+TextOptScr_SoundTest:		asc	"*    MOVESET    *"	; byte_985E:
+TextOptScr_Null:				asc	"FINISH THE GAME"	; byte_9870:
+TextOptScr_Null2:				asc	"      NULLS       "	; byte_9870:
 ; ============================================================================
 
 Sonic_Miles_Spr:incbin  "artunc/Sonic and Miles text.bin"
