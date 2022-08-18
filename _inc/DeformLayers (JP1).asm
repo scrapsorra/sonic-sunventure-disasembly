@@ -699,30 +699,28 @@ ScrollHoriz:
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
-
-; ||||||||||||||| S U B    R O U T    I N E |||||||||||||||||||||||||||||||||||||||
-
-
 MoveScreenHoriz:
+		tst.b	($FFFFFF8B).w
+		beq.w	@cont		
+		jmp	MoveScreenHorizEXT
+		
+	@cont:		
         move.w    (v_player+obX).w,d0
         sub.w    (v_screenposx).w,d0 ; Sonic's distance from left edge of screen
-        sub.w    (v_camera_pan).w,d0    ; Horizontal camera pan value
-        beq.s    SH_ProperlyFramed    ; if zero, branch
-        bcs.s    SH_BehindMid    ; if less than, branch
-        bra.s    SH_AheadOfMid    ; branch
-; ===========================================================================
-
-SH_ProperlyFramed:
+        subi.w    #144,d0        ; is distance less than 144px?
+        bcs.s    SH_BehindMid    ; if yes, branch
+        subi.w    #16,d0        ; is distance more than 160px?
+        bcc.s    SH_AheadOfMid    ; if yes, branch
         clr.w    (v_scrshiftx).w
         rts 
 ; ===========================================================================
 
 SH_AheadOfMid:
         cmpi.w    #16,d0        ; is Sonic within 16px of middle area?
-        blt.s    SH_Ahead16    ; if yes, branch
+        bcs.s    SH_Ahead16    ; if yes, branch
         move.w    #16,d0        ; set to 16 if greater
 
-SH_Ahead16:
+    SH_Ahead16:
         add.w    (v_screenposx).w,d0
         cmp.w    (v_limitright2).w,d0
         blt.s    SH_SetScreen
@@ -734,33 +732,68 @@ SH_SetScreen:
         asl.w    #8,d1
         move.w    d0,(v_screenposx).w ; set new screen position
         move.w    d1,(v_scrshiftx).w ; set distance for screen movement
-        rts
-
+        rts 
 ; ===========================================================================
 
 SH_BehindMid:
-        cmpi.w    #-16,d0        ; is Sonic within 16px of middle area?
-        bge.s    SH_Behind16    ; if no, branch
-        move.w    #-16,d0        ; set to -16 if less
-
-SH_Behind16:
         add.w    (v_screenposx).w,d0
         cmp.w    (v_limitleft2).w,d0
         bgt.s    SH_SetScreen
         move.w    (v_limitleft2).w,d0
         bra.s    SH_SetScreen
+; End of function MoveScreenHoriz
+
+; ||||||||||||||| S U B    R O U T    I N E |||||||||||||||||||||||||||||||||||||||
+
+MoveScreenHorizEXT:
+        move.w    (v_player+obX).w,d0
+        sub.w    (v_screenposx).w,d0 ; Sonic's distance from left edge of screen
+        sub.w    (v_camera_pan).w,d0    ; Horizontal camera pan value
+        beq.s    SHEXT_ProperlyFramed    ; if zero, branch
+        bcs.s    SHEXT_BehindMid    ; if less than, branch
+        bra.s    SHEXT_AheadOfMid    ; branch
+; ===========================================================================
+
+SHEXT_ProperlyFramed:
+        clr.w    (v_scrshiftx).w
+        rts 
+; ===========================================================================
+
+SHEXT_AheadOfMid:
+        cmpi.w    #16,d0        ; is Sonic within 16px of middle area?
+        blt.s    SHEXT_Ahead16    ; if yes, branch
+        move.w    #16,d0        ; set to 16 if greater
+
+SHEXT_Ahead16:
+        add.w    (v_screenposx).w,d0
+        cmp.w    (v_limitright2).w,d0
+        blt.s    SHEXT_SetScreen
+        move.w    (v_limitright2).w,d0
+
+SHEXT_SetScreen:
+        move.w    d0,d1
+        sub.w    (v_screenposx).w,d1
+        asl.w    #8,d1
+        move.w    d0,(v_screenposx).w ; set new screen position
+        move.w    d1,(v_scrshiftx).w ; set distance for screen movement
+        rts
+
+; ===========================================================================
+
+SHEXT_BehindMid:
+        cmpi.w    #-16,d0        ; is Sonic within 16px of middle area?
+        bge.s    SHEXT_Behind16    ; if no, branch
+        move.w    #-16,d0        ; set to -16 if less
+
+SHEXT_Behind16:
+        add.w    (v_screenposx).w,d0
+        cmp.w    (v_limitleft2).w,d0
+        bgt.s    SHEXT_SetScreen
+        move.w    (v_limitleft2).w,d0
+        bra.s    SHEXT_SetScreen
       
 ; End of function MoveScreenHoriz
 
-; ===========================================================================
-		tst.w	d0
-		bpl.s	loc_6610
-		move.w	#-2,d0
-		bra.s	SH_BehindMid
-
-loc_6610:
-		move.w	#2,d0
-		bra.s	SH_AheadOfMid
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to	scroll the level vertically as Sonic moves

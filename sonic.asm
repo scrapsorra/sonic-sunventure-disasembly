@@ -19,7 +19,7 @@ AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
 ; Change to 0 to build the original version of the game, dubbed REV00
 ; Change to 1 to build the later vesion, dubbed REV01, which includes various bugfixes and enhancements
 ; Change to 2 to build the version from Sonic Mega Collection, dubbed REVXB, which fixes the infamous "spike bug"
-Revision:	equ 1
+Revision:	equ 2
 
 ZoneCount:	equ 6	; discrete zones are: GHZ, MZ, SYZ, LZ, SLZ, and SBZ
 
@@ -7375,9 +7375,11 @@ Sonic_Main:	; Routine 0
 		move.b	#5,$FFFFD1C0.w
 
 Sonic_Control:    ; Routine 2
-     
+ 		tst.b	($FFFFFF8B).w
+		beq.w	@cont    
 		bsr.s    Sonic_PanCamera    ; ++add this++
-     
+ 
+	@cont: 
 		tst.w    (f_debugmode).w    ; is debug cheat enabled?
 		beq.s    loc_12C58    ; if not, branch
 		btst    #bitB,(v_jpadpress1).w ; is button B pressed?
