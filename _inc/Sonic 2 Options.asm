@@ -108,16 +108,16 @@ MenuScreen_Options:
 ; loc_9060:
 OptionScreen_Main:
 		move.b	#$16,(v_vbla_routine).w
-		jsr	WaitForVBla
+		jsr	WaitForVBla		
 		jsr	ReadJoypads			
 		move	#$2700,sr
 		bsr.w	OptionScreen_DrawUnselected
 		bsr.w	OptionScreen_Controls			
 		bsr.w	OptionScreen_DrawSelected
 		move	#$2300,sr
-		bsr.w	Dynamic_Menu
-		move.b	(v_jpadpress1).w,d0
-		andi.b	#-$80,d0 ; check if Start is pressed
+		bsr.w	Dynamic_Menu		
+		andi.b	#btnStart,(v_jpadpress1).w ; check if Start is pressed
+
 		bne.s	OptionScreen_Select		; if yes, branch
 		bra.s	OptionScreen_Main
 ; ===========================================================================
@@ -150,52 +150,55 @@ OptionScreen_Select_Other:
 
 ;sub_90E0:
 OptionScreen_Controls:
-	moveq	#0,d2
-	move.b	(Options_menu_box).w,d2
-	move.b	(v_jpadpress1).w,d0
-	btst	#0,d0
-	beq.s	@cont
-	subq.b	#1,d2	; Up 1 box
-	bcc.s	@cont
-	move.b	#2,d2	; if you go below 0, wrap back to 2
+		moveq	#0,d2
+		move.b	(Options_menu_box).w,d2			
+		move.b	(v_jpadpress1).w,d0		; Ctrl_1_Press
+		btst	#0,d0			; is up pressed?
+		beq.s	Option_Controls_Down	; if not, branch
+		subq.b	#1,d2					; move up 1 selection
+		bcc.s	Option_Controls_Down
+		move.b	#2,d2
 
-@cont:
-	btst	#1,d0
-	beq.s	@cont2
-	addq.b	#1,d2	; down 1 box
-	cmpi.b	#3,d2	; if you go above 2,
-	blo.s	@cont2
-	moveq	#0,d2	; wrap back around to 0
+Option_Controls_Down:
+		btst	#1,d0			; is down pressed?
+		beq.s	Option_Controls_Refresh	; if not, branch
+		addq.b	#1,d2					; move down 1 selection
+		cmpi.b	#3,d2
+		blo.s	Option_Controls_Refresh
+		moveq	#0,d2
 
-@cont2:
-	move.b	d2,(Options_menu_box).w
-	lsl.w	#2,d2
-	move.b	OptionScreen_Choices(pc,d2.w),d3 ; number of choices for the option
-	movea.l	OptionScreen_Choices(pc,d2.w),a1 ; location where the choice is stored (in RAM)
-	move.w	(a1),d2
-	btst	#2,d0
-	beq.s	@cont3	; didn't press Left
-	subq.b	#1,d2	; subtract 1
-	bcc.s	@cont3	; wrap back around...? (branch carry clear...)
-	move.b	d3,d2	; move d3 to d2. wait, this is the number of choices for the option. so, this is wrapping back around?
+Option_Controls_Refresh:
+		move.b	d2,(Options_menu_box).w
+		lsl.w	#2,d2
+		move.b	OptionScreen_Choices(pc,d2.w),d3 ; number of choices for the option
+		movea.l	OptionScreen_Choices(pc,d2.w),a1 ; location where the choice is stored (in RAM)
+		move.w	(a1),d2
+		btst	#2,d0				; is left pressed?
+		beq.s	Option_Controls_Right		; if not, branch
+		subq.b	#1,d2						; subtract 1 from sound test
+		bcc.s	Option_Controls_Right
+		move.b	d3,d2
 
-@cont3:
-	btst	#3,d0
-	beq.s	@cont4
-	addq.b	#1,d2
-	cmp.b	d3,d2
-	bls.s	@cont4
-	moveq	#0,d2
+Option_Controls_Right:
+		btst	#3,d0			; is right pressed?
+		beq.s	Option_Controls_Button_A	; if not, branch
+		addq.b	#1,d2						; add 1 to sound test
+		cmp.b	d3,d2
+		bls.s	Option_Controls_Button_A
+		moveq	#0,d2
 
-@cont4:
-	btst	#6,d0
-	beq.s	@cont5
-	addi.b	#$10,d2
-	cmp.b	d3,d2
-	bls.s	@cont5
-	moveq	#0,d2
+Option_Controls_Button_A:
+		btst	#6,d0				; is button A pressed?
+		beq.s	Option_Controls_Refresh2	; if not, branch
+		addi.b	#$10,d2						; add $10 to sound test
+		cmp.b	d3,d2
+		bls.s	Option_Controls_Refresh2
+		moveq	#0,d2
 
-@cont5:
+Option_Controls_Refresh2:
+		move.w	d2,(a1)
+
+Option_Controls_NoMove:
 		rts
 ; End of function OptionScreen_Controls
 
@@ -222,8 +225,24 @@ OptionScreen_DrawSelected:
 		bsr.w	MenuScreenTextToRAM
 		lea	($FFFF00B6).l,a2
 		moveq	#0,d1
+		cmpi.b	#2,(Options_menu_box).w
+		beq.s	loc_9186
+		move.b	(Options_menu_box).w,d1
+		lsl.w	#2,d1
+		lea	OptionScreen_Choices(pc),a1
+		movea.l	(a1,d1.w),a1
+		move.w	(a1),d1
+		lsl.w	#2,d1
+
+loc_9186:		
 		movea.l	(a4,d1.w),a1
 		bsr.w	MenuScreenTextToRAM
+		;cmpi.b	#2,(Options_menu_box).w
+		;bne.s	loc2_9186
+		;lea	($FFFF00C2).l,a2
+		;bsr.w	loc_9296
+
+loc2_9186:		
 		lea	(v_256x256).l,a1
 		move.l	(a3)+,d0
 		moveq	#$15,d1
@@ -244,8 +263,24 @@ OptionScreen_DrawUnselected:
 		bsr.w	MenuScreenTextToRAM
 		lea	($FFFF0216).l,a2
 		moveq	#0,d1
+		cmpi.b	#2,(Options_menu_box).w
+		beq.s	loc2_91F8
+		move.b	(Options_menu_box).w,d1
+		lsl.w	#2,d1
+		lea	OptionScreen_Choices(pc),a1
+		movea.l	(a1,d1.w),a1
+		move.w	(a1),d1
+		lsl.w	#2,d1
+
+loc2_91F8		
 		movea.l	(a4,d1.w),a1
 		bsr.w	MenuScreenTextToRAM
+		;cmpi.b	#2,(Options_menu_box).w
+		;bne.s	loc3_91F8
+		;lea	($FFFF0222).l,a2
+		;bsr.w	loc_9296
+
+loc3_91F8		
 		lea	($FFFF0160).l,a1
 		move.l	(a3)+,d0
 		moveq	#$15,d1
@@ -274,22 +309,6 @@ loc4_9268:
 ; ===========================================================================
 
 loc_9296:
-		move.w	(v_levselsound).w,d1
-		move.b	d1,d2
-		lsr.b	#4,d1
-		bsr.s	loc2_9296
-		move.b	d2,d1
-
-loc2_9296:
-		andi.w	#$F,d1
-		cmpi.b	#$A,d1
-		blo.s	loc3_9296
-		addi.b	#4,d1
-
-loc3_9296:
-		addi.b	#$10,d1
-		move.b	d1,d0
-		move.w	d0,(a2)+
 		rts
 
 Dynamic_Menu:
@@ -354,15 +373,15 @@ off_92F2:
 		dc.l TextOptScr_Null2
 ; ===========================================================================
 
-TextOptScr_PlayerSelect:	asc	"* PLAYER SELECT *"	; byte_97CA:
+TextOptScr_PlayerSelect:	asc	"* PALETTE PICKER *"	; byte_97CA:
 TextOptScr_Sonic:			asc	"SONIC          "	; byte_97FC:
 TextOptScr_Miles:			asc	"MILES          "	; byte_980C:
 TextOptScr_Tails:			asc	"TAILS          "	; byte_981C:
 TextOptScr_Knux:			asc "KNUCKLES       "
-TextOptScr_LivesSystem:		asc	"*EXTENDED CAMERA*"	; byte_982C:
+TextOptScr_LivesSystem:		asc	"* EXTENDED CAMERA*"	; byte_982C:
 TextOptScr_On:				asc	"      OFF       "	; byte_984E:
 TextOptScr_Off:				asc	"      ON      "	; byte_984E:
-TextOptScr_SoundTest:		asc	"*    MOVESET    *"	; byte_985E:
+TextOptScr_SoundTest:		asc	"* NEW MOVESTYLES *"	; byte_985E:
 TextOptScr_Null:				asc	"FINISH THE GAME"	; byte_9870:
 TextOptScr_Null2:				asc	"      NULLS       "	; byte_9870:
 ; ============================================================================
