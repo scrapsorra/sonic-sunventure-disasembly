@@ -264,6 +264,7 @@ PLC_Signpost:	dc.w ((PLC_Signpostend-PLC_Signpost-2)/6)-1
 		plcm	Nem_SignPost, $D000	; signpost
 		plcm	Nem_Bonus, $96C0	; hidden bonus points
 		plcm	Nem_BigFlash, $8C40	; giant	ring flash effect
+		;plcm	Nem_SSEmerald, $EE00	; emeralds
 	PLC_Signpostend:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - beta special stage warp effect
@@ -293,13 +294,13 @@ PLC_SpecialStage:	dc.w ((PLC_SpeStageend-PLC_SpecialStage-2)/6)-1
 		plcm	Nem_SSWBlock, $AE00	; W block
 		plcm	Nem_SSGlass, $BE00	; glass	block
 		plcm	Nem_SSEmerald, $EE00	; emeralds
-		plcm	Nem_SSZone1, $F2E0	; ZONE 1 block
-		plcm	Nem_SSZone2, $F400	; ZONE 2 block
-		plcm	Nem_SSZone3, $F520	; ZONE 3 block
+		;plcm	Nem_SSZone1, $F2E0	; ZONE 1 block
+		;plcm	Nem_SSZone2, $F400	; ZONE 2 block
+		;plcm	Nem_SSZone3, $F520	; ZONE 3 block
 	PLC_SpeStageend:
-		plcm	Nem_SSZone4, $F2E0	; ZONE 4 block
-		plcm	Nem_SSZone5, $F400	; ZONE 5 block
-		plcm	Nem_SSZone6, $F520	; ZONE 6 block
+		;plcm	Nem_SSZone4, $F2E0	; ZONE 4 block
+		;plcm	Nem_SSZone5, $F400	; ZONE 5 block
+		;plcm	Nem_SSZone6, $F520	; ZONE 6 block
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - GHZ animals
 ; ---------------------------------------------------------------------------

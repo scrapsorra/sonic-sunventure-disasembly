@@ -351,7 +351,7 @@ v_megadrive:	equ $FFFFFFF8	; Megadrive machine type
 f_debugmode:	equ $FFFFFFFA	; debug mode flag (sometimes 2 bytes)
 v_init:		equ $FFFFFFFC	; 'init' text string (4 bytes)
 
-v_emeraldm:	equ $FFFFF5C3
+f_emeraldm:	equ $FFFFF5C3
 v_tagwater:    	equ $FFFFF5C4   ; TIS  
 v_watersplashpos:    equ $FFFFFF92    ; TIS  
 f_spindash	= $39

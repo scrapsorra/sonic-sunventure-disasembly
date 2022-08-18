@@ -116,7 +116,7 @@
 	dc.l Map_SS_R
 	dc.w $7A9
 	dc.l Map_Ring
-	dc.w $27B2
+	dc.w $2798
 	dc.l Map_SS_Chaos3
 	dc.w $770
 	dc.l Map_SS_Chaos3
@@ -132,13 +132,13 @@
 	dc.l Map_SS_R
 	dc.w $4F0
 	dc.l Map_Ring+$4000000
-	dc.w $27B2
+	dc.w $2798
 	dc.l Map_Ring+$5000000
-	dc.w $27B2
+	dc.w $2798
 	dc.l Map_Ring+$6000000
-	dc.w $27B2
+	dc.w $2798
 	dc.l Map_Ring+$7000000
-	dc.w $27B2
+	dc.w $2798
 	dc.l Map_SS_Glass
 	dc.w $23F0
 	dc.l Map_SS_Glass+$1000000

@@ -157,6 +157,7 @@ Lamp_StoreInfo:
 		move.w	(v_waterpos2).w,($FFFFFE50).w 	; water height
 		move.b	(v_wtr_routine).w,($FFFFFE52).w ; rountine counter for water
 		move.b	(f_wtr_state).w,($FFFFFE53).w 	; water direction
+		move.b	(f_emeraldm).w,($FFFFFE54).w 	; emerald monitor
 		rts	
 
 ; ---------------------------------------------------------------------------
@@ -189,6 +190,7 @@ Lamp_LoadInfo:
 		move.w	($FFFFFE4A).w,(v_bg2screenposy).w
 		move.w	($FFFFFE4C).w,(v_bg3screenposx).w
 		move.w	($FFFFFE4E).w,(v_bg3screenposy).w
+		move.b	($FFFFFE54).w,(f_emeraldm).w	;emerald monitor count
 		cmpi.b	#1,(v_zone).w	; is this Labyrinth Zone?
 		bne.s	@notlabyrinth	; if not, branch
 

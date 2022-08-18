@@ -151,11 +151,10 @@ Pow_ChkS:
 		
 		cmpi.b	#6,(v_emeralds).w ; do you have all the emeralds?
 		beq.s	PowS2	; if yes, branch
-		cmpi.b	#6,(v_emeraldm).w
-		beq.s	PowS2
 		subi.b	#$3B,d4
 		moveq	#0,d0
-		move.b	#1,(v_emeraldm).w
+		move.b	#0,(f_emeraldm).w
+		move.b	#1,(f_emeraldm).w
 		bra.s	PowSPlay
 
 PowS2:

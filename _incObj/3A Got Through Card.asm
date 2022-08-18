@@ -88,6 +88,7 @@ loc_C61A:
 		bne.s	loc_C5FE
 		addq.b	#2,obRoutine(a0)
 		move.w	#180,obTimeFrame(a0) ; set time delay to 3 seconds
+		;move.b	#id_SSRChaos,(v_objspace+$800).w ; load chaos emerald object
 
 Got_Wait:	; Routine 4, 8, $C
 		subq.w	#1,obTimeFrame(a0) ; subtract 1 from time delay
@@ -160,7 +161,7 @@ Got_ChkSS:
 		beq.s	VBla_08A	; if not, branch
 		move.b	#id_Special,(v_gamemode).w ; set game mode to Special Stage (10)
 		bra.s	Got_Display2
-		;move.b  #0,(v_emeraldm).w
+		move.b  #0,(f_emeraldm).w
 ; ===========================================================================
 
 VBla_08A:
