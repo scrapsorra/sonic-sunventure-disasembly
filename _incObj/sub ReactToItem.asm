@@ -436,19 +436,20 @@ KillSonic:
 		cmpi.b	#$6D,(a2)    ; check if you were killed by flamethrower
 		beq.s	Kill_Lava        ; if yes, branch
 		cmpi.b	#$14,(a2)	; was damage caused by lava ball?
-		beq.s	Kill_Lava  
-		cmpi.b	#$4C,(a2)	; was damage caused by lava geyser?
-		beq.s	Kill_Lava  
-		cmpi.b	#$4D,(a2)	; was damage caused by lava geyser?
-		beq.s	Kill_Lava  
+		beq.s	Kill_Lava
+		;cmpi.b	#$35,(a2)	; was damage caused by burning grass?
+		;beq.s	Kill_Lava  		  
 		cmpi.b	#$4E,(a2)	; was damage caused by wall of lava?
 		beq.s	Kill_Lava  
 		cmpi.b	#$62,(a2)	; was damage caused by gargoyle?
 		beq.s	Kill_Lava  
 		cmpi.b	#$74,(a2)	; was damage caused by MZ fire boss?
+		beq.s	Kill_Lava
+		cmpi.b	#$4C,(a2)	; was damage caused by lava geyser?
 		beq.s	Kill_Lava  
-		cmpi.b	#$35,(a2)	; was damage caused by burning grass?
-		beq.s	Kill_Lava  
+		cmpi.b	#$4D,(a2)	; was damage caused by lava geyser?
+		beq.s	Kill_Lava		
+
 		move.b	#id_Death,obAnim(a0)
 		bset	#7,obGfx(a0)
 		move.w	#sfx_Death,d0	; play normal death sound
@@ -464,10 +465,10 @@ KillSonic:
 		rts	
 ; End of function KillSonic
 Kill_Lava:	
-	move.b    #$16,$1C(a0)
-	bset	#7,obGfx(a0)
-	move.w    #$C8,d0        ; play death sound
-    jsr    (PlaySound_Special).l
+	;bset	#7,obGfx(a0)
+	move.b	#$16,$1C(a0)
+	move.w	#$C8,d0        ; play death sound
+    jsr		(PlaySound_Special).l
 
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||

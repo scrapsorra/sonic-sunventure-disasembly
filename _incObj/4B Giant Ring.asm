@@ -54,8 +54,8 @@ GRing_Collect:	; Routine 4
 		cmp.w	obX(a0),d0	; has Sonic come from the left?
 		bcs.s	GRing_PlaySnd	; if yes, branch
 		bset	#0,obRender(a1)	; reverse flash	object	
-		;move.b  #1,(v_emeralds).w
-		;move.b  #0,(f_emeraldm).w
+		move.b  #1,(v_emeralds).w
+		move.b  #0,(f_emeraldm).w
 		
 GRing_PlaySnd:
 		sfx	sfx_GiantRing,0,0,0	; play giant ring sound
