@@ -205,8 +205,8 @@ Option_Controls_NoMove:
 ; ===========================================================================
 ; word_917A:
 OptionScreen_Choices:
-		dc.l (3-1)<<24|($FFFF8A&$FFFFFF)
-		dc.l (2-1)<<24|($FFFFBE&$FFFFFF)
+		dc.l (3-1)<<24|($FFFFBE&$FFFFFF)
+		dc.l (2-1)<<24|($FFFF8A&$FFFFFF)
 		dc.l (2-1)<<24|($FFFF84&$FFFFFF)
 		even
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
