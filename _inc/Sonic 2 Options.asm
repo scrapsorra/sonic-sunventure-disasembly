@@ -205,7 +205,7 @@ Option_Controls_NoMove:
 ; ===========================================================================
 ; word_917A:
 OptionScreen_Choices:
-		dc.l (3-1)<<24|($FFFFBE&$FFFFFF)
+		dc.l ($A-1)<<24|($FFFFBE&$FFFFFF)
 		dc.l (2-1)<<24|($FFFF8A&$FFFFFF)
 		dc.l (2-1)<<24|($FFFF84&$FFFFFF)
 		even
@@ -358,13 +358,27 @@ OptScrBoxData:
 		dc.w 3
 
 off_92D2:
-		dc.l TextOptScr_Sonic
-		dc.l TextOptScr_Miles
-		dc.l TextOptScr_Knux
+		dc.l TextOptScr_Default
+		dc.l TextOptScr_Original
+		dc.l TextOptScr_Beta
+		dc.l TextOptScr_Midnight
+		dc.l TextOptScr_C2
+		dc.l TextOptScr_Clackers
+		dc.l TextOptScr_RHS
+		dc.l TextOptScr_Socket
+		dc.l TextOptScr_Cringe
+		dc.l TextOptScr_Dark		
 off_92DE:
-		dc.l TextOptScr_Sonic
-		dc.l TextOptScr_Tails
-		dc.l TextOptScr_Knux
+		dc.l TextOptScr_Default
+		dc.l TextOptScr_Original
+		dc.l TextOptScr_Beta
+		dc.l TextOptScr_Midnight
+		dc.l TextOptScr_C2
+		dc.l TextOptScr_Clackers
+		dc.l TextOptScr_RHS
+		dc.l TextOptScr_Socket
+		dc.l TextOptScr_Cringe
+		dc.l TextOptScr_Dark	
 off_92EA:
 		dc.l TextOptScr_On
 		dc.l TextOptScr_Off
@@ -374,11 +388,17 @@ off_92F2:
 ; ===========================================================================
 
 TextOptScr_PlayerSelect:	asc	"* PALETTE PICKER *"	; byte_97CA:
-TextOptScr_Sonic:			asc	"SONIC          "	; byte_97FC:
-TextOptScr_Miles:			asc	"MILES          "	; byte_980C:
-TextOptScr_Tails:			asc	"TAILS          "	; byte_981C:
-TextOptScr_Knux:			asc "KNUCKLES       "
-TextOptScr_LivesSystem:		asc	"* EXTENDED CAMERA*"	; byte_982C:
+TextOptScr_Default:			asc	"    DEFAULT      "	; byte_97FC:
+TextOptScr_Original:			asc	"    ORIGINAL   "	; byte_980C:
+TextOptScr_Beta:			asc	" TOKYO TOY SHOW "	; byte_981C:
+TextOptScr_Midnight:			asc	"   MIDNIGHT    "
+TextOptScr_C2:			asc	"   CLASSIC      "
+TextOptScr_Clackers:			asc	"   CRACKERS     "
+TextOptScr_RHS:			asc	"  REDHOTSONIC   "
+TextOptScr_Socket:			asc	"    SOCKET    "
+TextOptScr_Cringe:			asc	"    CRINGE    "
+TextOptScr_Dark:			asc	"    DARKER      "
+TextOptScr_LivesSystem:		asc	"*   SCD CAMERA   *"	; byte_982C:
 TextOptScr_On:				asc	"      OFF       "	; byte_984E:
 TextOptScr_Off:				asc	"      ON      "	; byte_984E:
 TextOptScr_SoundTest:		asc	"* NEW MOVESTYLES *"	; byte_985E:

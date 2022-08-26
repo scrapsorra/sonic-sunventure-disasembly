@@ -4,10 +4,10 @@ SndBD_Header:
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $01
 
-	smpsHeaderSFXChannel cFM4, SndBD_FM6,	$07, $05
+	smpsHeaderSFXChannel cFM3, SndBD_FM3,	$07, $05
 
 ; FM6 Data
-SndBD_FM6:
+SndBD_FM3:
 	smpsSetvoice        $00
 
 SndBD_Loop00:
