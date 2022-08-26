@@ -211,9 +211,9 @@ Pow_ChkGShield:
 
 
 		move.b	#0,(v_shield).w ; remove shield
-		move.b	#0,(v_rshield).w ; remove g shield
-		move.b	#1,(v_gshield).w ; give Sonic a red shield
-		move.b	#id_GShieldItem,(v_objspace+$180).w ; load red shield object ($38)	
+		move.b	#0,(v_rshield).w ; remove r shield
+		move.b	#1,(v_gshield).w ; give Sonic a g shield
+		move.b	#id_GShieldItem,(v_objspace+$180).w ; load g shield object ($38)	
 		music	sfx_Shield,1,0,0	; play shield sound
 
 Pow_ChkEnd:

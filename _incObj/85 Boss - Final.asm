@@ -96,7 +96,7 @@ loc_19E3E:
 
 loc_19E5A:
 		move.w	#0,$34(a0)
-		move.b	#8,obColProp(a0) ; set number of hits to 8
+		move.b	#4,obColProp(a0) ; set number of hits to 8
 		move.w	#-1,$30(a0)
 
 Obj85_Eggman:	; Routine 2
@@ -577,7 +577,7 @@ loc_1A3D0:
 		bra.w	loc_1A2A6
 		
 BossModeMusic:
-		cmpi.b	#3,obColProp(a0)
+		cmpi.b	#1,obColProp(a0)
 		bne.w	NormalMode
 		jmp	PinchMode
 

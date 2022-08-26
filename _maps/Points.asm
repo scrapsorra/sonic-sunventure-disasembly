@@ -1,28 +1,26 @@
-; ---------------------------------------------------------------------------
-; Sprite mappings - points that	appear when you	destroy	something
-; ---------------------------------------------------------------------------
-Map_Poi_internal:
-		dc.w byte_94BC-Map_Poi_internal
-		dc.w byte_94C2-Map_Poi_internal
-		dc.w byte_94C8-Map_Poi_internal
-		dc.w byte_94CE-Map_Poi_internal
-		dc.w byte_94D4-Map_Poi_internal
-		dc.w byte_94DA-Map_Poi_internal
-		dc.w byte_94E5-Map_Poi_internal
-byte_94BC:	dc.b 1
-		dc.b $FC, 4, 0,	0, $F8	; 100 points
-byte_94C2:	dc.b 1
-		dc.b $FC, 4, 0,	2, $F8	; 200 points
-byte_94C8:	dc.b 1
-		dc.b $FC, 4, 0,	4, $F8	; 500 points
-byte_94CE:	dc.b 1
-		dc.b $FC, 8, 0,	6, $F8	; 1000 points
-byte_94D4:	dc.b 1
-		dc.b $FC, 0, 0,	6, $FC	; 10 points
-byte_94DA:	dc.b 2
-		dc.b $FC, 8, 0,	6, $F4	; 10,000 points
-		dc.b $FC, 4, 0,	7, 1
-byte_94E5:	dc.b 2
-		dc.b $FC, 8, 0,	6, $F4	; 100,000 points
-		dc.b $FC, 4, 0,	7, 6
+; --------------------------------------------------------------------------------
+; Sprite mappings - output from SonMapEd - Sonic 1 format
+; --------------------------------------------------------------------------------
+
+SME_qLvsg:	
+		dc.w SME_qLvsg_E-SME_qLvsg, SME_qLvsg_14-SME_qLvsg	
+		dc.w SME_qLvsg_1A-SME_qLvsg, SME_qLvsg_20-SME_qLvsg	
+		dc.w SME_qLvsg_26-SME_qLvsg, SME_qLvsg_2C-SME_qLvsg	
+		dc.w SME_qLvsg_37-SME_qLvsg	
+SME_qLvsg_E:	dc.b 1	
+		dc.b $FC, 4, 0, 0, $F8	
+SME_qLvsg_14:	dc.b 1	
+		dc.b $FC, 4, 0, 2, $F8	
+SME_qLvsg_1A:	dc.b 1	
+		dc.b $FC, 4, 0, 4, $F8	
+SME_qLvsg_20:	dc.b 1	
+		dc.b $FC, 4, 0, 6, $F8	
+SME_qLvsg_26:	dc.b 1	
+		dc.b $FC, 0, 0, 6, $FC	
+SME_qLvsg_2C:	dc.b 2	
+		dc.b $FC, 8, 0, 6, $F4	
+		dc.b $FC, 4, 0, 7, 1	
+SME_qLvsg_37:	dc.b 2	
+		dc.b $FC, 8, 0, 6, $F4	
+		dc.b $FC, 4, 0, 7, 6	
 		even
