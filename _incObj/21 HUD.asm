@@ -19,7 +19,7 @@ HUD_Main:	; Routine 0
 		move.l	#Map_HUD,obMap(a0)
 		move.w	#$6CA,obGfx(a0)
 		move.b	#0,obRender(a0)
-		move.b	#0,obPriority(a0)
+		move.w	#0,obPriority(a0)
 
 HUD_Flash:	; Routine 2
 		moveq	#0,d0

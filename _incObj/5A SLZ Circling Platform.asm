@@ -23,7 +23,7 @@ Circ_Main:	; Routine 0
 		move.l	#Map_Circ,obMap(a0)
 		move.w	#$4000,obGfx(a0)
 		move.b	#4,obRender(a0)
-		move.b	#4,obPriority(a0)
+		move.w	#$200,obPriority(a0)
 		move.b	#$18,obActWid(a0)
 		move.w	obX(a0),circ_origX(a0)
 		move.w	obY(a0),circ_origY(a0)

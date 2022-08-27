@@ -40,7 +40,7 @@ Obj84_Main:	; Routine
 		move.b	#$60,obWidth(a0)
 		move.b	#$20,obActWid(a0)
 		move.b	#$60,obHeight(a0)
-		move.b	#3,obPriority(a0)
+		move.w	#$180,obPriority(a0)
 		addq.b	#2,obRoutine(a0)
 
 loc_1A4CE:	; Routine 2

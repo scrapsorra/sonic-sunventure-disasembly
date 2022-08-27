@@ -21,7 +21,7 @@ WFall_Main:	; Routine 0
 		move.w	#$4259,obGfx(a0)
 		ori.b	#4,obRender(a0)
 		move.b	#$18,obActWid(a0)
-		move.b	#1,obPriority(a0)
+		move.w	#$80,obPriority(a0)
 		move.b	obSubtype(a0),d0 ; get object type
 		bpl.s	@under80	; branch if $00-$7F
 		bset	#7,obGfx(a0)

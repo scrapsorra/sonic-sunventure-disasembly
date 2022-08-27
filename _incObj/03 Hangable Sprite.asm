@@ -19,7 +19,7 @@ Obj03_Init:
     addq.b    #2,obRoutine(a0)        ;just use s1 version of this variable
     move.b    #4,obRender(a0)    ;just use s1 version of this variable
     move.b    #$18,obActWid(a0)    ;just use s1 version of this variable
-    move.b    #4,obPriority(a0)            ;just use s1 version of this variable
+    move.w    #$200,obPriority(a0)            ;just use s1 version of this variable
 ; loc_2C954:
 Obj03_Main:
     lea    $30(a0),a2

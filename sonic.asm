@@ -3278,23 +3278,17 @@ Level_ClrRam:
 		move.b	#1,(f_water).w	; enable water
 
 Level_LoadPal:
-		move.w	#30,(v_air).w
-		enable_ints
+		move.w	#$1E,($FFFFFE14).w
+		move	#$2300,sr
 		jsr		LoadPlayerPal
-		bsr.w	PalLoad2	; load Sonic's palette
-		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
+		bsr.w	PalLoad2	; load Sonic's pallet line
+		cmp.b	#1,(f_water).w ; Is water enabled?
 		bne.s	Level_GetBgm	; if not, branch
-
 		jsr		LoadPlayerWaterPal
-		cmpi.b	#3,(v_act).w	; is act number 3?
-		bne.s	Level_WaterPal	; if not, branch
-		jsr		LoadPlayerWaterPal
-
-	Level_WaterPal:
-		bsr.w	PalLoad3_Water	; load underwater palette
-		tst.b	(v_lastlamp).w
+		bsr.w	PalLoad3_Water	; load underwater pallet (see d0)
+		tst.b	($FFFFFE30).w
 		beq.s	Level_GetBgm
-		move.b	($FFFFFE53).w,(f_wtr_state).w
+		move.b	($FFFFFE53).w,($FFFFF64E).w
 
 	Level_GetBgm:
 		tst.w	(f_demo).w
@@ -5932,7 +5926,7 @@ loc_84B2:
 		move.w	obX(a0),obX(a1)
 		move.w	obY(a0),obY(a1)
 		move.w	obGfx(a0),obGfx(a1)
-		move.b	obPriority(a0),obPriority(a1)
+		move.w	obPriority(a0),obPriority(a1)
 		move.b	obActWid(a0),obActWid(a1)
 		move.b	(a4)+,ledge_timedelay(a1)
 		cmpa.l	a0,a1
@@ -6528,47 +6522,52 @@ Map_Smash:	include	"_maps\Smashable Walls.asm"
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-ExecuteObjects:
-		lea	(v_objspace).w,a0 ; set address for object RAM
-		moveq	#$7F,d7
-		moveq	#0,d0
-		cmpi.b	#6,(v_player+obRoutine).w
-		bhs.s	loc_D362
+
+ExecuteObjects: ; XREF: GM_Title; et al
+		lea (v_objspace).w,a0 ; set address for object RAM
+		moveq #$7F,d7
+		moveq #0,d0
+		cmpi.b #6,(v_player+obRoutine).w
+		bcc.s loc_D362
 
 loc_D348:
-		move.b	(a0),d0		; load object number from RAM
-		beq.s	loc_D358
-		add.w	d0,d0
-		add.w	d0,d0
-		movea.l	Obj_Index-4(pc,d0.w),a1
-		jsr	(a1)		; run the object's code
-		moveq	#0,d0
+		move.b (a0),d0 ; load object number from RAM
+		beq.s loc_D358
+		add.w d0,d0
+		add.w d0,d0
+		movea.l Obj_Index-4(pc,d0.w),a1
+		jsr (a1) ; run the object's code
+		moveq #0,d0
 
 loc_D358:
-		lea	$40(a0),a0	; next object
-		dbf	d7,loc_D348
-		rts	
+		lea $40(a0),a0 ; next object
+		dbf d7,loc_D348
+		rts
 ; ===========================================================================
 
 loc_D362:
-		moveq	#$1F,d7
-		bsr.s	loc_D348
-		moveq	#$5F,d7
+		moveq #$1F,d7
+		bsr.s loc_D348
+		moveq #$5F,d7
 
 loc_D368:
-		moveq	#0,d0
-		move.b	(a0),d0
-		beq.s	loc_D378
-		tst.b	obRender(a0)
-		bpl.s	loc_D378
-		bsr.w	DisplaySprite
+		moveq #0,d0 ; Clear d0 quickly
+		move.b (a0),d0 ; get the object's ID
+		beq.s loc_D37C ; if it's obj00, skip it
+		tst.b obRender(a0) ; should we render it?
+		bpl.s loc_D37C ; if not, skip it
+		move.w obpriority(a0),d0 ; move object's priority to d0
+		btst #6,obRender(a0) ; is the compound sprites flag set?
+		beq.s loc_D378 ; if not, branch
+		move.w #$200,d0 ; move $200 to d0
 
 loc_D378:
-		lea	$40(a0),a0
-
+		bsr.w DisplaySprite2
+		
 loc_D37C:
-		dbf	d7,loc_D368
-		rts	
+		lea $40(a0),a0
+		dbf d7,loc_D368
+		rts
 ; End of function ExecuteObjects
 
 ; ===========================================================================
@@ -7237,8 +7236,8 @@ loc_1DD36:				; DATA XREF: h+6DBA?o
 		addq.b	#2,$24(a0)
 		move.l	#MapUnc_1DF5E,4(a0)
 		or.b	#4,1(a0)
-		move.b	#1,$18(a0)
-		move.b	#$10,$19(a0)
+		move.w	#$80,obPriority(a0)
+		move.b	#$10,obActWid(a0)
 		move	#$7A0,2(a0)
 		move	#-$3000,$3E(a0)
 		move	#$F400,$3C(a0)
@@ -7354,8 +7353,8 @@ loc_1DE9A:				; CODE XREF: h+6F1E?j
 		addq.b	#2,$24(a1)
 		move.l	4(a0),4(a1)
 		move.b	1(a0),1(a1)
-		move.b	#1,$18(a1)
-		move.b	#4,$19(a1)
+		move.w	#$80,obPriority(a1)
+		move.b	#4,obActWid(a1)
 		move	2(a0),2(a1)
 		move	$3E(a0),$3E(a1)
 		and	#$7FFF,2(a1)
@@ -7598,7 +7597,7 @@ Sonic_Main:	; Routine 0
 		move.b	#9,obWidth(a0)
 		move.l	#Map_Sonic,obMap(a0)
 		move.w	#$780,obGfx(a0)
-		move.b	#2,obPriority(a0)
+		move.w	#$100,obPriority(a0)
 		move.b	#$18,obActWid(a0)
 		move.b	#4,obRender(a0)
 		move.w	#$600,(v_sonspeedmax).w ; Sonic's top speed

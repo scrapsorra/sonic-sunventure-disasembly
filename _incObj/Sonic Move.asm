@@ -199,7 +199,7 @@ locret_1307C:
 
 
 Sonic_MoveLeft:
-		move.w	$14(a0),d0
+		move.w	obInertia(a0),d0
 		beq.s	loc_13086
 		bpl.s	loc_130B2
 
@@ -221,7 +221,7 @@ loc_1309A:
 		move.w	d1,d0
 
 loc_130A6:
-		move.w	d0,$14(a0)
+		move.w	d0,obInertia(a0)
 		move.b	#0,$1C(a0); use walking animation
 		rts
 ; ===========================================================================
@@ -242,7 +242,7 @@ loc_130BA:
 		move.b	#id_Stop,obAnim(a0) ; use "stopping" animation
 		bclr	#0,obStatus(a0)
 		sfx	sfx_Skid,0,0,0	; play stopping sound
-
+		
 locret_130E8:
 		rts	
 ; End of function Sonic_MoveLeft
@@ -252,7 +252,7 @@ locret_130E8:
 
 
 Sonic_MoveRight:
-		move.w	$14(a0),d0
+		move.w	obInertia(a0),d0
 		bmi.s	loc_13118
 		bclr	#0,$22(a0)
 		beq.s	loc_13104
@@ -269,7 +269,7 @@ loc_13104:
 		move.w	d6,d0
 
 loc_1310C:
-		move.w	d0,$14(a0)
+		move.w	d0,obInertia(a0)
 		move.b	#0,$1C(a0); use walking animation
 		rts
 ; ===========================================================================
@@ -290,7 +290,7 @@ loc_13120:
 		move.b	#id_Stop,obAnim(a0) ; use "stopping" animation
 		bset	#0,obStatus(a0)
 		sfx	sfx_Skid,0,0,0	; play stopping sound
-
+		
 locret_1314E:
 		rts	
 ; End of function Sonic_MoveRight

@@ -25,7 +25,7 @@ Obj77_Main:	; Routine 0
 		move.w	obY(a0),$38(a0)
 		move.b	#$F,obColType(a0)
 		move.b	#8,obColProp(a0) ; set number of hits to 8
-		move.b	#4,obPriority(a0)
+		move.w	#$200,obPriority(a0)
 		lea	Obj77_ObjData(pc),a2
 		movea.l	a0,a1
 		moveq	#2,d1
@@ -44,7 +44,7 @@ Obj77_LoadBoss:
 		clr.b	ob2ndRout(a1)
 		move.b	(a2)+,obRoutine(a1)
 		move.b	(a2)+,obAnim(a1)
-		move.b	obPriority(a0),obPriority(a1)
+		move.w	obPriority(a0),obPriority(a1)
 		move.l	#Map_Eggman,obMap(a1)
 		move.w	#$400,obGfx(a1)
 		move.b	#4,obRender(a1)

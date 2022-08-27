@@ -29,7 +29,7 @@ LBall_Main:	; Routine 0
 
 	@notSLZ:
 		move.b	#4,obRender(a0)
-		move.b	#3,obPriority(a0)
+		move.w	#$180,obPriority(a0)
 		move.b	#$8B,obColType(a0)
 		move.w	obY(a0),$30(a0)
 		tst.b	$29(a0)

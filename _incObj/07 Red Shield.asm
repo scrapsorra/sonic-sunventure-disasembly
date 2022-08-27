@@ -23,8 +23,8 @@ RShield_Init:
 		addq.b #2,$24(a0)
 		move.l #Map_Shield,$4(A0) ; Load Shield Map into place
 		move.b #4,1(a0)
-		move.b #1,$18(a0)
-		move.b #$18,$19(a0)
+		move.w #$80,$18(a0)
+		move.b #$18,obActWid(a0)
 		move.w #$541,2(a0) ; Set VRAM location
 		btst #7,($FFFFD002).w
 		beq.s RShieldChecks

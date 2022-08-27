@@ -517,7 +517,7 @@ loc_1A312:
 		tst.b	1(a0)
 		bpl.w	Obj85_Delete
 		bsr.w	BossDefeated
-		move.b	#2,obPriority(a0)
+		move.w	#$100,obPriority(a0)
 		move.b	#0,obAnim(a0)
 		move.l	#Map_FZDamaged,obMap(a0)
 		move.w	#$3A0,obGfx(a0)

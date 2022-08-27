@@ -19,9 +19,9 @@ MozMain:				; XREF: MozIndex
 		move.l	#Map_Mozzietron,4(a0)
 		move.w	#$444,2(a0)
 		move.b	#4,1(a0)
-		move.b	#3,$18(a0)
+		move.w	#$180,obPriority(a0)
 		move.b	#5,$20(a0) ; hit box
-		move.b	#$18,$19(a0)
+		move.b	#$18,obActWid(a0)
 MozAction:				; XREF: MozIndex
 		moveq	#0,d0
 		move.b	$25(a0),d0

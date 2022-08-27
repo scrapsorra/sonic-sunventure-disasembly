@@ -14,8 +14,8 @@ Invincibility_Init:
 		addq.b #2,$24(a0)
 		move.l #Map_Shield,4(a0) ; loads mapping
 		move.b #4,1(a0)
-		move.b #1,$18(a0)
-		move.b #$10,$19(a0)
+		move.w #$80,$18(a0)
+		move.b #$10,obActWid(a0)
 		move.w #$541,2(a0) ; shield specific code
 ; ===========================================================================
 

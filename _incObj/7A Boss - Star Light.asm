@@ -14,10 +14,10 @@ Obj7A_Index:	dc.w Obj7A_Main-Obj7A_Index
 		dc.w Obj7A_FlameMain-Obj7A_Index
 		dc.w Obj7A_TubeMain-Obj7A_Index
 
-Obj7A_ObjData:	dc.b 2,	0, 4		; routine number, animation, priority
-		dc.b 4,	1, 4
-		dc.b 6,	7, 4
-		dc.b 8,	0, 3
+Obj7A_ObjData:	dc.b 2,	0, $02, $00		; routine number, animation, priority (high and low bytes)
+		dc.b 4,	1, $02, $00
+		dc.b 6,	7, $02, $00
+		dc.b 8,	0, $01, $80
 ; ===========================================================================
 
 Obj7A_Main:

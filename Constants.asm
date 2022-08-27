@@ -129,11 +129,11 @@ obScreenY:	equ $A	; y-axis position for screen-fixed items (2 bytes)
 obY:		equ $C	; y-axis position (2-4 bytes)
 obVelX:		equ $10	; x-axis velocity (2 bytes)
 obVelY:		equ $12	; y-axis velocity (2 bytes)
-obInertia:	equ $14	; potential speed (2 bytes)
+obInertia:	equ $20	; potential speed (2 bytes)
 obHeight:	equ $16	; height/2
 obWidth:	equ $17	; width/2
 obPriority:	equ $18	; sprite stack priority -- 0 is front
-obActWid:	equ $19	; action width
+obActWid:	equ $14	; action width
 obFrame:	equ $1A	; current frame displayed
 obAniFrame:	equ $1B	; current frame in animation script
 obAnim:		equ $1C	; current animation
@@ -166,7 +166,7 @@ y_vel:		equ $12	; y-axis velocity (2 bytes)
 y_radius:	equ $16	; height/2
 x_radius:	equ $17	; width/2
 priority:	equ $18	; sprite stack priority -- 0 is front
-width_pixels:	equ $19	; action width
+width_pixels:	equ $14	; action width
 mapping_frame:	equ $1A	; current frame displayed
 anim_frame:	equ $1B	; current frame in animation script
 anim:		equ $1C	; current animation

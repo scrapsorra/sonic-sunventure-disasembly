@@ -14,10 +14,10 @@ Obj73_Index:	dc.w Obj73_Main-Obj73_Index
 		dc.w Obj73_FlameMain-Obj73_Index
 		dc.w Obj73_TubeMain-Obj73_Index
 
-Obj73_ObjData:	dc.b 2,	0, 4		; routine number, animation, priority
-		dc.b 4,	1, 4
-		dc.b 6,	7, 4
-		dc.b 8,	0, 3
+Obj73_ObjData:	dc.b 2,	0, $02, $00		; routine number, animation, priority (high and low bytes)
+		dc.b 4,	1, $02, $00
+		dc.b 6,	7, $02, $00
+		dc.b 8,	0, $01, $80
 ; ===========================================================================
 
 Obj73_Main:	; Routine 0

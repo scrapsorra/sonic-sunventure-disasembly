@@ -24,6 +24,10 @@ Scen_Main:	; Routine 0
 		move.b	(a1)+,obFrame(a0)
 		move.b	(a1)+,obActWid(a0)
 		move.b	(a1)+,obPriority(a0)
+		move.w obPriority(a0),d0 
+		lsr.w #1,d0 
+		andi.w #$380,d0 
+		move.w d0,obPriority(a0)		
 		move.b	(a1)+,obColType(a0)
 
 Scen_ChkDel:	; Routine 2
