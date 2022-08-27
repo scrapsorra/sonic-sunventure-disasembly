@@ -36,8 +36,8 @@ MenuScreen_ClrObjRam:
 
 ; ===========================================================================
 
-		clr.w	($FFFFC800).w
-		move.l	#$FFFFC800,($FFFFC8FC).w
+		ResetDMAQueue
+
 		locVRAM	$200
 		lea		(Nem_MenuFont).l,a0
 		jsr	NemDec
