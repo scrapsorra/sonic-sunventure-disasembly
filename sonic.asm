@@ -1910,90 +1910,61 @@ Pal_Sega2:	incbin	"palette\Sega2.bin"
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
+; ---------------------------------------------------------------------------
+; Subroutines to load pallets
+; ---------------------------------------------------------------------------
+
+; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
+
 PalLoad1:
-		cmp.b	#id_SLZ,(v_zone).w
-		bne.s	PalLoad1_Normal
-		move.b (v_act),d1
-		lea	(PalPointers2).l,a1
-		cmp.b #0,d1
-		beq.s PalLoad1_Continue
+		move.b ($FFFFFE11),d1
 		lea (PalPointers).l,a1
-		bra.s	PalLoad1_Continue
-PalLoad1_Normal:
-		move.b (v_act),d1
-		lea	(PalPointers).l,a1
 		cmp.b #0,d1
-		beq.s PalLoad1_Continue
-		cmp.b	#id_LZ,(v_zone).w
-		bne.s	PalLoad1_Normal_CheckSBZ
-		cmp.b #3,d1
-		beq.s PalLoad1_Continue
-		bra.s	PalLoad1_Normal_Continue
-PalLoad1_Normal_CheckSBZ:
-		cmp.b	#id_SBZ,(v_zone).w
-		bne.s	PalLoad1_Normal_Continue
-		cmp.b #2,d1
-		beq.s PalLoad1_Continue
-PalLoad1_Normal_Continue:
+		beq.w PalLoad1_Continue
 		lea (PalPointers2).l,a1
+		cmp.b #1,d1
+		beq.w PalLoad1_Continue
+		lea (PalPointers3).l,a1
 
 PalLoad1_Continue:
-		lsl.w	#3,d0
-		adda.w	d0,a1
-		movea.l	(a1)+,a2	; get palette data address
-		movea.w	(a1)+,a3	; get target RAM address
-		adda.w	#v_pal_dry_dup-v_pal_dry,a3		; skip to "main" RAM address
-		move.w	(a1)+,d7	; get length of palette data
+		lsl.w #3,d0
+		adda.w d0,a1
+		movea.l (a1)+,a2
+		movea.w (a1)+,a3
+		adda.w #$80,a3
+		move.w (a1)+,d7
 
-	@loop:
-		move.l	(a2)+,(a3)+	; move data to RAM
-		dbf	d7,@loop
-		rts	
-		
-; End of function PalLoad1
+loc_2110:
+		move.l (a2)+,(a3)+
+		dbf d7,loc_2110
+		rts
+ ; End of function PalLoad1
 
 
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
+; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
 PalLoad2:
-		cmp.b	#id_SLZ,(v_zone).w
-		bne.s	PalLoad2_Normal
-		move.b (v_act),d1
-		lea	(PalPointers2).l,a1
-		cmp.b #0,d1
-		beq.s PalLoad2_Continue
+		move.b ($FFFFFE11),d1
 		lea (PalPointers).l,a1
-		bra.s	PalLoad2_Continue
-PalLoad2_Normal:
-		move.b (v_act),d1
-		lea	(PalPointers).l,a1
 		cmp.b #0,d1
-		beq.s PalLoad2_Continue
-		cmp.b	#id_LZ,(v_zone).w
-		bne.s	PalLoad2_Normal_CheckSBZ
-		cmp.b #3,d1
-		beq.s PalLoad2_Continue
-		bra.s	PalLoad2_Normal_Continue
-PalLoad2_Normal_CheckSBZ:
-		cmp.b	#id_SBZ,(v_zone).w
-		bne.s	PalLoad2_Normal_Continue
-		cmp.b #2,d1
-		beq.s PalLoad2_Continue
-PalLoad2_Normal_Continue:
+		beq.w PalLoad2_Continue
 		lea (PalPointers2).l,a1
+		cmp.b #1,d1
+		beq.w PalLoad2_Continue
+		lea (PalPointers3).l,a1
+
 
 PalLoad2_Continue:
-		lsl.w	#3,d0
-		adda.w	d0,a1
-		movea.l	(a1)+,a2	; get palette data address
-		movea.w	(a1)+,a3	; get target RAM address
-		move.w	(a1)+,d7	; get length of palette
+		lsl.w #3,d0
+		adda.w d0,a1
+		movea.l (a1)+,a2
+		movea.w (a1)+,a3
+		move.w (a1)+,d7
 
-	@loop:
-		move.l	(a2)+,(a3)+	; move data to RAM
-		dbf	d7,@loop
-		rts	
+loc_2128:
+		move.l (a2)+,(a3)+
+		dbf d7,loc_2128
+		rts
 ; End of function PalLoad2
 
 ; ||||||||||||||| S U B    R O U T    I N E |||||||||||||||||||||||||||||||||||||||
@@ -2006,101 +1977,69 @@ PalLoad_Loop: ;Quick load - TIS
         rts
 
 ; ---------------------------------------------------------------------------
-; Underwater palette loading subroutine
+; Underwater pallet loading subroutine
 ; ---------------------------------------------------------------------------
 
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
+; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
 PalLoad3_Water:
-		cmp.b	#id_SLZ,(v_zone).w
-		bne.s	PalLoad3_Normal
-		move.b (v_act),d1
-		lea	(PalPointers2).l,a1
-		cmp.b #0,d1
-		beq.s PalLoad3_Continue
+		move.b ($FFFFFE11),d1
 		lea (PalPointers).l,a1
-		bra.s	PalLoad3_Continue
-PalLoad3_Normal:
-		move.b (v_act),d1
-		lea	(PalPointers).l,a1
 		cmp.b #0,d1
-		beq.s PalLoad3_Continue
-		cmp.b	#id_LZ,(v_zone).w
-		bne.s	PalLoad3_Normal_CheckSBZ
-		cmp.b #3,d1
-		beq.s PalLoad3_Continue
-		bra.s	PalLoad3_Normal_Continue
-PalLoad3_Normal_CheckSBZ:
-		cmp.b	#id_SBZ,(v_zone).w
-		bne.s	PalLoad3_Normal_Continue
-		cmp.b #2,d1
-		beq.s PalLoad3_Continue
-PalLoad3_Normal_Continue:
+		beq.w PalLoad3_Continue
 		lea (PalPointers2).l,a1
+		cmp.b #1,d1
+		beq.w PalLoad3_Continue
+		lea (PalPointers3).l,a1
 
 PalLoad3_Continue:
-		lsl.w	#3,d0
-		adda.w	d0,a1
-		movea.l	(a1)+,a2	; get palette data address
-		movea.w	(a1)+,a3	; get target RAM address
-		suba.w	#v_pal_dry-v_pal_water,a3		; skip to "main" RAM address
-		move.w	(a1)+,d7	; get length of palette data
+		lsl.w #3,d0
+		adda.w d0,a1
+		movea.l (a1)+,a2
+		movea.w (a1)+,a3
+		suba.w #$80,a3
+		move.w (a1)+,d7
 
-	@loop:
-		move.l	(a2)+,(a3)+	; move data to RAM
-		dbf	d7,@loop
-		rts	
+loc_2144:
+		move.l (a2)+,(a3)+
+		dbf d7,loc_2144
+		rts
 ; End of function PalLoad3_Water
 
 
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
+; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
 
 PalLoad4_Water:
-		cmp.b	#id_SLZ,(v_zone).w
-		bne.s	PalLoad4_Normal
-		move.b (v_act),d1
-		lea	(PalPointers2).l,a1
-		cmp.b #0,d1
-		beq.s PalLoad4_Continue
+		move.b ($FFFFFE11),d1
 		lea (PalPointers).l,a1
-		bra.s	PalLoad4_Continue
-PalLoad4_Normal:
-		move.b (v_act),d1
-		lea	(PalPointers).l,a1
 		cmp.b #0,d1
-		beq.s PalLoad4_Continue
-		cmp.b	#id_LZ,(v_zone).w
-		bne.s	PalLoad4_Normal_CheckSBZ
-		cmp.b #3,d1
-		beq.s PalLoad4_Continue
-		bra.s	PalLoad4_Normal_Continue
-PalLoad4_Normal_CheckSBZ:
-		cmp.b	#id_SBZ,(v_zone).w
-		bne.s	PalLoad4_Normal_Continue
-		cmp.b #2,d1
-		beq.s PalLoad4_Continue
-PalLoad4_Normal_Continue:
+		beq.w PalLoad4_Continue
 		lea (PalPointers2).l,a1
+		cmp.b #1,d1
+		beq.w PalLoad4_Continue
+		lea (PalPointers3).l,a1
 
 PalLoad4_Continue:
-		lsl.w	#3,d0
-		adda.w	d0,a1
-		movea.l	(a1)+,a2	; get palette data address
-		movea.w	(a1)+,a3	; get target RAM address
-		suba.w	#v_pal_dry-v_pal_water_dup,a3
-		move.w	(a1)+,d7	; get length of palette data
-
-	@loop:
-		move.l	(a2)+,(a3)+	; move data to RAM
-		dbf	d7,@loop
-		rts	
-; End of function PalLoad4_Water
+		lsl.w #3,d0
+		adda.w d0,a1
+		movea.l (a1)+,a2
+		movea.w (a1)+,a3
+		suba.w #$100,a3
+		move.w (a1)+,d7
+loc_2160:
+		move.l (a2)+,(a3)+
+		dbf d7,loc_2160
+		rts
+ ; End of function PalLoad4_Water
 
 ; ===========================================================================
 
 		include	"_inc\Palette Pointers.asm"
+		
+		;include	"_inc\Palette Pointers2.asm"
+		
+		;include	"_inc\Palette Pointers3.asm"
 		
 
 ; ---------------------------------------------------------------------------
@@ -2112,16 +2051,22 @@ Pal_LevelSel:	incbin	"palette\Level Select.bin"
 Pal_Sonic:	incbin	"palette\Sonic Pal\01 Default.bin"
 Pal_GHZ:	incbin	"palette\Green Hill Zone.bin"
 Pal_GHZ2:	incbin	"palette\Green Hill Zone2.bin"
+Pal_GHZ3:	incbin	"palette\Green Hill Zone3.bin"
 Pal_LZ:		incbin	"palette\Labyrinth Zone.bin"
 Pal_LZ2:	incbin	"palette\Labyrinth Zone2.bin"
+Pal_LZ3:	incbin	"palette\Labyrinth Zone3.bin"
 Pal_LZWater:	incbin	"palette\Labyrinth Zone Underwater.bin"
 Pal_LZWatr2:	incbin	"palette\Labyrinth Zone Underwater2.bin"
+Pal_LZWatr3:	incbin	"palette\Labyrinth Zone Underwater3.bin"
 Pal_MZ:		incbin	"palette\Marble Zone.bin"
 Pal_MZ2:	incbin	"palette\Marble Zone2.bin"
+Pal_MZ3:	incbin	"palette\Marble Zone3.bin"
 Pal_SLZ:	incbin	"palette\Star Light Zone.bin"
 Pal_SLZ2:	incbin	"palette\Star Light Zone2.bin"
+Pal_SLZ3:	incbin	"palette\Star Light Zone3.bin"
 Pal_SYZ:	incbin	"palette\Spring Yard Zone.bin"
 Pal_SYZ2:	incbin	"palette\Spring Yard Zone2.bin"
+Pal_SYZ3:	incbin	"palette\Spring Yard Zone3.bin"
 Pal_SBZ1:	incbin	"palette\SBZ Act 1.bin"
 Pal_SBZ2:	incbin	"palette\SBZ Act 2.bin"
 Pal_Special:	incbin	"palette\Special Stage.bin"
@@ -2152,6 +2097,15 @@ Pal_SonWater7:	incbin	"palette\Sonic Pal\07 Red Hot Underwater.bin"
 Pal_SonWater8:	incbin	"palette\Sonic Pal\08 Socket Underwater.bin"
 Pal_SonWater9:	incbin	"palette\Sonic Pal\09 Cringe Underwater.bin"
 Pal_SonWater10:	incbin	"palette\Sonic Pal\10 Dark Underwater.bin"
+Pal_SBZ3SonWat2:	incbin	"palette\Sonic Pal\02 Sonic 1 SBZ3.bin"
+Pal_SBZ3SonWat3:	incbin	"palette\Sonic Pal\03 Beta SBZ3.bin"
+Pal_SBZ3SonWat4:	incbin	"palette\Sonic Pal\04 Midnight SBZ3.bin"
+Pal_SBZ3SonWat5:	incbin	"palette\Sonic Pal\05 C2 SBZ3.bin"
+Pal_SBZ3SonWat6:	incbin	"palette\Sonic Pal\06 Clacker SBZ3.bin"
+Pal_SBZ3SonWat7:	incbin	"palette\Sonic Pal\07 Red Hot SBZ3.bin"
+Pal_SBZ3SonWat8:	incbin	"palette\Sonic Pal\08 Socket SBZ3.bin"
+Pal_SBZ3SonWat9:	incbin	"palette\Sonic Pal\09 Cringe SBZ3.bin"
+Pal_SBZ3SonWat10:	incbin	"palette\Sonic Pal\10 Dark SBZ3.bin"
 ; ---------------------------------------------------------------------------
 ; Subroutine to	wait for VBlank routines to complete
 ; ---------------------------------------------------------------------------
@@ -2362,7 +2316,7 @@ GM_Title:
 		bsr.w	NemDec
 		moveq	#palid_Title,d0	; load title screen palette
 		bsr.w	PalLoad1
-		sfx	bgm_Title,0,1,1	; play title screen music
+		sfx		bgm_Title,0,1,1	; play title screen music
 		move.b	#0,(f_debugmode).w ; disable debug mode
 		move.w	#$900,(v_demolength).w ; run title screen for $178 frames
 		lea	(v_objspace+$80).w,a1
