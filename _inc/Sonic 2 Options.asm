@@ -38,21 +38,19 @@ MenuScreen_ClrObjRam:
 
 		clr.w	($FFFFC800).w
 		move.l	#$FFFFC800,($FFFFC8FC).w
-		move.l	#$42000000,(vdp_control_port).l
+		locVRAM	$200
 		lea		(Nem_MenuFont).l,a0
 		jsr	NemDec
-		move.l	#$4E000000,(vdp_control_port).l
+		locVRAM	$E00
 		lea		(Nem_MenuBox).l,a0
 		jsr	NemDec
-		lea		(v_256x256),a1
-		lea		(Eni_MenuBg),a0
+		lea	($FF0000).l,a1
+		lea	(Eni_MenuBg).l,a0 ; load SONIC/MILES mappings
 		move.w	#$6000,d0
 		jsr	EniDec
-		lea		(v_256x256),a1
-		move.l	#$60000003,d0
-		moveq	#$27,d1
-		moveq	#$1B,d2
-		jsr	TilemapToVRAM	; fullscreen background
+
+		copyTilemap	$FF0000,$E000,$27,$1B
+
 		bsr.w	MenuScreen_Options	; if yes, branch
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
@@ -90,7 +88,8 @@ MenuScreen_Options:
 		clr.b	($FFFFF711).w		
 		clr.w	($FFFFF7F0).w					 
 ;-------------------------------------------------------------------------------
-		clr.l ($FFFFF7B8).w ; clear RAM adresses $F7B8 to $F7BA
+		clr.w	($FFFFF7B8).w
+		lea		(Anim_SonicMilesBG).l,a2
 		bsr.w	Dynamic_Menu
 ;-------------------------------------------------------------------------------
 		moveq	#palid_Options,d0
@@ -115,6 +114,7 @@ OptionScreen_Main:
 		bsr.w	OptionScreen_Controls			
 		bsr.w	OptionScreen_DrawSelected
 		move	#$2300,sr
+		lea		(Anim_SonicMilesBG).l,a2		
 		bsr.w	Dynamic_Menu		
 		andi.b	#btnStart,(v_jpadpress1).w ; check if Start is pressed
 
@@ -312,37 +312,70 @@ loc_9296:
 		rts
 
 Dynamic_Menu:
-		subq.b  #$01, (v_lani4_time).w
-		bpl.s   Exit_Dinamic_Menu
-		move.b  #$07, (v_lani4_time).w
-		move.b  (v_lani4_frame).w, D0
-		addq.b  #$01, (v_lani4_frame).w
-		andi.w  #$001F, D0
-		move.b  Sonic_Miles_Frame_Select(PC, D0), D0
-		lsl.w   #$06, D0
-		lea     (vdp_data_port), A6
-		move.l  #$40200000, $0004(A6)
-		lea     (Sonic_Miles_Spr), A1
-		lea     $00(A1, D0), A1
-		move.w  #$0009, D0
-Menu_Loop_Load_Tiles:
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		move.l  (A1)+, (A6)
-		dbra    D0, Menu_Loop_Load_Tiles
-Exit_Dinamic_Menu:
-				rts
-Sonic_Miles_Frame_Select:
-				dc.b    $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-				dc.b    $05, $0A
-				dc.b    $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F
-				dc.b    $0A, $05
-				; 0 = 0000000000  ; 1 = 0101000000  ; 2 = 1010000000 ; 3 = 1111000000
+	lea	($FFFFF7B8).w,a3
+
+loc_3FF30:
+	move.w	(a2)+,d6	; loop counter. We start off with 00 the first time.
+
+loc_3FF32:
+	subq.b	#1,(a3)		; decrement timer
+	bcc.s	loc_3FF78	; if time remains, branch ahead
+	moveq	#0,d0
+	move.b	1(a3),d0	; load animation counter from animation data table
+	cmp.b	6(a2),d0
+	blo.s	loc_3FF48
+	moveq	#0,d0
+	move.b	d0,1(a3)	; set animation counter
+
+loc_3FF48:
+	addq.b	#1,1(a3)	; increment animation counter
+	move.b	(a2),(a3)	; set timer
+	bpl.s	loc_3FF56
+	add.w	d0,d0
+	move.b	9(a2,d0.w),(a3)
+
+loc_3FF56:
+	move.b	8(a2,d0.w),d0
+	lsl.w	#5,d0
+	move.w	4(a2),d2
+	move.l	(a2),d1
+	andi.l	#$FFFFFF,d1		; Filter out the first byte, which contains the first PLC ID, leaving the address of the zone's art in d0
+	add.l	d0,d1
+	moveq	#0,d3
+	move.b	7(a2),d3
+	lsl.w	#4,d3
+	jsr	(QueueDMATransfer).l	; Use d1, d2, and d3 to locate the decompressed art and ready for transfer to VRAM
+
+loc_3FF78:
+	move.b	6(a2),d0
+	tst.b	(a2)
+	bpl.s	loc_3FF82
+	add.b	d0,d0
+
+loc_3FF82:
+	addq.b	#1,d0
+	andi.w	#$FE,d0
+	lea	8(a2,d0.w),a2
+	addq.w	#2,a3
+	dbf	d6,loc_3FF32
+	rts
+; ------------------------------------------------------------------------
+; MENU ANIMATION SCRIPT
+; ------------------------------------------------------------------------
+;word_87C6:
+Anim_SonicMilesBG:
+	dc.w   0
+; Sonic/Miles animated background
+	dc.l $FF<<24|Sonic_Miles_Spr
+	dc.w $20
+	dc.b 6
+	dc.b $A
+	dc.b   0,$C7    ; "SONIC"
+	dc.b  $A,  5	; 2
+	dc.b $14,  5	; 4
+	dc.b $1E,$C7	; "TAILS"
+	dc.b $14,  5	; 8
+	dc.b  $A,  5	; 10	
 ; ===========================================================================
 ; off_92BA:
 OptScrBoxData:
@@ -390,17 +423,17 @@ off_92F2:
 TextOptScr_PlayerSelect:	asc	"* PALETTE PICKER *"	; byte_97CA:
 TextOptScr_Default:			asc	"    DEFAULT      "	; byte_97FC:
 TextOptScr_Original:			asc	"    ORIGINAL   "	; byte_980C:
-TextOptScr_Beta:			asc	" TOKYO TOY SHOW "	; byte_981C:
+TextOptScr_Beta:			asc	"     DEMO     "	; byte_981C:
 TextOptScr_Midnight:			asc	"   MIDNIGHT    "
 TextOptScr_C2:			asc	"   CLASSIC      "
 TextOptScr_Clackers:			asc	"   CRACKERS     "
 TextOptScr_RHS:			asc	"  REDHOTSONIC   "
 TextOptScr_Socket:			asc	"    SOCKET    "
 TextOptScr_Cringe:			asc	"    CRINGE    "
-TextOptScr_Dark:			asc	"    DARKER      "
+TextOptScr_Dark:			asc	"    DARKER    "
 TextOptScr_LivesSystem:		asc	"*   SCD CAMERA   *"	; byte_982C:
-TextOptScr_On:				asc	"      OFF       "	; byte_984E:
-TextOptScr_Off:				asc	"      ON      "	; byte_984E:
+TextOptScr_On:				asc	"    DISABLED     "	; byte_984E:
+TextOptScr_Off:				asc	"    ENABLED    "	; byte_984E:
 TextOptScr_SoundTest:		asc	"* NEW MOVESTYLES *"	; byte_985E:
 TextOptScr_Null:				asc	"FINISH THE GAME"	; byte_9870:
 TextOptScr_Null2:				asc	"      NULLS       "	; byte_9870:

@@ -951,10 +951,11 @@ Sound_PlaySFX:
 		moveq	#0,d1
 		move.w	(a1)+,d1		; Voice pointer
 		add.l	a3,d1			; Relative pointer
-		move.b	(a1)+,d5		; Dividing timing
+		move.b	(a1)+,d5		; Dividing timing	
 		; DANGER! there is a missing 'moveq	#0,d7' here, without which SFXes whose
 		; index entry is above $3F will cause a crash. This is actually the same way that
 		; this bug is fixed in Ristar's driver.
+		moveq	#0,d7	
 		move.b	(a1)+,d7	; Number of tracks (FM + PSG)
 		subq.b	#1,d7
 		moveq	#TrackSz,d6
@@ -1075,6 +1076,7 @@ Sound_PlaySpecial:
 		move.b	(a1)+,d5			; Dividing timing
 		; DANGER! there is a missing 'moveq	#0,d7' here, without which special SFXes whose
 		; index entry is above $3F will cause a crash. This instance was not fixed in Ristar's driver.
+		moveq	#0,d7	
 		move.b	(a1)+,d7			; Number of tracks (FM + PSG)
 		subq.b	#1,d7
 		moveq	#TrackSz,d6
@@ -1390,7 +1392,7 @@ StopAllSound:
 		movea.l	a6,a0
 		; DANGER! This should be clearing all variables and track data, but misses the last $10 bytes of v_spcsfx_psg3_track.
 		; Remove the '-$10' to fix this.
-		move.w	#((v_spcsfx_track_ram_end-v_startofvariables-$10)/4)-1,d0	; Clear $390 bytes: all variables and most track data
+		move.w	#((v_spcsfx_track_ram_end-v_startofvariables)/4)-1,d0	; Clear $390 bytes: all variables and most track data
 ; loc_725B6:
 @clearramloop:
 		clr.l	(a0)+
@@ -1891,9 +1893,9 @@ SendPSGNoteOff:
 		; risk of music accidentally playing noise because it can't detect if
 		; the PSG4/noise channel needs muting on track initialisation.
 		; S&K's driver fixes it by doing this:
-		;cmpi.b	#$DF,d0				; Are stopping PSG3?
-		;bne.s	locret_729B4
-		;move.b	#$FF,(psg_input).l		; If so, stop noise channel while we're at it
+		cmpi.b	#$DF,d0				; Are stopping PSG3?
+		bne.s	locret_729B4
+		move.b	#$FF,(psg_input).l		; If so, stop noise channel while we're at it
 
 locret_729B4:
 		rts	
@@ -2242,7 +2244,7 @@ SendVoiceTL:
 		beq.s	@gotvoiceptr
 		; DANGER! This uploads the wrong voice! It should have been a5 instead
 		; of a6!
-		movea.l	TrackVoicePtr(a6),a1
+		movea.l	TrackVoicePtr(a5),a1
 		tst.b	f_voice_selector(a6)
 		bmi.s	@gotvoiceptr
 		movea.l	v_special_voice_ptr(a6),a1

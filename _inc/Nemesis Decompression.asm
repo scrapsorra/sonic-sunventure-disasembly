@@ -4,7 +4,7 @@
 ; ------------------------------------------------------------------------------
 ; Optimized by vladikcomper
 ; ------------------------------------------------------------------------------
-
+ 
 NemDec_RAM:
     movem.l d0-a1/a3-a6,-(sp)
     lea NemDec_WriteRowToRAM(pc),a3
@@ -50,11 +50,11 @@ NemDec2:
     add.w   d1,d1
     sub.b   (a1,d1.w),d6        ; ~~ subtract from shift value so that the next code is read next time around
     cmpi.w  #9,d6           ; does a new byte need to be read?
-    bcc.s   @1          ; if not, branch
+    bcc.s   @0          ; if not, branch
     addq.w  #8,d6
     asl.w   #8,d5
     move.b  (a0)+,d5        ; read next byte
-@1  move.b  1(a1,d1.w),d1
+@0  move.b  1(a1,d1.w),d1
     move.w  d1,d0
     andi.w  #$F,d1          ; get palette index for pixel
     andi.w  #$F0,d0
@@ -81,11 +81,11 @@ NemDec_WritePixelLoop:
 NemDec_InlineData:
     subq.w  #6,d6           ; 6 bits needed to signal inline data
     cmpi.w  #9,d6
-    bcc.s   @2
+    bcc.s   @0
     addq.w  #8,d6
     asl.w   #8,d5
     move.b  (a0)+,d5
-@2  subq.w  #7,d6           ; and 7 bits needed for the inline data itself
+@0  subq.w  #7,d6           ; and 7 bits needed for the inline data itself
     move.w  d5,d1
     lsr.w   d6,d1           ; shift so that low bit of the code is in bit position 0
     move.w  d1,d0
@@ -102,7 +102,7 @@ NemDec_InlineData:
 ; Subroutines to output decompressed entry
 ; Selected depending on current decompression mode
 ; ---------------------------------------------------------------------------
-
+ 
 NemPCD_WriteRowToVDP:
 loc_1502:
     move.l  d4,(a4)         ; write 8-pixel row
@@ -120,7 +120,7 @@ NemPCD_WriteRowToVDP_XOR:
     bne.s   NemPCD_NewRow
     rts
 ; ---------------------------------------------------------------------------
-
+ 
 NemDec_WriteRowToRAM:
     move.l  d4,(a4)+        ; write 8-pixel row
     subq.w  #1,a5
@@ -149,10 +149,10 @@ NemDec_BuildCodeTable:
     bne.s   @NewPalIndex        ; if not, branch
     rts
 ; ---------------------------------------------------------------------------
-
+ 
 @NewPalIndex:
     move.w  d0,d7
-
+ 
 @ItemLoop:
     move.b  (a0)+,d0        ; read next byte
     bmi.s   @ChkEnd         ; ~~

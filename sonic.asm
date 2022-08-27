@@ -2143,15 +2143,15 @@ Pal_Sonic7:	incbin	"palette\Sonic Pal\07 Red Hot.bin"
 Pal_Sonic8:	incbin	"palette\Sonic Pal\08 Socket.bin"
 Pal_Sonic9:	incbin	"palette\Sonic Pal\09 Cringe.bin"
 Pal_Sonic10:	incbin	"palette\Sonic Pal\10 Dark.bin"
-Pal_SonWater2:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater3:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater4:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater5:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater6:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater7:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater8:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater9:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
-Pal_SonWater10:	incbin	"palette\Sonic Pal\Sonic - LZ Underwater.bin"
+Pal_SonWater2:	incbin	"palette\Sonic Pal\02 Sonic 1 Underwater.bin"
+Pal_SonWater3:	incbin	"palette\Sonic Pal\03 Beta Underwater.bin"
+Pal_SonWater4:	incbin	"palette\Sonic Pal\04 Midnight Underwater.bin"
+Pal_SonWater5:	incbin	"palette\Sonic Pal\05 C2 Underwater.bin"
+Pal_SonWater6:	incbin	"palette\Sonic Pal\06 Clacker Underwater.bin"
+Pal_SonWater7:	incbin	"palette\Sonic Pal\07 Red Hot Underwater.bin"
+Pal_SonWater8:	incbin	"palette\Sonic Pal\08 Socket Underwater.bin"
+Pal_SonWater9:	incbin	"palette\Sonic Pal\09 Cringe Underwater.bin"
+Pal_SonWater10:	incbin	"palette\Sonic Pal\10 Dark Underwater.bin"
 ; ---------------------------------------------------------------------------
 ; Subroutine to	wait for VBlank routines to complete
 ; ---------------------------------------------------------------------------
@@ -2303,7 +2303,7 @@ GM_Title:
 		move.l	d0,(a1)+
 		dbf	d1,Tit_ClrPal	; fill palette with 0 (black)
 
-		moveq	#palid_Sonic,d0	; load Sonic's palette
+		jsr		LoadPlayerPal
 		bsr.w	PalLoad1
 		move.b	#id_CreditsText,(v_objspace+$80).w ; load "SONIC TEAM PRESENTS" object
 		jsr	(ExecuteObjects).l
@@ -3023,15 +3023,15 @@ Level_ClrRam:
 Level_LoadPal:
 		move.w	#30,(v_air).w
 		enable_ints
-		moveq	#palid_Sonic,d0
+		jsr		LoadPlayerPal
 		bsr.w	PalLoad2	; load Sonic's palette
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
 		bne.s	Level_GetBgm	; if not, branch
 
-		moveq	#palid_LZSonWater,d0 ; palette number $F (LZ)
+		jsr		LoadPlayerWaterPal
 		cmpi.b	#3,(v_act).w	; is act number 3?
 		bne.s	Level_WaterPal	; if not, branch
-		moveq	#palid_SBZ3SonWat,d0 ; palette number $10 (SBZ3)
+		jsr		LoadPlayerWaterPal
 
 	Level_WaterPal:
 		bsr.w	PalLoad3_Water	; load underwater palette
@@ -3067,7 +3067,7 @@ Level_TtlCardLoop:
 		jsr	(Hud_Base).l	; load basic HUD gfx
 
 	Level_SkipTtlCard:
-		moveq	#palid_Sonic,d0
+		jsr		LoadPlayerPal
 		bsr.w	PalLoad1	; load Sonic's palette
 		bsr.w	LevelSizeLoad
 		bsr.w	DeformLayers
@@ -4070,7 +4070,7 @@ End_LoadData:
 		lea	(Kos_EndFlowers).l,a0 ;	load extra flower patterns
 		lea	($FFFF9400).w,a1 ; RAM address to buffer the patterns
 		bsr.w	KosDec
-		moveq	#palid_Sonic,d0
+		jsr		LoadPlayerPal
 		bsr.w	PalLoad1	; load Sonic's palette
 		music	bgm_Invincible,0,1,0	; play ending sequence music
 		btst	#bitA,(v_jpadhold1).w ; is button A pressed?
@@ -7291,6 +7291,27 @@ word_1E0EC:	dc 1
 	even
 
 ; ===========================================================================
+
+LoadPlayerPal:
+		moveq	#0,d0
+		move.b	($FFFFFFBF).w,d0
+		move.b	@palLUT(pc,d0.w),d0
+		rts
+
+	@palLUT:
+		dc.b	palid_Sonic, palid_Sonic2, palid_Sonic3, palid_Sonic4, palid_Sonic5
+		dc.b	palid_Sonic6, palid_Sonic7, palid_Sonic8, palid_Sonic9, palid_Sonic10
+
+LoadPlayerWaterPal:
+		moveq	#0,d0
+		move.b	($FFFFFFBF).w,d0
+		move.b	@palLUT(pc,d0.w),d0
+		rts
+
+	@palLUT:
+		dc.b	palid_SBZ3SonWat, palid_SonWater2, palid_SonWater3, palid_SonWater4, palid_SonWater5
+		dc.b	palid_SonWater6, palid_SonWater7, palid_SonWater8, palid_SonWater9, palid_SonWater10
+
 ; ---------------------------------------------------------------------------
 ; Object 01 - Sonic
 ; ---------------------------------------------------------------------------
