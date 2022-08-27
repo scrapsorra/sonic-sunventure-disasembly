@@ -62,26 +62,26 @@ PCycGHZ_Skip:
 
 PCycle_LZ:
 ; Waterfalls
-		;subq.w	#1,(v_pcyc_time).w ; decrement timer
-		;bpl.s	PCycLZ_Skip1	; if time remains, branch
+		subq.w	#1,(v_pcyc_time).w ; decrement timer
+		bpl.s	PCycLZ_Skip1	; if time remains, branch
 
-		;move.w	#3,(v_pcyc_time).w ; reset timer to 2 frames
-		;move.w	(v_pcyc_num).w,d0
-		;addq.w	#1,(v_pcyc_num).w ; increment cycle number
-		;andi.w	#3,d0		; if cycle > 3, reset to 0
-		;lsl.w	#3,d0
-		;lea	(Pal_LZCyc1).l,a0
-		;cmpi.b	#3,(v_act).w	; check if level is SBZ3
-		;bne.s	PCycLZ_NotSBZ3
-		;lea	(Pal_SBZ3Cyc1).l,a0 ; load SBZ3	palette instead
+		move.w	#3,(v_pcyc_time).w ; reset timer to 2 frames
+		move.w	(v_pcyc_num).w,d0
+		addq.w	#1,(v_pcyc_num).w ; increment cycle number
+		andi.w	#3,d0		; if cycle > 3, reset to 0
+		lsl.w	#3,d0
+		lea	(Pal_LZCyc1).l,a0
+		cmpi.b	#3,(v_act).w	; check if level is SBZ3
+		bne.s	PCycLZ_NotSBZ3
+		lea	(Pal_SBZ3Cyc1).l,a0 ; load SBZ3	palette instead
 
-	;PCycLZ_NotSBZ3:
-		;lea	(v_pal_dry+$56).w,a1
-		;move.l	(a0,d0.w),(a1)+
-		;move.l	4(a0,d0.w),(a1)
-		;lea	(v_pal_water+$56).w,a1
-		;move.l	(a0,d0.w),(a1)+
-		;move.l	4(a0,d0.w),(a1)
+	PCycLZ_NotSBZ3:
+		lea	(v_pal_dry+$56).w,a1
+		move.l	(a0,d0.w),(a1)+
+		move.l	4(a0,d0.w),(a1)
+		lea	(v_pal_water+$56).w,a1
+		move.l	(a0,d0.w),(a1)+
+		move.l	4(a0,d0.w),(a1)
 
 PCycLZ_Skip1:
 ; Conveyor belts

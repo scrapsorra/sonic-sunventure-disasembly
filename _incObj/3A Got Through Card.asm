@@ -160,7 +160,7 @@ Got_ChkSS:
 		tst.b	(f_bigring).w	; has Sonic jumped into	a giant	ring?
 		beq.s	VBla_08A	; if not, branch
 		move.b  #0,(f_emeraldm).w
-		;move.b	#id_Special,(v_gamemode).w ; set game mode to Special Stage (10)
+		move.b	#id_Special,(v_gamemode).w ; set game mode to Special Stage (10)
 		bra.s	Got_Display2
 		move.b  #0,(f_emeraldm).w
 ; ===========================================================================

@@ -106,7 +106,7 @@ PLC_LZ:		dc.w ((PLC_LZ2-PLC_LZ-2)/6)-1
 		plcm	Nem_LZ,0		; LZ main patterns
 		;plcm	Nem_LzBlock1, $3C00	; block
 		;plcm	Nem_LzBlock2, $3E00	; blocks
-		plcm	Nem_Splash, $4B20	; waterfalls and splash
+		;plcm	Nem_Splash, $4B20	; waterfalls and splash
 		plcm	Nem_Water, $6000	; water	surface
 		plcm	Nem_LzSpikeBall, $6200	; spiked ball
 		plcm	Nem_FlapDoor, $6500	; flapping door
@@ -194,16 +194,16 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_Roller, $9700	; roller enemy
 		plcm	Nem_FlamePipe, $7B20	; flaming pipe
 		plcm	Nem_SbzFloor, $7EA0	; collapsing floor
-		plcm	Nem_SbzBlock, $9860	; vanishing block
+		;plcm	Nem_SbzBlock, $9860	; vanishing block
 
 PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		;plcm	Nem_Cater, $5600	; caterkiller enemy
 		plcm	Nem_Bumper, $7000	; bumper
 		plcm	Nem_SyzSpike1, $72C0	; large	spikeball
 		plcm	Nem_SyzSpike2, $7740	; small	spikeball
-		plcm	Nem_TrapDoor, $9240	; trapdoor
+		;plcm	Nem_TrapDoor, $9240	; trapdoor
 		plcm	Nem_SbzFloor, $7F20	; collapsing floor
-		plcm	Nem_SpinPform, $9BE0	; small	spinning platform
+		;plcm	Nem_SpinPform, $9BE0	; small	spinning platform
 		plcm	Nem_LzSwitch, $A1E0	; switch
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
