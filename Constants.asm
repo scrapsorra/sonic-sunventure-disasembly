@@ -271,6 +271,7 @@ sfx__Last:	equ ((ptr_sndend-SoundIndex-4)/4)+sfx__First
 ; Special sound effects
 spec__First:	equ $D0
 sfx_Waterfall:	equ ((ptr_sndD0-SpecSoundIndex)/4)+spec__First
+sfx_LightningShield:	equ ((ptr_sndD1-SpecSoundIndex)/4)+spec__First
 spec__Last:	equ ((ptr_specend-SpecSoundIndex-4)/4)+spec__First
 
 flg__First:	equ $E0

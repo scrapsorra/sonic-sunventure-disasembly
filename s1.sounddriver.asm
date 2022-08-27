@@ -659,13 +659,12 @@ PlaySoundID:
 		bls.w	Sound_PlaySFX		; Branch if yes
 		cmpi.b	#spec__First,d7		; Is this after sfx but before special sfx? (redundant check)
 		blo.w	@locret			; Return if yes
-		; DANGER! Special SFXes end at $D0, yet this checks until $DF; attempting to
-		; play sounds $D1-$DF will cause a crash! Remove the '+$10' and change the 'blo' to a 'bls'
-		; and uncomment the two lines below to fix this.
-		cmpi.b	#spec__Last+$10,d7	; Is this special sfx ($D0-$DF)?
-		blo.w	Sound_PlaySpecial	; Branch if yes
-		;cmpi.b	#flg__First,d7		; Is this after special sfx but before $E0?
-		;blo.w	@locret			; Return if yes
+		cmpi.b	#$D1,d7
+		bcs.w	Sound_PlaySpecial
+		cmp.b	#$DF,d7
+		ble.w	Sound_D1toDF
+		cmpi.b	#flg__First,d7		; Is this after special sfx but before $E0?
+		blo.w	@locret			; Return if yes
 		cmpi.b	#flg__Last,d7		; Is this $E0-$E4?
 		bls.s	Sound_E0toE4		; Branch if yes
 ; locret_71F8C:
@@ -916,35 +915,50 @@ PSGInitBytes:	dc.b $80, $A0, $C0	; Specifically, these configure writes to the P
 		even
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
+; Play Spin Dash sound effect
+; ---------------------------------------------------------------------------
+Sound_D1toDF:
+	tst.b	$27(a6)
+	bne.w	loc_722C6
+	tst.b	4(a6)
+	bne.w	loc_722C6
+	tst.b	$24(a6)
+	bne.w	loc_722C6
+	movea.l	(Go_SoundIndex).l,a0
+	sub.b	#$A0,d7
+	bra.s	SoundEffects_Common
+; ---------------------------------------------------------------------------
 ; Play normal sound effect
 ; ---------------------------------------------------------------------------
 ; Sound_A0toCF:
 Sound_PlaySFX:
 		tst.b	f_1up_playing(a6)	; Is 1-up playing?
-		bne.w	@clear_sndprio		; Exit is it is
+		bne.w	loc_722C6		; Exit is it is
 		tst.b	v_fadeout_counter(a6)	; Is music being faded out?
-		bne.w	@clear_sndprio		; Exit if it is
+		bne.w	loc_722C6		; Exit if it is
 		tst.b	f_fadein_flag(a6)	; Is music being faded in?
-		bne.w	@clear_sndprio		; Exit if it is
+		bne.w	loc_722C6		; Exit if it is
 		cmpi.b	#sfx_Ring,d7		; is ring sound	effect played?
-		bne.s	@sfx_notRing		; if not, branch
+		bne.s	Sound_notB5		; if not, branch
 		tst.b	v_ring_speaker(a6)	; Is the ring sound playing on right speaker?
-		bne.s	@gotringspeaker		; Branch if not
+		bne.s	loc_721EE		; Branch if not
 		move.b	#sfx_RingLeft,d7	; play ring sound in left speaker
-; loc_721EE:
-@gotringspeaker:
+
+loc_721EE:
 		bchg	#0,v_ring_speaker(a6)	; change speaker
-; Sound_notB5:
-@sfx_notRing:
+
+Sound_notB5:
 		cmpi.b	#sfx_Push,d7		; is "pushing" sound played?
-		bne.s	@sfx_notPush		; if not, branch
+		bne.s	Sound_notA7		; if not, branch
 		tst.b	f_push_playing(a6)	; Is pushing sound already playing?
-		bne.w	@locret			; Return if not
+		bne.w	locret_722C4			; Return if not
 		move.b	#$80,f_push_playing(a6)	; Mark it as playing
-; Sound_notA7:
-@sfx_notPush:
+		
+Sound_notA7:
 		movea.l	(Go_SoundIndex).l,a0
 		subi.b	#sfx__First,d7		; Make it 0-based
+
+SoundEffects_Common:		
 		lsl.w	#2,d7			; Convert sfx ID into index
 		movea.l	(a0,d7.w),a3		; SFX data pointer
 		movea.l	a3,a1
@@ -959,41 +973,41 @@ Sound_PlaySFX:
 		move.b	(a1)+,d7	; Number of tracks (FM + PSG)
 		subq.b	#1,d7
 		moveq	#TrackSz,d6
-; loc_72228:
-@sfx_loadloop:
+
+loc_72228:
 		moveq	#0,d3
 		move.b	1(a1),d3	; Channel assignment bits
 		move.b	d3,d4
-		bmi.s	@sfxinitpsg	; Branch if PSG
+		bmi.s	loc_72244	; Branch if PSG
 		subq.w	#2,d3		; SFX can only have FM3, FM4 or FM5
 		lsl.w	#2,d3
 		lea	SFX_BGMChannelRAM(pc),a5
 		movea.l	(a5,d3.w),a5
 		bset	#2,(a5)		; Mark music track as being overridden (TrackPlaybackControl)
-		bra.s	@sfxoverridedone
+		bra.s	loc_7226E
 ; ===========================================================================
-; loc_72244:
-@sfxinitpsg:
+
+loc_72244:
 		lsr.w	#3,d3
 		lea	SFX_BGMChannelRAM(pc),a5
 		movea.l	(a5,d3.w),a5
 		bset	#2,(a5)			; Mark music track as being overridden (TrackPlaybackControl)
 		cmpi.b	#$C0,d4			; Is this PSG 3?
-		bne.s	@sfxoverridedone	; Branch if not
+		bne.s	loc_7226E	; Branch if not
 		move.b	d4,d0
 		ori.b	#$1F,d0			; Command to silence PSG 3
 		move.b	d0,(psg_input).l
 		bchg	#5,d0			; Command to silence noise channel
 		move.b	d0,(psg_input).l
-; loc_7226E:
-@sfxoverridedone:
+
+loc_7226E:
 		movea.l	SFX_SFXChannelRAM(pc,d3.w),a5
 		movea.l	a5,a2
 		moveq	#(TrackSz/4)-1,d0	; $30 bytes
-; loc_72276:
-@clearsfxtrackram:
+
+loc_72276:
 		clr.l	(a2)+
-		dbf	d0,@clearsfxtrackram
+		dbf	d0,loc_72276
 
 		move.w	(a1)+,(a5)			; Initial playback control bits (TrackPlaybackControl)
 		move.b	d5,TrackTempoDivider(a5)	; Initial voice control bits
@@ -1005,27 +1019,27 @@ Sound_PlaySFX:
 		move.b	#1,TrackDurationTimeout(a5)	; Set duration of first "note"
 		move.b	d6,TrackStackPointer(a5)	; set "gosub" (coord flag F8h) stack init value
 		tst.b	d4				; Is this a PSG channel?
-		bmi.s	@sfxpsginitdone			; Branch if yes
+		bmi.s	loc_722A8		; Branch if yes
 		move.b	#$C0,TrackAMSFMSPan(a5)	; AMS/FMS/Panning
 		move.l	d1,TrackVoicePtr(a5)		; Voice pointer
-; loc_722A8:
-@sfxpsginitdone:
-		dbf	d7,@sfx_loadloop
+
+loc_722A8:
+		dbf	d7,loc_72228
 
 		tst.b	v_sfx_fm4_track+TrackPlaybackControl(a6)	; Is special SFX being played?
-		bpl.s	@doneoverride					; Branch if not
+		bpl.s	loc_722B8				; Branch if not
 		bset	#2,v_spcsfx_fm4_track+TrackPlaybackControl(a6)	; Set 'SFX is overriding' bit
-; loc_722B8:
-@doneoverride:
+
+loc_722B8:
 		tst.b	v_sfx_psg3_track+TrackPlaybackControl(a6)	; Is SFX being played?
-		bpl.s	@locret						; Branch if not
+		bpl.s	locret_722C4						; Branch if not
 		bset	#2,v_spcsfx_psg3_track+TrackPlaybackControl(a6)	; Set 'SFX is overriding' bit
-; locret_722C4:
-@locret:
+
+locret_722C4:
 		rts	
 ; ===========================================================================
-; loc_722C6:
-@clear_sndprio:
+
+loc_722C6:
 		clr.b	v_sndprio(a6)	; Clear priority
 		rts	
 ; ===========================================================================
@@ -2593,6 +2607,7 @@ ptr_sndend
 ; ---------------------------------------------------------------------------
 SpecSoundIndex:
 ptr_sndD0:	dc.l SoundD0
+ptr_sndD1:	dc.l SoundD1
 ptr_specend
 SoundA0:	include	"sound/sfx/Jump.asm"
 		even
@@ -2692,7 +2707,8 @@ SoundCF:	include	"sound/sfx/Signpost.asm"
 		even
 SoundD0:	incbin	"sound/sfx/SndD0 - Waterfall.bin"
 		even
-
+SoundD1:	include	"sound/sfx/Lightning Shield.asm"
+		even
 		; Don't let Sega sample cross $8000-byte boundary
 		; (DAC driver doesn't switch banks automatically)
 		if (*&$7FFF)+Size_of_SegaPCM>$8000

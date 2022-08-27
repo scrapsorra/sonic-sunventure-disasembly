@@ -233,9 +233,9 @@ loc_130B2:
 
 loc_130BA:
 		move.w	d0,obInertia(a0)
-		move.b	obAngle(a0),d0
-		addi.b	#$20,d0
-		andi.b	#$C0,d0
+		move.b	obAngle(a0),d1
+		addi.b	#$20,d1
+		andi.b	#$C0,d1
 		bne.s	locret_130E8
 		cmpi.w	#$400,d0
 		blt.s	locret_130E8
@@ -281,9 +281,9 @@ loc_13118:
 
 loc_13120:
 		move.w	d0,obInertia(a0)
-		move.b	obAngle(a0),d0
-		addi.b	#$20,d0
-		andi.b	#$C0,d0
+		move.b	obAngle(a0),d1
+		addi.b	#$20,d1
+		andi.b	#$C0,d1
 		bne.s	locret_1314E
 		cmpi.w	#-$400,d0
 		bgt.s	locret_1314E
