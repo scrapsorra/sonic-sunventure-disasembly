@@ -189,6 +189,7 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_SYZ,0		; SYZ main patterns
 		;plcm	Nem_Stomper, $5800	; moving platform and stomper
 		;plcm	Nem_SbzDoor1, $5D40	; door
+		plcm	Nem_Bubbles, $6900	; bubbles and numbers
 		plcm	Nem_Buzz, $8880		; buzz bomber enemy
 		plcm	Nem_Yadrin, $8F60	; yadrin enemy
 		plcm	Nem_Roller, $9700	; roller enemy

@@ -3366,6 +3366,7 @@ Level_LoadObj:
 		move.b	d0,(v_shield).w	; clear shield
 		move.b	d0,(v_rshield).w; clear red shield
 		move.b	d0,(v_gshield).w; clear gold shield
+		move.b	d0,(v_spshield).w; clear gold shield
 		move.b	d0,(v_invinc).w	; clear invincibility
 		move.b	d0,(v_shoes).w	; clear speed shoes
 		move.b	d0,($FFFFFE2F).w
@@ -7130,13 +7131,10 @@ Map_Bump:	include	"_maps\Bumper.asm"
 Map_Sign:	include	"_maps\Signpost.asm"
 
 		include	"_incObj\4C & 4D Lava Geyser Maker.asm"
-		include	"_incObj\4E Wall of Lava.asm"
 		include	"_incObj\54 Lava Tag.asm"
 Map_LTag:	include	"_maps\Lava Tag.asm"
 		include	"_anim\Lava Geyser.asm"
-		include	"_anim\Wall of Lava.asm"
 Map_Geyser:	include	"_maps\Lava Geyser.asm"
-Map_LWall:	include	"_maps\Wall of Lava.asm"
 
 		include	"_incObj\40 Moto Bug.asm" ; includes "_incObj\sub RememberState.asm"
 		include	"_anim\Moto Bug.asm"
@@ -7688,8 +7686,8 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		;bsr.w	Sonic_Peelout
-		;bsr.w	Sonic_SpinDash
+		bsr.w	Sonic_Peelout
+		bsr.w	Sonic_SpinDash
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
 		bsr.w	Sonic_Move
@@ -7838,6 +7836,7 @@ ResumeMusic:
 		include	"_anim\Drowning Countdown.asm"
 Map_Drown:	include	"_maps\Drowning Countdown.asm"
 
+		include	"_incObj\4E Silver Shield.asm"
 		include	"_incObj\04 Gold Shield.asm"
 		include	"_incObj\07 Red Shield.asm"
 		include	"_incObj\38 Shield.asm"
@@ -7846,7 +7845,9 @@ Map_Drown:	include	"_maps\Drowning Countdown.asm"
 		include	"_incObj\08 Water Splash.asm"
 		include	"_anim\Shield and Invincibility.asm"
 Map_Shield:	include	"_maps\Shield and Invincibility.asm"
-Map_GShield:	include	"_maps\Gold Shield.asm"
+Map_Shield2:	include	"_maps\Shield 2.asm"
+
+Map_Shield3:	include	"_maps\Shield 3.asm"
 		include	"_anim\Special Stage Entry (Unused).asm"
 Map_Vanish:	include	"_maps\Special Stage Entry (Unused).asm"
 		include	"_anim\Water Splash.asm"
@@ -9246,9 +9247,11 @@ Nem_SyzSparkle:	incbin	"artnem\Unused - SYZ Sparkles.bin"
 		even
 		else
 		endc
-Unc_GShield:	incbin	"artunc\Gray Shield.bin"
+Unc_GShield:	incbin	"artunc\Gold Shield.bin"
 		even
 Unc_RedShield:	incbin	"artunc\Red Shield.bin"
+		even
+Unc_SpShield:	incbin	"artunc\Gray Shield.bin"
 		even
 Unc_Shield:	incbin	"artunc\Shield.bin"
 		even
@@ -9992,7 +9995,7 @@ SoundDriver:	include "s1.sounddriver.asm"
 SHC2022:    incbin "SHC22_Full_Sonic12.bin"
             even
 
-Art_Dust	incbin	artunc\spindust.bin
+Art_Dust:	incbin	artunc\spindust.bin
 
 ; ===============================================================
 ; ---------------------------------------------------------------

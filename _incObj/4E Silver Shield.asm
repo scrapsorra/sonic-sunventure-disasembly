@@ -1,25 +1,25 @@
 ; ---------------------------------------------------------------------------
-; Object 04 - Gold shield
+; Object 4E - Silver Shield
 ; ---------------------------------------------------------------------------
 
-GShieldItem:
-		move.l #Unc_GShield,d1 ; Call for Gold Shield Art
+SpShieldItem:
+		move.l #Unc_SpShield,d1 ; Call for Silver Shield Art
 		move.w #$A820,d2 ; Load Art from this location (VRAM location*20)
 		; In this case, VRAM = $541*20
 		move.w #$200,d3
 		jsr (QueueDMATransfer).l
 ; ---------------------------------------------------------------------------
-GShieldObj_Main:
+SpShieldObj_Main:
 		moveq #0,d0
 		move.b $24(a0),d0
-		move.w GShield_Index(pc,d0.w),d1
-		jmp GShield_Index(pc,d1.w)
+		move.w SpShield_Index(pc,d0.w),d1
+		jmp SpShield_Index(pc,d1.w)
 ; ===========================================================================
-GShield_Index:
-		dc.w GShield_Init-GShield_Index
-		dc.w GShieldChecks-GShield_Index
+SpShield_Index:
+		dc.w SpShield_Init-SpShield_Index
+		dc.w SpShieldChecks-SpShield_Index
 ; ===========================================================================
-GShield_Init:
+SpShield_Init:
 		addq.b #2,$24(a0)
 		move.l #Map_Shield,$4(A0) ; Load Shield Map into place
 		move.b #4,1(a0)
@@ -27,22 +27,22 @@ GShield_Init:
 		move.b #$18,obActWid(a0)
 		move.w #$541,2(a0) ; Set VRAM location
 		btst #7,($FFFFD002).w
-		beq.s GShieldChecks
+		beq.s SpShieldChecks
 		bset #7,2(a0)
 ; ---------------------------------------------------------------------------
-GShieldChecks:
+SpShieldChecks:
 		tst.b ($FFFFFE2D).w ; Test if Sonic has a shield
-		bne.s GSonicHasShield ; If so, branch to do nothing
-		tst.b (v_GShield).w ; Test if Sonic got invisibility
-		beq.s Gjmp_DeleteObj38 ; If so, delete object temporarily
-GShieldProperties:
+		bne.s SpSonicHasShield ; If so, branch to do nothing
+		tst.b (v_SpShield).w ; Test if Sonic got invisibility
+		beq.s Spjmp_DeleteObj38 ; If so, delete object temporarily
+SpShieldProperties:
 		move.w ($FFFFD008).w,8(a0) ; Load Main Character X-position
 		move.w ($FFFFD00C).w,$C(a0) ; Load Main Character Y-position
 		move.b ($FFFFD022).w,$22(a0) ; Something about Character status
 		lea (Ani_Shield).l, a1 ; Load Animation Scripts into a1
 		jsr AnimateSprite
 		jmp DisplaySprite
-GSonicHasShield:
+SpSonicHasShield:
 		rts
-Gjmp_DeleteObj38: ; loc_12648:
+Spjmp_DeleteObj38: ; loc_12648:
 		jmp DeleteObject

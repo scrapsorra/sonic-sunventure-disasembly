@@ -93,6 +93,7 @@ Pow_ChkShield:
 
 		move.b	#0,(v_rshield).w ; remove red shield
 		move.b	#0,(v_gshield).w ; remove g shield
+		move.b	#0,(v_spshield).w ; remove s shield
 		move.b	#1,(v_shield).w	; give Sonic a shield
 		move.b	#id_ShieldItem,(v_objspace+$180).w ; load shield object ($38)
 		music	sfx_Shield,1,0,0	; play shield sound
@@ -201,20 +202,34 @@ Pow_ChkRShield:
 
 		move.b	#0,(v_shield).w ; remove shield
 		move.b	#0,(v_gshield).w ; remove g shield
+		move.b	#0,(v_spshield).w ; remove s shield
 		move.b	#1,(v_rshield).w ; give Sonic a red shield
 		move.b	#id_RShieldItem,(v_objspace+$180).w ; load red shield object ($38)
 		music	sfx_FireShield,1,0,0	; play shield sound
 
 Pow_ChkGShield:
 		cmpi.b	#11,d0		; does monitor contain a g shield?
-		bne.s	Pow_ChkEnd
+		bne.s	Pow_ChkSpShield
 
 
 		move.b	#0,(v_shield).w ; remove shield
 		move.b	#0,(v_rshield).w ; remove r shield
+		move.b	#0,(v_spshield).w ; remove s shield
 		move.b	#1,(v_gshield).w ; give Sonic a g shield
 		move.b	#id_GShieldItem,(v_objspace+$180).w ; load g shield object ($38)	
 		music	sfx_LightningShield,1,0,0	; play shield sound
+
+Pow_ChkSpShield:
+		cmpi.b	#12,d0		; does monitor contain a g shield?
+		bne.s	Pow_ChkEnd
+
+		move.b	#0,(v_shield).w 		; remove shield
+		move.b	#0,(v_rshield).w 		; remove r shield
+		move.b	#0,(v_gshield).w 		; remove g shield
+		move.b	#1,(v_spshield).w 		; give sonic a s shield
+		move.b	#id_SpShieldItem,(v_objspace+$180).w ; load s shield object ($38)	
+		music	sfx_SpikesMove,1,0,0			; play shield sound
+		nop
 
 Pow_ChkEnd:
 		rts

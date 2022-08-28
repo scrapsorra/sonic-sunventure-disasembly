@@ -279,6 +279,8 @@ HurtSonic:
 		bne.s	@hasshield	; if yes, branch
 		tst.b	(v_gshield).w	; does Sonic have a gold shield?
 		bne.s	@hasshield	; if yes, branch
+		tst.b	(v_spshield).w	; does Sonic have a gold shield?
+		bne.s	@hasshield	; if yes, branch
 		tst.w	(v_rings).w	; does Sonic have any rings?
 		beq.w	@norings	; if not, branch
 
@@ -291,6 +293,8 @@ HurtSonic:
 	@hasshield:
 		cmpi.b	#1,(v_shield).w     ; does sonic have a Shield?
 		bne.s	@hasrshield        ; if no, check for red shield
+		cmpi.b	#1,(v_gshield).w     ; does sonic have a Gold Shield?
+		bne.s	@hasrshield        ; if no, check for red shield
 		cmpi.b	#$6E,(a2)     ; was damage caused by electrocuter?
 		beq.w	isflashing
 		cmpi.b	#$86,(a2)     ; was damage caused by Plasma Ball Launcher?
@@ -298,14 +302,12 @@ HurtSonic:
 
 	@hasrshield:
 		cmpi.b	#1,(v_rshield).w     ; does sonic have a Red Shield?
-		bne.s	@hasgshield          ; if no, check for gray shield
+		bne.s	@hasspshield          ; if no, check for gray shield
 		cmpi.b	#$14,(a2)	; was damage caused by lava ball?
 		beq.w 	isflashing
 		cmpi.b	#$4C,(a2)	; was damage caused by lava geyser?
 		beq.w 	isflashing
 		cmpi.b	#$4D,(a2)	; was damage caused by lava geyser?
-		beq.w 	isflashing
-		cmpi.b	#$4E,(a2)	; was damage caused by wall of lava?
 		beq.w 	isflashing
 		cmpi.b	#$62,(a2)	; was damage caused by gargoyle?
 		beq.w 	isflashing
@@ -318,8 +320,8 @@ HurtSonic:
 		cmpi.b	#$54,(a2)	; was damage caused by Lava Tag/Magma?
 		beq.w 	isflashing
 		
-	@hasgshield:
-		cmpi.b	#1,(v_gshield).w     ; does sonic have a Gray Shield?
+	@hasspshield:
+		cmpi.b	#1,(v_spshield).w     ; does sonic have a sp Shield?
 		bne.s	@hurtcont             ; if yes, make him invulnerable to metal objects
 		cmpi.b	#$15,(a2)	; was damage caused by SBZ Spiked Ball?
 		beq.w 	isflashing
@@ -355,8 +357,9 @@ HurtSonic:
 		move.b	#0,(v_shield).w		; remove shield
 		move.b	#0,(v_rshield).w	; remove red shield
 		move.b	#0,(v_gshield).w	; remove gold shield
+		move.b	#0,(v_spshield).w	; remove gold shield
 		move.b	#4,obRoutine(a0)
-		bsr.w	Sonic_ResetOnFloor
+		jsr		Sonic_ResetOnFloor
 		bset	#1,obStatus(a0)
 		move.w	#-$400,obVelY(a0) ; make Sonic bounce away from the object
 		move.w	#-$200,obVelX(a0)
