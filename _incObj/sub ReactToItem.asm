@@ -279,7 +279,7 @@ HurtSonic:
 		bne.s	@hasshield	; if yes, branch
 		tst.b	(v_gshield).w	; does Sonic have a gold shield?
 		bne.s	@hasshield	; if yes, branch
-		tst.b	(v_spshield).w	; does Sonic have a gold shield?
+		tst.b	(v_spshield).w	; does Sonic have a silver shield?
 		bne.s	@hasshield	; if yes, branch
 		tst.w	(v_rings).w	; does Sonic have any rings?
 		beq.w	@norings	; if not, branch
@@ -293,16 +293,14 @@ HurtSonic:
 	@hasshield:
 		cmpi.b	#1,(v_shield).w     ; does sonic have a Shield?
 		bne.s	@hasrshield        ; if no, check for red shield
-		cmpi.b	#1,(v_gshield).w     ; does sonic have a Gold Shield?
-		bne.s	@hasrshield        ; if no, check for red shield
 		cmpi.b	#$6E,(a2)     ; was damage caused by electrocuter?
 		beq.w	isflashing
 		cmpi.b	#$86,(a2)     ; was damage caused by Plasma Ball Launcher?
 		beq.w	isflashing
 
 	@hasrshield:
-		cmpi.b	#1,(v_rshield).w     ; does sonic have a Red Shield?
-		bne.s	@hasspshield          ; if no, check for gray shield
+		cmpi.b	#0,(v_rshield).w     ; does sonic not a Red Shield?
+		beq.s	@hasspshield          ; if yes, check for gray shield
 		cmpi.b	#$14,(a2)	; was damage caused by lava ball?
 		beq.w 	isflashing
 		cmpi.b	#$4C,(a2)	; was damage caused by lava geyser?
@@ -319,10 +317,10 @@ HurtSonic:
 		beq.w 	isflashing
 		cmpi.b	#$54,(a2)	; was damage caused by Lava Tag/Magma?
 		beq.w 	isflashing
-		
+
 	@hasspshield:
 		cmpi.b	#1,(v_spshield).w     ; does sonic have a sp Shield?
-		bne.s	@hurtcont             ; if yes, make him invulnerable to metal objects
+		bne.s	@hurtcont           ; if yes, make him invulnerable to metal objects
 		cmpi.b	#$15,(a2)	; was damage caused by SBZ Spiked Ball?
 		beq.w 	isflashing
 		cmpi.b	#$16,(a2)	; was damage caused by LZ Harpoon?
@@ -355,9 +353,14 @@ HurtSonic:
 
 	@hurtcont:
 		move.b	#0,(v_shield).w		; remove shield
-		move.b	#0,(v_rshield).w	; remove red shield
-		move.b	#0,(v_gshield).w	; remove gold shield
-		move.b	#0,(v_spshield).w	; remove gold shield
+		move.b	#0,(v_gshield).w	; remove g shield
+		move.b	#0,(v_spshield).w	; remove sp shield
+		
+		cmpi.b	#0,(v_rshield).w ; do you have no r shield?
+		beq.s	@hurtcont2	;if not, branch
+		subq.b	#1,(v_rshield).w
+		
+	@hurtcont2:
 		move.b	#4,obRoutine(a0)
 		jsr		Sonic_ResetOnFloor
 		bset	#1,obStatus(a0)
@@ -398,6 +401,7 @@ HurtSonic:
 		jsr	(PlaySound_Special).l
 		moveq	#-1,d0
 		rts	
+
 	@hurtelec:
 		move.b	#id_Hurt2,obAnim(a0)
 		move.w	#120,$30(a0)	; set temp invincible time to 2 seconds

@@ -23,7 +23,7 @@ GRing_Main:    ; Routine 0
 		bpl.s	GRing_Animate
 		cmpi.b	#6,(v_emeralds).w ; do you have 6 emeralds?
 		beq.w	GRing_Delete    ; if yes, branch
-		cmpi.b	#1,(f_emeraldm).w    ;TIS Did you  hit the S-Monitor?
+		cmpi.b	#2,(f_emeraldm).w    ;TIS Did you  hit the S-Monitor?
 		beq.s	GRing_Okay    ; if yes, branch
 
 		rts    

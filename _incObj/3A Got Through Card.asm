@@ -140,6 +140,7 @@ Got_AddBonus:
 
 Got_NextLevel:	; Routine $A
 		move.b  #0,($FFFFF5C2).w ; Clear victory animation flag
+		move.b  #0,(f_emeraldm).w
 		move.b	(v_zone).w,d0
 		andi.w	#7,d0
 		lsl.w	#3,d0
@@ -155,14 +156,15 @@ Got_NextLevel:	; Routine $A
 		bra.s	Got_Display2
 ; ===========================================================================
 
-Got_ChkSS:
+Got_ChkSS:	
 		clr.b	(v_lastlamp).w	; clear	lamppost counter
-		tst.b	(f_bigring).w	; has Sonic jumped into	a giant	ring?
-		beq.s	VBla_08A	; if not, branch
-		move.b  #0,(f_emeraldm).w
-		move.b	#id_Special,(v_gamemode).w ; set game mode to Special Stage (10)
+		tst.b	(f_emeraldm).w
+		beq.s	VBla_08A
+		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
+		sfx		bgm_Emerald,1,0,0 ;	play emerald music
 		bra.s	Got_Display2
 		move.b  #0,(f_emeraldm).w
+		
 ; ===========================================================================
 
 VBla_08A:

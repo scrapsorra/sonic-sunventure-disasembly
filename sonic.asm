@@ -7250,9 +7250,9 @@ loc_1DD36:				; DATA XREF: h+6DBA?o
 		or.b	#4,1(a0)
 		move.w	#$80,obPriority(a0)
 		move.b	#$10,obActWid(a0)
-		move	#$7A0,2(a0)
+		move	#$7AC,2(a0)
 		move	#-$3000,$3E(a0)
-		move	#$F400,$3C(a0)
+		move	#$F580,$3C(a0)
 		cmp	#-$2E40,a0
 		beq.s	loc_1DD8C
 		move.b	#1,$34(a0)
