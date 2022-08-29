@@ -14,13 +14,13 @@ Sonic_Peelout:
 		beq.w	@return
 		move.b	#1,$1C(a0)
 		move.w	#0,$3A(a0)
-		move.w	#$A2,d0
+		move.w	#$D2,d0
 		jsr	(PlaySound_Special).l 		; Play peelout charge sound
 	;	sfx 	sfx_PeeloutCharge 		; These are if you use AMPS
 		addq.l	#4,sp
 		bset	#1,$39(a0)
 		
-		clr.w	$14(a0)
+		clr.w	obInertia(a0)
  
 		bsr.w	Sonic_LevelBound
 		bsr.w	Sonic_AnglePos
@@ -36,25 +36,33 @@ SCDPeelout_Launch:
 		bne.w	SCDPeelout_Charge
 		bclr	#1,$39(a0)	; stop Dashing
 		cmpi.b	#$1E,$3A(a0)	; have we been charging long enough?
-		bne.s	SCDPeelout_Stop_Sound
+		bne.w	SCDPeelout_Stop_Sound
 		move.b	#0,$1C(a0)	; launches here (peelout sprites)
 		move.w	#1,$10(a0)	; force X speed to nonzero for camera lag's benefit
-		move.w	$14(a0),d0
+		move.w	obInertia(a0),d0
 		subi.w	#$800,d0
 		add.w	d0,d0
 		andi.w	#$1F00,d0
 		neg.w	d0
 		addi.w	#$2000,d0
-		;move.w	d0,(v_cameralag).w
+		move.w	d0,($FFFFC904).w
 		btst	#0,$22(a0)
 		beq.s	@dontflip
-		neg.w	$14(a0)
+		neg.w	obInertia(a0)
  
 @dontflip:
 		bclr	#7,$22(a0)
-		move.w	#$AB,d0
+		move.w	#$D3,d0
 		jsr	(PlaySound_Special).l
 	;	sfx 	sfx_PeeloutRelease
+		move.b	obAngle(a0),d0
+		jsr	(CalcSine).l
+		muls.w	obInertia(a0),d1
+		asr.l	#8,d1
+		move.w	d1,obVelX(a0)
+		muls.w	obInertia(a0),d0
+		asr.l	#8,d0
+		move.w	d0,obVelY(a0)	
 		bra.w	SCDPeelout_ResetScr
 ; ---------------------------------------------------------------------------
  
@@ -68,10 +76,10 @@ SCDPeelout_Charge:				; If still charging the dash...
 		sub.w	d2,d1
 
 @noshoes:
-		addi.w	#$64,$14(a0)		; increment speed
-		cmp.w	$14(a0),d1
+		addi.w	#$64,obInertia(a0)		; increment speed
+		cmp.w	obInertia(a0),d1
 		bgt.s	@inctimer
-		move.w	d1,$14(a0)
+		move.w	d1,obInertia(a0)
 
 @inctimer:
 		addq.b	#1,$3A(a0)		; increment timer
@@ -81,10 +89,10 @@ SCDPeelout_Charge:				; If still charging the dash...
 		jmp 	SCDPeelout_ResetScr
 		
 SCDPeelout_Stop_Sound:
-		move.w	#$AB,d0
+		move.w	#$D4,d0
 		jsr		(PlaySound_Special).l
 	;	sfx 	sfx_PeeloutStop
-		clr.w	$14(a0)
+		clr.w	obInertia(a0)
 
 SCDPeelout_ResetScr:
 		addq.l	#4,sp			; increase stack ptr ; was 4

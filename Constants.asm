@@ -272,6 +272,10 @@ sfx__Last:	equ ((ptr_sndend-SoundIndex-4)/4)+sfx__First
 spec__First:	equ $D0
 sfx_Waterfall:	equ ((ptr_sndD0-SpecSoundIndex)/4)+spec__First
 sfx_LightningShield:	equ ((ptr_sndD1-SpecSoundIndex)/4)+spec__First
+sfx_Peelout:	equ ((ptr_sndD2-SpecSoundIndex)/4)+spec__First
+sfx_PeeloutRelease:	equ ((ptr_sndD3-SpecSoundIndex)/4)+spec__First
+sfx_PeeloutStop:	equ ((ptr_sndD4-SpecSoundIndex)/4)+spec__First
+sfx_Spindash:	equ ((ptr_sndD5-SpecSoundIndex)/4)+spec__First
 spec__Last:	equ ((ptr_specend-SpecSoundIndex-4)/4)+spec__First
 
 flg__First:	equ $E0

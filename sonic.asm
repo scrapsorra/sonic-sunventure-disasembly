@@ -529,7 +529,7 @@ VBlank:
 		jsr	VBla_Index(pc,d0.w)
 
 VBla_Music:
-		jsr	(UpdateMusic).l
+		jsr		(UpdateMusic).l
 
 VBla_Exit:
 		addq.l	#1,(v_vbla_count).w
@@ -829,7 +829,7 @@ HBlank:
 loc_119E:
 		clr.b	($FFFFF64F).w
 		movem.l	d0-a6,-(sp)
-		bsr.w	Demo_Time
+		bsr.w	Demo_Time	
 		jsr	(UpdateMusic).l
 		movem.l	(sp)+,d0-a6
 		rte	
@@ -3022,7 +3022,7 @@ LevSel_SndTest:
 		beq.s	LevSel_Right	; if not, branch
 		subq.w	#1,d0		; subtract 1 from sound	test
 		bhs.s	LevSel_Right
-		moveq	#$4F,d0		; if sound test	moves below 0, set to $4F
+		moveq	#$5F,d0		; if sound test	moves below 0, set to $4F
 
 LevSel_Right:
 		btst	#bitR,d1	; is right pressed?
@@ -5911,12 +5911,28 @@ loc_8486:
 		move.b	0(a0),d4
 		move.b	obRender(a0),d5
 		movea.l	a0,a1
-		bra.s	loc_84B2
+		move.b	#6,obRoutine(a1)
+		move.b	d4,0(a1)
+		move.l	a3,obMap(a1)
+		move.b	d5,obRender(a1)
+		move.w	obX(a0),obX(a1)
+		move.w	obY(a0),obY(a1)
+		move.w	obGfx(a0),obGfx(a1)
+		move.w	obPriority(a0),obPriority(a1)
+		move.b	obActWid(a0),obActWid(a1)
+		move.b	(a4)+,ledge_timedelay(a1)
+		subq.w	#1,d1
+		lea		(v_lvlobjspace).w,a1
+		move.w	#$5F,d0
 ; ===========================================================================
 
 loc_84AA:
-		bsr.w	FindFreeObj
-		bne.s	loc_84F2
+		tst.b	(a1)
+		beq.s	@cont		
+		lea		$40(a1),a1
+		dbf		d0,loc_84AA	
+		bne.s	loc_84F2	
+	@cont:
 		addq.w	#5,a3
 
 loc_84B2:
@@ -5930,8 +5946,6 @@ loc_84B2:
 		move.w	obPriority(a0),obPriority(a1)
 		move.b	obActWid(a0),obActWid(a1)
 		move.b	(a4)+,ledge_timedelay(a1)
-		cmpa.l	a0,a1
-		bhs.s	loc_84EE
 		bsr.w	DisplaySprite1
 
 loc_84EE:

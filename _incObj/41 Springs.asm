@@ -136,6 +136,7 @@ loc_DC56:
 		sfx	sfx_Spring,0,0,0	; play spring sound
 
 Spring_AniLR:	; Routine $A
+		clr.w ($FFFFC904).w	; clear screen delay counter
 		lea	(Ani_Spring).l,a1
 		bra.w	AnimateSprite
 ; ===========================================================================

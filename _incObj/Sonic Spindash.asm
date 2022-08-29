@@ -14,7 +14,7 @@ Sonic_SpinDash:
 		andi.b	#$70,d0			; pressing A/B/C ?
 		beq.w	locret2_1AC8C		; if not, return
 		move.b	#id_spindash,obAnim(a0)		; set Spin Dash anim (9 in s2)
-		move.w	#$A5,d0			; spin sound ($E0 in s2)
+		move.w	#$D5,d0			; spin sound ($E0 in s2)
 		jsr	(PlaySound_Special).l	; play spin sound
 		addq.l	#4,sp			; Add 4 bytes to the stack return address to skip Sonic_Jump on next rts to Obj01_MdNormal, preventing conflicts with button presses.
 		move.b	#1,f_spindash(a0)		; set Spin Dash flag
@@ -51,7 +51,7 @@ loc2_1AC8E:
 		andi.w	#$1F00,d0		; mask it against $1F00
 		neg.w	d0			; negate it
 		addi.w	#$2000,d0		; add $2000
-		move.w	d0,($FFFFEED0).w	; move to $EED0
+		move.w	d0,($FFFFC904).w	; move to $EED0
 		btst	#0,$22(a0)		; is sonic facing right?
 		beq.s	loc2_1ACF4		; if not, branch
 		neg.w	obInertia(a0)			; negate inertia
@@ -61,6 +61,15 @@ loc2_1ACF4:
 		move.b	#0,($FFFFD1DC).w	; clear Spin Dash dust animation.
 		move.w	#$BC,d0			; spin release sound
 		jsr	(PlaySound_Special).l	; play it!
+		move.b	obAngle(a0),d0
+		jsr	(CalcSine).l
+		muls.w	obInertia(a0),d1
+		asr.l	#8,d1
+		move.w	d1,obVelX(a0)
+		muls.w	obInertia(a0),d0
+		asr.l	#8,d0
+		move.w	d0,obVelY(a0)
+	
 		bra.s	loc2_1AD78
 ; ===========================================================================
 Dash_Speeds:
@@ -89,7 +98,7 @@ loc2_1AD48:
 		andi.b	#$70,d0			; pressing A/B/C?
 		beq.w	loc2_1AD78		; if not, branch
 		move.w	#$1F00,obAnim(a0)	; reset spdsh animation
-		move.w	#$A5,d0			; was $E0 in sonic 2
+		move.w	#$D5,d0			; was $E0 in sonic 2
 		move.b	#2,$FFFFD1DC.w		; Set the Spin Dash dust animation to $2.
 		jsr	(PlaySound_Special).l	; play charge sound
 		addi.w	#$200,$3A(a0)		; increase charge count
@@ -99,17 +108,17 @@ loc2_1AD48:
 
 loc2_1AD78:
 		addq.l	#4,sp			; Add 4 bytes to the stack return address to skip Sonic_Jump on next rts to Obj01_MdNormal, preventing conflicts with button presses.
-		cmpi.w	#$60,($FFFFEED8).w	; $EED8 only ever seems
+		cmpi.w	#$60,($FFFFF73E).w	; $EED8 only ever seems
 		beq.s	loc2_1AD8C		; to be used in Spin Dash
 		bcc.s	loc2_1AD88
-		addq.w	#4,($FFFFEED8).w
+		addq.w	#4,($FFFFF73E).w
 
 loc2_1AD88:
-		subq.w	#2,($FFFFEED8).w
+		subq.w	#2,($FFFFF73E).w
 
 loc2_1AD8C:
 		bsr.w	Sonic_LevelBound
 		bsr.w	Sonic_AnglePos
-		move.w	#$60,(v_lookshift).w	; reset looking up/down
+		;move.w	#$60,(v_lookshift).w	; reset looking up/down
 		rts
 ; End of subroutine Sonic_SpinDash

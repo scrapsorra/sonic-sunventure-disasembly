@@ -8,8 +8,7 @@
 Sonic_RollSpeed:
 		move.w	(v_sonspeedmax).w,d6
 		asl.w	#1,d6
-		move.w	(v_sonspeedacc).w,d5
-		asr.w	#1,d5
+		moveq	#6,d5	; natural roll deceleration = 1/2 normal acceleration
 		move.w	(v_sonspeeddec).w,d4
 		asr.w	#2,d4
 		tst.b	(f_jumponly).w
@@ -56,6 +55,15 @@ loc_131AA:
 		subq.w	#5,obY(a0)
 
 loc_131CC:
+		cmp.w	#$60,($FFFFF73E).w
+		beq.s	@cont2
+		bcc.s	@cont1
+		addq.w	#4,($FFFFF73E).w
+		
+@cont1:
+		subq.w	#2,($FFFFF73E).w
+		
+@cont2:
 		move.b	obAngle(a0),d0
 		jsr	(CalcSine).l
 		muls.w	obInertia(a0),d0

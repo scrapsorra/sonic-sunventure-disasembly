@@ -19,7 +19,7 @@ v_hscrolltablebuffer:	equ $FFFFCC00 ; scrolling table data (actually $380 bytes,
 v_objspace:	equ $FFFFD000	; object variable space ($40 bytes per object) ($2000 bytes)
 v_player:	equ v_objspace	; object variable space for Sonic ($40 bytes)
 v_lvlobjspace:	equ $FFFFD800	; level object variable space ($1800 bytes)
-
+v_palmuscounter:	equ $FFFFF015
 v_snddriver_ram:	equ $FFFFF000 ; start of RAM for the sound driver data ($5C0 bytes)
 
 ; =================================================================================

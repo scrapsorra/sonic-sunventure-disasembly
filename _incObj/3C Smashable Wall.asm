@@ -31,45 +31,49 @@ Smash_Solid:	; Routine 2
 		move.w	#$20,d2
 		move.w	#$20,d3
 		move.w	obX(a0),d4
-		bsr.w	SolidObject
+		bsr.w	SolidObject	
+		tst.b	d4
+		bgt.w	@chkroll	
+		beq.w	@donothing								
 		btst	#5,obStatus(a0)	; is Sonic pushing against the wall?
-		bne.s	@chkroll	; if yes, branch
-
-@donothing:
-		rts	
+		beq.w	@donothing	; if yes, branch
 ; ===========================================================================
 
 @chkroll:
 		cmpi.b	#id_Roll,obAnim(a1) ; is Sonic rolling?
-		bne.s	@donothing	; if not, branch
+		bne.s	@donothing	; if not, branch	
 		move.w	smash_speed(a0),d0
 		bpl.s	@chkspeed
 		neg.w	d0
 
 	@chkspeed:
 		cmpi.w	#$480,d0	; is Sonic's speed $480 or higher?
-		bcs.s	@donothing	; if not, branch
+		bcs.s	@donothing	; if not, branch	
+		
+	@continue:	
+		bclr	#5,obStatus(a0)
 		move.w	smash_speed(a0),obVelX(a1)
-		addq.w	#4,obX(a1)
 		lea	(Smash_FragSpd1).l,a4 ;	use fragments that move	right
 		move.w	obX(a0),d0
 		cmp.w	obX(a1),d0	; is Sonic to the right	of the block?
 		bcs.s	@smash		; if yes, branch
-		subq.w	#8,obX(a1)
 		lea	(Smash_FragSpd2).l,a4 ;	use fragments that move	left
 
 	@smash:
 		move.w	obVelX(a1),obInertia(a1)
-		bclr	#5,obStatus(a0)
 		bclr	#5,obStatus(a1)
-		moveq	#7,d1		; load 8 fragments
+		moveq	#6,d1		; load 7 fragments
 		move.w	#$70,d2
 		bsr.s	SmashObject
 
+@donothing:
+		rts	
+
 Smash_FragMove:	; Routine 4
+		addq.l	#4,sp
 		bsr.w	SpeedToPos
 		addi.w	#$70,obVelY(a0)	; make fragment	fall faster
-		bsr.w	DisplaySprite
 		tst.b	obRender(a0)
 		bpl.w	DeleteObject
-		rts	
+		bra.w	DisplaySprite
+

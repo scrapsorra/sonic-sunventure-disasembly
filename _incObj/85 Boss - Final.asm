@@ -33,12 +33,13 @@ Obj85_ObjData:	dc.w $100, $100, $470	; X pos, Y pos,	VRAM setting
 		dc.w $26E0, $596, $400
 		dc.l Map_Eggman
 
-Obj85_ObjData2:	dc.b 2,	0, 4, $20, $19	; routine num, animation, sprite priority, width, height
-		dc.b 4,	0, 1, $12, 8
-		dc.b 6,	0, 3, 0, 0
-		dc.b 8,	0, 3, 0, 0
-		dc.b $A, 0, 3, $20, $20
-		dc.b $C, 0, 3, 0, 0
+Obj85_ObjData2:	; routine num, animation, sprite priority (high and low bytes), width, height		
+		dc.b  2, 0, $02, $00, $20, $19
+		dc.b  4, 0, $00, $80, $12,   8
+		dc.b  6, 0, $01, $80,   0,   0
+		dc.b  8, 0, $01, $80,   0,   0
+		dc.b $A, 0, $01, $80, $20, $20
+		dc.b $C, 0, $01, $80,   0,   0
 ; ===========================================================================
 
 Obj85_Main:	; Routine 0
@@ -61,7 +62,7 @@ Obj85_LoadBoss:
 		move.l	(a2)+,obMap(a1)
 		move.b	(a3)+,obRoutine(a1)
 		move.b	(a3)+,obAnim(a1)
-		move.b	(a3)+,obPriority(a1)
+		move.w	(a3)+,obPriority(a1)
 		if Revision=0
 		move.b	(a3)+,obWidth(a1)
 		else

@@ -75,37 +75,48 @@ loc_12F6A:
 
 loc_12F70:
 		move.b	#id_Balance,obAnim(a0) ; use "balancing" animation
-		bra.s	Sonic_ResetScr
+		bra.w	Sonic_ResetScr
 ; ===========================================================================
 
 Sonic_LookUp:
-		btst	#bitUp,(v_jpadhold2).w ; is up being pressed?
+		btst	#0,($FFFFF602).w ; is up being pressed?
 		beq.s	Sonic_Duck	; if not, branch
-		move.b	#id_LookUp,obAnim(a0) ; use "looking up" animation
-		cmpi.w	#$C8,(v_lookshift).w
+		move.b	#7,$1C(a0)	; use "looking up" animation
+		addq.b	#1,($FFFFC903).w
+		cmp.b	#$78,($FFFFC903).w
+		bcs.s	Sonic_ResetScr_Part2
+		move.b	#$78,($FFFFC903).w
+		cmpi.w	#$C8,($FFFFF73E).w
 		beq.s	loc_12FC2
-		addq.w	#2,(v_lookshift).w
+		addq.w	#2,($FFFFF73E).w
 		bra.s	loc_12FC2
 ; ===========================================================================
 
 Sonic_Duck:
-		btst	#bitDn,(v_jpadhold2).w ; is down being pressed?
+		btst	#1,($FFFFF602).w ; is down being pressed?
 		beq.s	Sonic_ResetScr	; if not, branch
-		move.b	#id_Duck,obAnim(a0) ; use "ducking" animation
-		cmpi.w	#8,(v_lookshift).w
+		move.b	#8,$1C(a0)	; use "ducking"	animation
+		addq.b	#1,($FFFFC903).w
+		cmpi.b	#$78,($FFFFC903).w
+		bcs.s	Sonic_ResetScr_Part2
+		move.b	#$78,($FFFFC903).w
+		cmpi.w	#8,($FFFFF73E).w
 		beq.s	loc_12FC2
-		subq.w	#2,(v_lookshift).w
+		subq.w	#2,($FFFFF73E).w
 		bra.s	loc_12FC2
 ; ===========================================================================
 
 Sonic_ResetScr:
-		cmpi.w	#$60,(v_lookshift).w ; is screen in its default position?
+		move.b	#0,($FFFFC903).w
+		
+Sonic_ResetScr_Part2:
+		cmpi.w	#$60,($FFFFF73E).w ; is	screen in its default position?
 		beq.s	loc_12FC2	; if yes, branch
 		bcc.s	loc_12FBE
-		addq.w	#4,(v_lookshift).w ; move screen back to default
+		addq.w	#4,($FFFFF73E).w ; move	screen back to default
 
 loc_12FBE:
-		subq.w	#2,(v_lookshift).w ; move screen back to default
+		subq.w	#2,($FFFFF73E).w ; move	screen back to default
 
 loc_12FC2:
 		move.b	(v_jpadhold2).w,d0
@@ -242,6 +253,8 @@ loc_130BA:
 		move.b	#id_Stop,obAnim(a0) ; use "stopping" animation
 		bclr	#0,obStatus(a0)
 		sfx	sfx_Skid,0,0,0	; play stopping sound
+        move.b    #6,($FFFFD1E4).w    ; set the spin dash dust routine to skid dust
+        move.b    #$15,($FFFFD1DA).w
 		
 locret_130E8:
 		rts	
@@ -290,6 +303,8 @@ loc_13120:
 		move.b	#id_Stop,obAnim(a0) ; use "stopping" animation
 		bset	#0,obStatus(a0)
 		sfx	sfx_Skid,0,0,0	; play stopping sound
+        move.b    #6,($FFFFD1E4).w    ; set the spin dash dust routine to skid dust
+        move.b    #$15,($FFFFD1DA).w
 		
 locret_1314E:
 		rts	

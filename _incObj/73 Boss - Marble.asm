@@ -43,7 +43,7 @@ Obj73_LoadBoss:
 		clr.b	ob2ndRout(a1)
 		move.b	(a2)+,obRoutine(a1)
 		move.b	(a2)+,obAnim(a1)
-		move.b	(a2)+,obPriority(a1)
+		move.w	(a2)+,obPriority(a1)
 		move.l	#Map_Eggman,obMap(a1)
 		move.w	#$400,obGfx(a1)
 		move.b	#4,obRender(a1)

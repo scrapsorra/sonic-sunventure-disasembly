@@ -161,6 +161,11 @@ UpdateMusic:
 		jsr	PlaySoundID(pc)
 ; loc_71BC8:
 @nonewsound:
+		tst.b	($FFFFC901).w
+		beq.s	@cont
+		subq.b	#1,($FFFFC901).w
+		
+@cont:
 		lea	v_music_dac_track(a6),a5
 		tst.b	(a5)			; Is DAC track playing? (TrackPlaybackControl)
 		bpl.s	@dacdone		; Branch if not
@@ -227,7 +232,16 @@ UpdateMusic:
 ; loc_71C44:
 DoStartZ80:
 		startZ80
-		rts	
+		btst #6,(v_megadrive).w ; is Megadrive PAL?
+		beq.s @end ; if not, branch
+		cmpi.b #$5,(v_palmuscounter).w ; 5th frame?
+		bne.s @end ; if not, branch
+		move.b #$0,(v_palmuscounter).w ; reset counter
+		bra.w UpdateMusic ; run sound driver again
+
+	@end:
+		addq.b #$1,(v_palmuscounter).w ; add 1 to frame count
+		rts
 ; End of function UpdateMusic
 
 
@@ -918,15 +932,36 @@ PSGInitBytes:	dc.b $80, $A0, $C0	; Specifically, these configure writes to the P
 ; Play Spin Dash sound effect
 ; ---------------------------------------------------------------------------
 Sound_D1toDF:
-	tst.b	$27(a6)
-	bne.w	loc_722C6
-	tst.b	4(a6)
-	bne.w	loc_722C6
-	tst.b	$24(a6)
-	bne.w	loc_722C6
-	movea.l	(Go_SoundIndex).l,a0
-	sub.b	#$A0,d7
-	bra.s	SoundEffects_Common
+		tst.b	$27(a6)
+		bne.w	loc_722C6
+		tst.b	4(a6)
+		bne.w	loc_722C6
+		tst.b	$24(a6)
+		bne.w	loc_722C6
+		clr.b	($FFFFC900).w
+		cmp.b	#$D5,d7		; is this the Spin Dash sound?
+		bne.s	@cont3	; if not, branch
+		move.w	d0,-(sp)
+		move.b	($FFFFC902).w,d0	; store extra frequency
+		tst.b	($FFFFC901).w	; is the Spin Dash timer active?
+		bne.s	@cont1		; if it is, branch
+		move.b	#-1,d0		; otherwise, reset frequency (becomes 0 on next line)
+		
+@cont1:
+		addq.b	#1,d0
+		cmp.b	#$C,d0		; has the limit been reached?
+		bcc.s	@cont2		; if it has, branch
+		move.b	d0,($FFFFC902).w	; otherwise, set new frequency
+		
+@cont2:
+		move.b	#1,($FFFFC900).w	; set flag
+		move.b	#60,($FFFFC901).w	; set timer
+		move.w	(sp)+,d0
+		
+@cont3:	
+		movea.l	(Go_SoundIndex).l,a0
+		sub.b	#$A0,d7
+		bra.s	SoundEffects_Common
 ; ---------------------------------------------------------------------------
 ; Play normal sound effect
 ; ---------------------------------------------------------------------------
@@ -938,6 +973,7 @@ Sound_PlaySFX:
 		bne.w	loc_722C6		; Exit if it is
 		tst.b	f_fadein_flag(a6)	; Is music being faded in?
 		bne.w	loc_722C6		; Exit if it is
+		clr.b	($FFFFC900).w
 		cmpi.b	#sfx_Ring,d7		; is ring sound	effect played?
 		bne.s	Sound_notB5		; if not, branch
 		tst.b	v_ring_speaker(a6)	; Is the ring sound playing on right speaker?
@@ -1001,7 +1037,8 @@ loc_72244:
 		move.b	d0,(psg_input).l
 
 loc_7226E:
-		movea.l	SFX_SFXChannelRAM(pc,d3.w),a5
+		lea	SFX_SFXChannelRAM(pc),a5
+		movea.l	(a5,d3.w),a5
 		movea.l	a5,a2
 		moveq	#(TrackSz/4)-1,d0	; $30 bytes
 
@@ -1015,8 +1052,16 @@ loc_72276:
 		move.w	(a1)+,d0			; Track data pointer
 		add.l	a3,d0				; Relative pointer
 		move.l	d0,TrackDataPointer(a5)	; Store track pointer
-		move.w	(a1)+,TrackTranspose(a5)	; load FM/PSG channel modifier
-		move.b	#1,TrackDurationTimeout(a5)	; Set duration of first "note"
+		move.w	(a1)+,8(a5)
+		tst.b	($FFFFC900).w	; is the Spin Dash sound playing?
+		beq.s	@cont		; if not, branch
+		move.w	d0,-(sp)
+		move.b	($FFFFC902).w,d0
+		add.b	d0,8(a5)
+		move.w	(sp)+,d0
+		
+@cont:
+		move.b	#1,$E(a5)
 		move.b	d6,TrackStackPointer(a5)	; set "gosub" (coord flag F8h) stack init value
 		tst.b	d4				; Is this a PSG channel?
 		bmi.s	loc_722A8		; Branch if yes
@@ -2608,6 +2653,10 @@ ptr_sndend
 SpecSoundIndex:
 ptr_sndD0:	dc.l SoundD0
 ptr_sndD1:	dc.l SoundD1
+ptr_sndD2:	dc.l SoundD2
+ptr_sndD3:	dc.l SoundD3
+ptr_sndD4:	dc.l SoundD4
+ptr_sndD5:	dc.l SoundD5
 ptr_specend
 SoundA0:	include	"sound/sfx/Jump.asm"
 		even
@@ -2709,6 +2758,14 @@ SoundD0:	incbin	"sound/sfx/SndD0 - Waterfall.bin"
 		even
 SoundD1:	include	"sound/sfx/Lightning Shield.asm"
 		even
+SoundD2:	include	"sound/sfx/CD_Charge.asm"
+		even		
+SoundD3:	incbin	"sound/sfx/Peelout_Release.bin"
+		even
+SoundD4:	incbin	"sound/sfx/Peelout_Stop.bin"
+		even				
+SoundD5:	incbin	"sound/sfx/Spindash.bin"
+		even			
 		; Don't let Sega sample cross $8000-byte boundary
 		; (DAC driver doesn't switch banks automatically)
 		if (*&$7FFF)+Size_of_SegaPCM>$8000

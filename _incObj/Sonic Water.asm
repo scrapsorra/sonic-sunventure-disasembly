@@ -43,7 +43,7 @@ Sonic_Water:
 		asr	obVelY(a0)	; slow Sonic
 		beq.w	Sonic_Water_Exit		; branch if Sonic stops moving
 		;move.w	(v_player+obY).w,(v_watersplashpos).w	;TIS copy y-pos
-		move.b	#id_Splash,(v_objspace+$300).w ; load splash object
+        move.w    #$100,($FFFFD1DC).w    ; set the spin dash dust animation to splash
 		sfx	sfx_Splash,1,0,0	 ; play splash sound
 		cmpi.b	#0,(v_tagwater).w	;TIS Lava Tag?
 		bne.w	@return
@@ -54,11 +54,6 @@ Sonic_Water:
 ; ===========================================================================
 
 Abovewater:
-		move.w	#$F,d0             ;TIS Length ($F = full line)
-		lea    (Pal_Sonic),a1  ;Palette location
-        	lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
-		jsr	Palload_Loop
-
 		bclr	#6,obStatus(a0)
 		beq.w	Sonic_Water_Exit
 		bsr.w	ResumeMusic
@@ -69,7 +64,7 @@ Abovewater:
 		move.w	#$80,(v_sonspeeddec).w ; restore Sonic's deceleration
 		asl	obVelY(a0)
 		beq.w	Sonic_Water_Exit
-		move.b	#id_Splash,(v_objspace+$300).w ; load splash object
+        move.w    #$100,($FFFFD1DC).w    ; set the spin dash dust animation to splash
 		cmpi.w	#-$1000,obVelY(a0)
 		bgt.s	@belowmaxspeed
 		move.w	#-$1000,obVelY(a0) ; set maximum speed on leaving water

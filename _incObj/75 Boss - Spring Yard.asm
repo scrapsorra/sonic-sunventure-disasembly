@@ -14,10 +14,10 @@ Obj75_Index:	dc.w Obj75_Main-Obj75_Index
 		dc.w Obj75_FlameMain-Obj75_Index
 		dc.w Obj75_SpikeMain-Obj75_Index
 
-Obj75_ObjData:	dc.b 2,	0, 5		; routine number, animation, priority
-		dc.b 4,	1, 5
-		dc.b 6,	7, 5
-		dc.b 8,	0, 5
+Obj75_ObjData:	dc.b 2,	0, $02, $80		; routine number, animation, priority (high and low bytes)
+		dc.b 4,	1, $02, $80
+		dc.b 6,	7, $02, $80
+		dc.b 8,	0, $02, $80
 ; ===========================================================================
 
 Obj75_Main:	; Routine 0
@@ -45,7 +45,7 @@ Obj75_LoadBoss:
 		clr.b	ob2ndRout(a1)
 		move.b	(a2)+,obRoutine(a1)
 		move.b	(a2)+,obAnim(a1)
-		move.b	(a2)+,obPriority(a1)
+		move.w	(a2)+,obPriority(a1)
 		move.l	#Map_Eggman,obMap(a1)
 		move.w	#$400,obGfx(a1)
 		move.b	#4,obRender(a1)

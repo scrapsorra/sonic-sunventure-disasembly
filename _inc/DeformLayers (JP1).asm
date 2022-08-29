@@ -725,8 +725,26 @@ MoveScreenHoriz:
 		jmp	MoveScreenHorizEXT
 		
 	@cont:		
-        move.w    (v_player+obX).w,d0
-        sub.w    (v_screenposx).w,d0 ; Sonic's distance from left edge of screen
+		move.w	($FFFFC904).w,d1
+		beq.s	@cont1
+		sub.w	#$100,d1
+		move.w	d1,($FFFFC904).w
+		moveq	#0,d1
+		move.b	($FFFFC904).w,d1
+		lsl.b	#2,d1
+		addq.b	#4,d1
+		move.w	($FFFFF7A8).w,d0
+		sub.b	d1,d0
+		lea	($FFFFCB00).w,a1
+		move.w	(a1,d0.w),d0
+		and.w	#$3FFF,d0
+		bra.s	@cont2
+		
+@cont1:
+		move.w	($FFFFD008).w,d0
+		
+@cont2:
+		sub.w	($FFFFF700).w,d0
         subi.w    #144,d0        ; is distance less than 144px?
         bcs.s    SH_BehindMid    ; if yes, branch
         subi.w    #16,d0        ; is distance more than 160px?
@@ -756,6 +774,11 @@ SH_SetScreen:
 ; ===========================================================================
 
 SH_BehindMid:
+		cmpi.w	#-$10,d0
+		bgt.s	@cont
+		move.w	#-$10,d0	
+		
+@cont:
         add.w    (v_screenposx).w,d0
         cmp.w    (v_limitleft2).w,d0
         bgt.s    SH_SetScreen
@@ -766,8 +789,26 @@ SH_BehindMid:
 ; ||||||||||||||| S U B    R O U T    I N E |||||||||||||||||||||||||||||||||||||||
 
 MoveScreenHorizEXT:
-        move.w    (v_player+obX).w,d0
-        sub.w    (v_screenposx).w,d0 ; Sonic's distance from left edge of screen
+		move.w	($FFFFC904).w,d1
+		beq.s	@cont1
+		sub.w	#$100,d1
+		move.w	d1,($FFFFC904).w
+		moveq	#0,d1
+		move.b	($FFFFC904).w,d1
+		lsl.b	#2,d1
+		addq.b	#4,d1
+		move.w	($FFFFF7A8).w,d0
+		sub.b	d1,d0
+		lea	($FFFFCB00).w,a1
+		move.w	(a1,d0.w),d0
+		and.w	#$3FFF,d0
+		bra.s	@cont2
+		
+@cont1:
+		move.w	($FFFFD008).w,d0
+		
+@cont2:
+		sub.w	($FFFFF700).w,d0
         sub.w    (v_camera_pan).w,d0    ; Horizontal camera pan value
         beq.s    SHEXT_ProperlyFramed    ; if zero, branch
         bcs.s    SHEXT_BehindMid    ; if less than, branch
