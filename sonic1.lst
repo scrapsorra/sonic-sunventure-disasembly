@@ -38229,7 +38229,7 @@
 00019E7A                            Lamp_Main:	; Routine 0
 00019E7A 5428 0024                  		addq.b	#2,obRoutine(a0)
 00019E7E 217C 0000 0000 0004        		move.l	#Map_Lamp,obMap(a0)
-00019E86 317C 06C0 0002             		move.w	#($D800/$20),2(a0)
+00019E86 317C 056F 0002             		move.w	#($ADE0/$20),2(a0)
 00019E8C 117C 0004 0001             		move.b	#4,obRender(a0)
 00019E92 117C 0008 0014             		move.b	#8,obActWid(a0)
 00019E98 317C 0280 0018             		move.w	#$280,obPriority(a0)
@@ -38295,7 +38295,7 @@
 00019F6C 3368 000C 0032             		move.w	obY(a0),lamp_origY(a1)
 00019F72 0469 0018 0032             		subi.w	#$18,lamp_origY(a1)
 00019F78 237C 0000 0000 0004        		move.l	#Map_Lamp,obMap(a1)
-00019F80 337C 06C0 0002             		move.w	#($D800/$20),2(a1)
+00019F80 337C 056F 0002             		move.w	#($ADE0/$20),2(a1)
 00019F86 137C 0004 0001             		move.b	#4,obRender(a1)
 00019F8C 137C 0008 0014             		move.b	#8,obActWid(a1)
 00019F92 337C 0200 0018             		move.w	#$200,obPriority(a1)
@@ -48098,7 +48098,7 @@
 00020A4A                            ; Pattern load cues - standard block 1
 00020A4A                            ; ---------------------------------------------------------------------------
 00020A4A 0000                       PLC_Main:	dc.w ((PLC_Mainend-PLC_Main-2)/6)-1
-00020A4C 0000 0000 D800             		plcm	Nem_Lamp, $D800		; lamppost
+00020A4C 0000 0000 ADE0             		plcm	Nem_Lamp, $ADE0		; lamppost
 00020A52 0000 0000 D940             		plcm	Nem_Hud, $D940		; HUD
 00020A58 0000 0000 FA80             		plcm	Nem_Lives, $FA80	; lives	counter
 00020A5E 0000 0000 F300             		plcm	Nem_Ring, $F300		; rings

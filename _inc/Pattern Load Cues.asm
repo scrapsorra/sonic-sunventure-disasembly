@@ -50,7 +50,7 @@ plcm:	macro gfx,vram
 ; Pattern load cues - standard block 1
 ; ---------------------------------------------------------------------------
 PLC_Main:	dc.w ((PLC_Mainend-PLC_Main-2)/6)-1
-		plcm	Nem_Lamp, $D800		; lamppost
+		plcm	Nem_Lamp, $ADE0		; lamppost
 		plcm	Nem_Hud, $D940		; HUD
 		plcm	Nem_Lives, $FA80	; lives	counter
 		plcm	Nem_Ring, $F300		; rings
