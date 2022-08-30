@@ -2574,6 +2574,9 @@ GM_Title:
 		locVRAM	$6900
 		lea	(Nem_TitleSonic).l,a0 ;	load Sonic title screen	patterns
 		bsr.w	NemDec
+		locVRAM $6BC0
+		lea (Nem_TitleMenu).l,a0 ; Load Menu Text/Characters pattern
+		bsr.w 	NemDec
 		lea	(vdp_data_port).l,a6
 		locVRAM	$D000,4(a6)
 		lea	(Art_Text).l,a5	; load level select font
@@ -2722,8 +2725,6 @@ Tit_ResetCheat:
 Tit_CountC:
 		move.b	(v_jpadpress1).w,d0
 		andi.b	#btnC,d0	; is C button pressed?
-		beq.s	loc_3230	; if not, branch
-		jmp		MenuScreen ; increment C counter
 
 loc_3230:
 		tst.w	(v_demolength).w
@@ -2733,10 +2734,29 @@ loc_3230:
 
 Tit_ChkLevSel:
 		tst.b	(f_levselcheat).w ; check if level select code is on
-		beq.w	PlayLevel	; if not, play level
+		beq.w	@cont	; if not, play level
 		btst	#bitA,(v_jpadhold1).w ; check if A is pressed
-		beq.w	PlayLevel	; if not, play level
+		beq.w	@cont	; if not, play level
+		bra.w	Tit_LevelSelect
 
+	@cont:		
+		moveq   #0,d2
+		move.b   (Title_screen_option).w,d2   ; load the choice
+		add.w   d2,d2            ; multiply by 2
+		move.w   Tit_Menu_Choice(pc,d2.w),d2
+		jmp   Tit_Menu_Choice(pc,d2.w)   ; jump to the choice code
+
+; ===========================================================================
+Tit_Menu_Choice:
+		dc.w PlayLevel-Tit_Menu_Choice   ; 0
+		dc.w Menu_Options-Tit_Menu_Choice  ; 2
+; ===========================================================================
+
+Menu_Options:
+	jmp	MenuScreen ; => OptionsMenu
+	rts
+
+Tit_LevelSelect:	
 		moveq	#palid_LevelSel,d0
 		bsr.w	PalLoad2	; load level select palette
 		lea	(v_hscrolltablebuffer).w,a1
@@ -9238,6 +9258,8 @@ Nem_TitleSonic:	incbin	"artnem\Title Screen Sonic.bin"
 		even
 Nem_TitleTM:	incbin	"artnem\Title Screen TM.bin"
 		even
+Nem_TitleMenu:   incbin   "artnem\titlemenu.bin"  
+		even		
 Eni_JapNames:	incbin	"tilemaps\Hidden Japanese Credits.bin" ; Japanese credits (mappings)
 		even
 Nem_JapNames:	incbin	"artnem\Hidden Japanese Credits.bin"

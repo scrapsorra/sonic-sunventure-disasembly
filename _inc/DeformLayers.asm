@@ -433,6 +433,11 @@ SH_SetScreen:
 ; ===========================================================================
 
 SH_BehindMid:
+		cmpi.w	#-$10,d0
+		bcc.s	SH_Behind16
+		move.w	#-$10,d0	
+
+	SH_Behind16:
 		add.w	(v_screenposx).w,d0
 		cmp.w	(v_limitleft2).w,d0
 		bgt.s	SH_SetScreen
