@@ -107,8 +107,7 @@ MenuScreen_Options:
 ; loc_9060:
 OptionScreen_Main:
 		move.b	#$16,(v_vbla_routine).w
-		jsr	WaitForVBla		
-		jsr	ReadJoypads			
+		jsr	WaitForVBla				
 		move	#$2700,sr
 		bsr.w	OptionScreen_DrawUnselected
 		bsr.w	OptionScreen_Controls			
