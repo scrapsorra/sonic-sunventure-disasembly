@@ -126,13 +126,7 @@ OptionScreen_Select:
 		move.b	(Options_menu_box).w,d0
 		bne.s	OptionScreen_Select_Not1P
 		moveq	#0,d0
-		move.w	#(id_GHZ<<8),(v_zone).w	; green_hill_zone_act_1
-		move.w	d0,(v_rings).w	; clear rings
-		move.l	d0,(v_time).w	; clear time
-		move.l	d0,(v_score).w	; clear score
-		move.b	#3,(v_lives).w	; set lives to 3
-		move.l	#$1388,(v_scorelife).w ; extra life is awarded at 50000 points
-		move.b	#id_Level,(v_gamemode).w ; => Level (Zone play mode)
+		move.b	#id_Title,(v_gamemode).w ; => SegaScreen
 		rts
 ; ===========================================================================
 ; loc_90B6:

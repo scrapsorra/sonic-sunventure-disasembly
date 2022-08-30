@@ -18,7 +18,7 @@ Obj0F_Init:
     move.l   #Map_TitleMenu,4(a0)
     move.w   #$101,8(a0)
     move.w   #$151,$A(a0)
-	move.w	#$512,2(a0)
+	move.w	#$56F,2(a0)
 	andi.b	#1,(Title_screen_option).w
 	move.b	(Title_screen_option).w,mapping_frame(a0)
 

@@ -735,6 +735,7 @@ VBla_12:
 
 Vbla_16:
 		move.w	(v_hbla_hreg).w,(a5)
+		bsr.w	ReadJoypads
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		jsr	(ProcessDMAQueue).l
@@ -3170,9 +3171,9 @@ LevelMenuText:	if Revision=0
 ; Music	playlist
 ; ---------------------------------------------------------------------------
 MusicList:
-		dc.b bgm_GHZ    ; GHZ1
+			dc.b bgm_GHZ    ; GHZ1
         	dc.b bgm_LZ    ; GHZ2
-        	dc.b bgm_LZ   ; GHZ3
+        	dc.b bgm_Seaside   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
         	dc.b bgm_Stop    ; LZ1
         	dc.b bgm_Stop   ; LZ2
@@ -3180,7 +3181,7 @@ MusicList:
         	dc.b bgm_SBZ3    ; LZ4
         	dc.b bgm_MZ    ; MZ1
         	dc.b bgm_SBZ    ; MZ2
-        	dc.b bgm_SBZ    ; MZ3
+        	dc.b bgm_MZ    ; MZ3
         	dc.b bgm_SBZ    ; MZ4
         	dc.b bgm_LZ    ; SLZ1
         	dc.b bgm_LZ    ; SLZ2
