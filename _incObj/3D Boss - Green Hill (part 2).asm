@@ -3,7 +3,7 @@ BGHZ_MakeBall:
 		move.w	#-$200,obVelX(a0)
 		move.w	#-$40,obVelY(a0)
 		bsr.w	BossMove
-		cmpi.w	#$1400,$30(a0)
+		cmpi.w	#$2A00,$30(a0)
 		bne.s	loc_17916
 		move.w	#0,obVelX(a0)
 		move.w	#0,obVelY(a0)
@@ -28,7 +28,7 @@ BGHZ_ShipMove:
 		addq.b	#2,ob2ndRout(a0)
 		move.w	#$3F,$3C(a0)
 		move.w	#$200,obVelX(a0) ; move the ship sideways
-		cmpi.w	#$1400,$30(a0)
+		cmpi.w	#$2A00,$30(a0)
 		bne.s	BGHZ_Reverse
 		move.w	#$7F,$3C(a0)
 		move.w	#$40,obVelX(a0)
@@ -134,7 +134,7 @@ loc_179EE:
 loc_179F6:
 		move.w	#$400,obVelX(a0)
 		move.w	#-$40,obVelY(a0)
-		cmpi.w	#$14C0,(v_limitright2).w
+		cmpi.w	#$2AC0,(v_limitright2).w
 		beq.s	loc_17A10
 		addq.w	#2,(v_limitright2).w
 		bra.s	loc_17A16
@@ -160,7 +160,7 @@ BGHZ_FaceMain:	; Routine 4
 		move.b	ob2ndRout(a1),d0
 		subq.b	#4,d0
 		bne.s	loc_17A3E
-		cmpi.w	#$1400,$30(a1)
+		cmpi.w	#$2A00,$30(a1)
 		bne.s	loc_17A46
 		moveq	#4,d1
 
