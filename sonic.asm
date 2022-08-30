@@ -4185,7 +4185,8 @@ GM_Continue:
 		move.w	#$8004,(a6)	; 8 colour mode
 		move.w	#$8700,(a6)	; background colour
 		bsr.w	ClearScreen
-
+		ResetDMAQueue
+		jsr		ReadJoypads
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
 		move.w	#$7FF,d1
