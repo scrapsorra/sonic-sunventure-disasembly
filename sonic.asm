@@ -2574,7 +2574,7 @@ GM_Title:
 		locVRAM	$6900
 		lea	(Nem_TitleSonic).l,a0 ;	load Sonic title screen	patterns
 		bsr.w	NemDec
-		locVRAM $6BC0
+		locVRAM $ADE0
 		lea (Nem_TitleMenu).l,a0 ; Load Menu Text/Characters pattern
 		bsr.w 	NemDec
 		lea	(vdp_data_port).l,a6

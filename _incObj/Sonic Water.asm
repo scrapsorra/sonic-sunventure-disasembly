@@ -25,7 +25,7 @@ Sonic_Water:
 		beq.w	Abovewater	; if yes, branch
 		move.w #$F,d0             ;TIS Length ($F = full line)
 		lea    (Pal_LZSonWatr2),a1  ;Palette location
-        	lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
+        lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
 		jsr	Palload_Loop
 	WaterStatus:
 		bset	#6,obStatus(a0)

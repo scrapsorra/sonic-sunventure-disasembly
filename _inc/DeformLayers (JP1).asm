@@ -775,17 +775,16 @@ SH_SetScreen:
 
 SH_BehindMid:
 		cmpi.w	#-$10,d0
-		bgt.s	@cont
+		bcc.s	@cont
 		move.w	#-$10,d0	
-		
-@cont:
-        add.w    (v_screenposx).w,d0
-        cmp.w    (v_limitleft2).w,d0
-        bgt.s    SH_SetScreen
-        move.w    (v_limitleft2).w,d0
-        bra.s    SH_SetScreen
-; End of function MoveScreenHoriz
 
+@cont:
+		add.w	(v_screenposx).w,d0
+		cmp.w	(v_limitleft2).w,d0
+		bgt.s	SH_SetScreen
+		move.w	(v_limitleft2).w,d0
+		bra.s	SH_SetScreen
+; End of function MoveScreenHoriz
 ; ||||||||||||||| S U B    R O U T    I N E |||||||||||||||||||||||||||||||||||||||
 
 MoveScreenHorizEXT:

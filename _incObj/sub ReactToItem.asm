@@ -457,7 +457,7 @@ KillSonic:
 		rts	
 ; End of function KillSonic
 Kill_Lava:	
-	;bset	#7,obGfx(a0)
+	bset	#7,obGfx(a0)
 	move.b	#$16,$1C(a0)
 	move.w	#$C8,d0        ; play death sound
     jsr		(PlaySound_Special).l
