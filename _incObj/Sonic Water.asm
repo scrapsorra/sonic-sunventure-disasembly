@@ -23,10 +23,10 @@ Sonic_Water:
 	WaterTagforMZ:
 		cmpi.b	#0,(v_tagwater).w	;TIS Lava Tag?
 		beq.w	Abovewater	; if yes, branch
-		move.w #$F,d0             ;TIS Length ($F = full line)
-		lea    (Pal_LZSonWatr2),a1  ;Palette location
-        lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
-		jsr	Palload_Loop
+		;move.w #$F,d0             ;TIS Length ($F = full line)
+		;lea    (Pal_LZSonWatr2),a1  ;Palette location
+    ;    lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
+	;	jsr	Palload_Loop
 	WaterStatus:
 		bset	#6,obStatus(a0)
 		bne.w	Sonic_Water_Exit
