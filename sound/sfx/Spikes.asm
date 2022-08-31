@@ -4,11 +4,11 @@ SpikesSFX_Header:
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $02
 
-	smpsHeaderSFXChannel cFM5, SndB7_FM5,	$00, $0D
-	smpsHeaderSFXChannel cFM4, SndB7_FM4,	$00, $03
+	smpsHeaderSFXChannel cFM3, SndB7_FM3,	$00, $0D
+	smpsHeaderSFXChannel cFM5, SndB7_FM5,	$00, $03
 
 ; FM6 Data
-SndB7_FM4:
+SndB7_FM3:
 	smpsSetvoice        $01
 	smpsModSet          $01, $01, $60, $01
 	dc.b	nC4, $05

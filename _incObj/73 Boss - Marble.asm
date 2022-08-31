@@ -302,7 +302,7 @@ loc_18566:
 
 loc_1856C:
 		clr.w	obVelY(a0)
-		music	bgm_MZ,0,0,0		; play MZ music
+		music	bgm_ToxicLandfill,0,0,0		; play MZ music
 
 loc_1857A:
 		bsr.w	BossMove
