@@ -119,7 +119,7 @@ Got_ChkBonus:
 		bne.s	Got_AddBonus	; if yes, branch
 		sfx	sfx_Cash,0,0,0	; play "ker-ching" sound
 		addq.b	#2,obRoutine(a0)
-		cmpi.w	#(id_SBZ<<8)+1,(v_zone).w
+		cmpi.w	#(id_MZ<<8)+2,(v_zone).w
 		bne.s	Got_SetDelay
 		addq.b	#4,obRoutine(a0)
 
@@ -158,11 +158,11 @@ Got_NextLevel:	; Routine $A
 
 Got_ChkSS:	
 		clr.b	(v_lastlamp).w	; clear	lamppost counter
-		tst.b	(f_emeraldm).w
-		beq.s	VBla_08A
-		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
-		sfx		bgm_Emerald,1,0,0 ;	play emerald music
-		bra.s	Got_Display2
+		;tst.b	(f_emeraldm).w
+		;beq.s	VBla_08A
+		;addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
+		;sfx		bgm_Emerald,1,0,0 ;	play emerald music
+		;bra.s	Got_Display2
 		move.b  #0,(f_emeraldm).w
 		
 ; ===========================================================================

@@ -76,7 +76,14 @@ Pri_BodyMain:	; Routine 2
 
 	@open:
 		move.b	#2,obFrame(a0)	; use frame number 2 (destroyed	prison)
+		tst.b	(f_emeraldm).w
+		beq.s	@rts
+		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
+		sfx		bgm_Emerald,1,0,0 ;	play emerald music
 		rts	
+		
+	@rts:
+		rts
 ; ===========================================================================
 
 Pri_Switched:	; Routine 4

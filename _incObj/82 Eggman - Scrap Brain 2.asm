@@ -18,8 +18,8 @@ SEgg_ObjData:	dc.b 2,	0, 3		; routine number, animation, priority
 
 SEgg_Main:	; Routine 0
 		lea	SEgg_ObjData(pc),a2
-		move.w	#$2160,obX(a0)
-		move.w	#$5A4,obY(a0)
+		move.w	#$1C60,obX(a0)
+		move.w	#$2A4,obY(a0)
 		move.b	#$F,obColType(a0)
 		move.b	#$10,obColProp(a0)
 		bclr	#0,obStatus(a0)
@@ -36,8 +36,8 @@ SEgg_Main:	; Routine 0
 		bne.s	SEgg_Eggman
 		move.l	a0,$34(a1)
 		move.b	#id_ScrapEggman,(a1) ; load switch object
-		move.w	#$2130,obX(a1)
-		move.w	#$5BC,obY(a1)
+		move.w	#$1C30,obX(a1)
+		move.w	#$2BC,obY(a1)
 		clr.b	ob2ndRout(a0)
 		move.b	(a2)+,obRoutine(a1)
 		move.b	(a2)+,obAnim(a1)
@@ -97,7 +97,7 @@ SEgg_Leap:
 		move.w	#-$3C0,obVelY(a0)
 
 loc_1996A:
-		cmpi.w	#$2132,obX(a0)
+		cmpi.w	#$1C32,obX(a0)
 		bgt.s	loc_19976
 		clr.w	obVelX(a0)
 
@@ -105,12 +105,12 @@ loc_19976:
 		addi.w	#$24,obVelY(a0)
 		tst.w	obVelY(a0)
 		bmi.s	SEgg_FindBlocks
-		cmpi.w	#$595,obY(a0)
+		cmpi.w	#$295,obY(a0)
 		bcs.s	SEgg_FindBlocks
 		move.w	#$5357,obSubtype(a0)
-		cmpi.w	#$59B,obY(a0)
+		cmpi.w	#$29B,obY(a0)
 		bcs.s	SEgg_FindBlocks
-		move.w	#$59B,obY(a0)
+		move.w	#$29B,obY(a0)
 		clr.w	obVelY(a0)
 
 SEgg_FindBlocks:

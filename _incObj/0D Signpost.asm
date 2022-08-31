@@ -44,6 +44,10 @@ Sign_Touch:	; Routine 2
 		move.w	(v_limitright2).w,(v_limitleft2).w ; lock screen position
 		addq.b	#2,obRoutine(a0)
 		move.b  #1,($FFFFF5C2).w ; Set victory animation flag
+		tst.b	(f_emeraldm).w
+		beq.s	@notouch
+		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
+		sfx		bgm_Emerald,1,0,0 ;	play emerald music
 
 	@notouch:
 		rts	

@@ -131,18 +131,18 @@ off_6E4A:	dc.w DLE_GHZ3main-off_6E4A
 
 DLE_GHZ3main:
 		move.w	#$300,(v_limitbtm1).w
-		cmpi.w	#$400,(v_screenposx).w
+		cmpi.w	#$380,(v_screenposx).w
 		bcs.s	locret_6E96
-		move.w	#$300,(v_limitbtm1).w
-		cmpi.w	#$960,(v_screenposx).w
+		move.w	#$310,(v_limitbtm1).w
+		cmpi.w	#$860,(v_screenposx).w
 		bcs.s	locret_6E96
 		cmpi.w	#$280,(v_screenposy).w
 		bcs.s	loc_6E98
-		move.w	#$300,(v_limitbtm1).w
+		move.w	#$400,(v_limitbtm1).w
 		cmpi.w	#$1380,(v_screenposx).w
 		bcc.s	loc_6E8E
-		move.w	#$300,(v_limitbtm1).w
-		move.w	#$300,(v_limitbtm2).w
+		move.w	#$4C0,(v_limitbtm1).w
+		move.w	#$4C0,(v_limitbtm2).w
 
 loc_6E8E:
 		cmpi.w	#$1700,(v_screenposx).w
@@ -164,21 +164,20 @@ DLE_GHZ3boss:
 		subq.b	#2,(v_dle_routine).w
 
 loc_6EB0:
-		cmpi.w	#$1360,(v_screenposx).w
+		cmpi.w	#$2960,(v_screenposx).w
 		bcs.s	locret_6EE8
 		bsr.w	FindFreeObj
 		bne.s	loc_6ED0
 		move.b	#id_BossGreenHill,0(a1) ; load GHZ boss	object
-		move.w	#$1460,obX(a1)
+		move.w	#$2A60,obX(a1)
 		move.w	#$280,obY(a1)
 
 loc_6ED0:
 		music	bgm_Boss,0,1,0	; play boss music
 		move.b	#1,(f_lockscreen).w ; lock screen
 		addq.b	#2,(v_dle_routine).w
-		moveq	#plcid_Egg,d0
+		moveq	#plcid_Boss,d0
 		bra.w	AddPLC		; load boss patterns
-		
 ; ===========================================================================
 
 locret_6EE8:
@@ -187,7 +186,6 @@ locret_6EE8:
 
 DLE_GHZ3end:
 		move.w	(v_screenposx).w,(v_limitleft2).w
-		move.w	#$280,obY(a1)
 		rts	
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -304,6 +302,8 @@ DLE_MZ3:
 		jmp	off_7098(pc,d0.w)
 ; ===========================================================================
 off_7098:	dc.w DLE_MZ3boss-off_7098
+		dc.w DLE_MZ3cutscene-off_7098
+		dc.w DLE_MZ3boss2-off_7098
 		dc.w DLE_MZ3end-off_7098
 ; ===========================================================================
 
@@ -330,12 +330,49 @@ loc_70D0:
 
 locret_70E8:
 		rts	
+; ===========================================================================		
+		
+DLE_MZ3cutscene:
+		cmpi.w	#$19B0,(v_screenposx).w
+		bcs.s	locret_8298
+		bsr.w	FindFreeObj
+		bne.s	locret_8298
+		move.b	#id_FalseFloor,(a1) ; load collapsing block object
+		addq.b	#2,(v_dle_routine).w
+		moveq	#plcid_EggmanSBZ2,d0
+		bra.w	AddPLC		; load SBZ2 Eggman patterns
+; ===========================================================================
+
+locret_8298:
+		rts	
+; ===========================================================================
+
+DLE_MZ3boss2:
+		cmpi.w	#$1A60,(v_screenposx).w
+		bcs.s	loc_72C6
+		bsr.w	FindFreeObj
+		bne.s	loc_72C0
+		move.b	#id_ScrapEggman,(a1) ; load SBZ2 Eggman object
+		addq.b	#2,(v_dle_routine).w
+
+loc_72C0:
+		move.b	#1,(f_lockscreen).w ; lock screen
+
+loc_72C6:
+		bra.w	loc_72C2
 ; ===========================================================================
 
 DLE_MZ3end:
-		move.w	(v_screenposx).w,(v_limitleft2).w
+		cmpi.w	#$1B50,(v_screenposx).w
+		bcs.s	loc_72D2
 		rts	
-		
+; ===========================================================================
+
+loc_72D2:
+		move.w	(v_screenposx).w,(v_limitleft2).w
+		rts
+
+
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Star Light Zone dynamic level events

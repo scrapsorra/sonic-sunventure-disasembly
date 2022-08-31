@@ -17,14 +17,14 @@ FFloor_Index:	dc.w FFloor_Main-FFloor_Index
 ; ===========================================================================
 
 FFloor_Main:	; Routine 0
-		move.w	#$2080,obX(a0)
-		move.w	#$5D0,obY(a0)
+		move.w	#$1B80,obX(a0)
+		move.w	#$2D0,obY(a0)
 		move.b	#$80,obActWid(a0)
 		move.b	#$10,obHeight(a0)
 		move.b	#4,obRender(a0)
 		bset	#7,obRender(a0)
 		moveq	#0,d4
-		move.w	#$2010,d5
+		move.w	#$1B10,d5
 		moveq	#7,d6
 		lea	$30(a0),a2
 
@@ -40,7 +40,7 @@ FFloor_MakeBlock:
 		move.b	#$10,obHeight(a1)
 		move.w	#$180,obPriority(a1)
 		move.w	d5,obX(a1)	; set X	position
-		move.w	#$5D0,obY(a1)
+		move.w	#$2D0,obY(a1)
 		addi.w	#$20,d5		; add $20 for next X position
 		move.b	#8,obRoutine(a1)
 		dbf	d6,FFloor_MakeBlock ; repeat sequence 7 more times
@@ -63,7 +63,7 @@ FFloor_Solid:
 		ext.w	d0
 		addq.w	#8,d0
 		asl.w	#4,d0
-		move.w	#$2100,d4
+		move.w	#$1C00,d4
 		sub.w	d0,d4
 		move.b	d0,obActWid(a0)
 		move.w	d4,obX(a0)

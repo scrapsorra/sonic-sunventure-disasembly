@@ -257,6 +257,7 @@ PLC_Boss:	dc.w ((PLC_Bossend-PLC_Boss-2)/6)-1
 		plcm	Nem_Bomb, $A300		; bomb enemy ((gets overwritten)
 		plcm	Nem_SlzSpike, $A300	; spikeball ((SLZ boss)
 		plcm	Nem_Exhaust, $A540	; exhaust flame
+		plcm	Nem_SignPost, $D000	; signpost
 	PLC_Bossend:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - act 1/2 signpost

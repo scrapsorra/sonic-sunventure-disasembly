@@ -39,9 +39,9 @@ Sonic_LevelBound:
 		move.w (v_limitbtm2).w,d1 
 		cmp.w d0,d1 ; screen still scrolling down? 
 		blt.s @dontkill; if so, don't kill Sonic 
-		cmpi.w	#(id_SBZ<<8)+1,(v_zone).w ; is level SBZ2 ?
+		cmpi.w	#(id_MZ<<8)+2,(v_zone).w ; is level SBZ2 ?
 		bne.w	Kill_transport	; if not, kill Sonic
-		cmpi.w	#$2000,(v_player+obX).w
+		cmpi.w	#$1B00,(v_player+obX).w
 		bcs.w	Kill_transport
 		clr.b	(v_lastlamp).w	; clear	lamppost counter
 		move.w	#1,(f_restart).w ; restart the level
