@@ -495,17 +495,25 @@ ErrorWaitForC:
 Art_Text:	incbin	"artunc\menutext.bin" ; text used in level select and debug mode
 		even
 
-; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Vertical interrupt
 ; ---------------------------------------------------------------------------
 
 VBlank:
 		movem.l	d0-a6,-(sp)
-		tst.b   (v_vbla_routine).w
+		tst.b	(v_vbla_routine).w
 		beq.s	VBla_00
-        move.l	#$40000010,(vdp_control_port).l
+		move.w	(vdp_control_port).l,d0
+		move.l	#$40000010,(vdp_control_port).l
 		move.l	(v_scrposy_dup).w,(vdp_data_port).l ; send screen y-axis pos. to VSRAM
+		btst	#6,(v_megadrive).w ; is Megadrive PAL?
+		beq.s	@notPAL		; if not, branch
+
+		move.w	#$700,d0
+	@waitPAL:
+		dbf	d0,@waitPAL ; wait here in a loop doing nothing for a while...
+
+	@notPAL:
 		move.b	(v_vbla_routine).w,d0
 		move.b	#0,(v_vbla_routine).w
 		move.w	#1,(f_hbla_pal).w
@@ -514,16 +522,12 @@ VBlank:
 		jsr	VBla_Index(pc,d0.w)
 
 VBla_Music:
-		enable_ints		; enable interrupts (we can accept horizontal interrupts from now on)
-        bset    #0,(f_wtr_state+$1).w    ; set "SMPS running flag"
-		bne.s   VBla_Exit       ; if it was set already, don't call another instance of SMPS
-        jsr UpdateMusic     ; run SMPS
-        clr.b   (f_wtr_state+$1).w       ; reset "SMPS running flag"
+		jsr	(UpdateMusic).l
 
 VBla_Exit:
 		addq.l	#1,(v_vbla_count).w
 		movem.l	(sp)+,d0-a6
-		rte
+		rte	
 ; ===========================================================================
 VBla_Index:	dc.w VBla_00-VBla_Index, VBla_02-VBla_Index
 		dc.w VBla_04-VBla_Index, VBla_06-VBla_Index
@@ -538,14 +542,24 @@ VBla_00:
 		cmpi.b	#$80+id_Level,(v_gamemode).w
 		beq.s	@islevel
 		cmpi.b	#id_Level,(v_gamemode).w ; is game on a level?
-		bne.s	VBla_Music	; if not, branch
+		bne.w	VBla_Music	; if not, branch
 
 	@islevel:
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ ?
-		bne.s	VBla_Music	; if not, branch
+		bne.w	VBla_Music	; if not, branch
 
 		move.w	(vdp_control_port).l,d0
+		btst	#6,(v_megadrive).w ; is Megadrive PAL?
+		beq.s	@notPAL		; if not, branch
+
+		move.w	#$700,d0
+	@waitPAL:
+		dbf	d0,@waitPAL
+
+	@notPAL:
 		move.w	#1,(f_hbla_pal).w ; set HBlank flag
+		stopZ80
+		waitZ80
 		tst.b	(f_wtr_state).w	; is water above top of screen?
 		bne.s	@waterabove 	; if yes, branch
 
@@ -557,7 +571,38 @@ VBla_00:
 
 	@waterbelow:
 		move.w	(v_hbla_hreg).w,(a5)
+		startZ80
 		bra.w	VBla_Music
+; ===========================================================================
+
+VBla_02:
+		bsr.w	sub_106E
+
+VBla_14:
+		tst.w	(v_demolength).w
+		beq.w	@end
+		subq.w	#1,(v_demolength).w
+
+	@end:
+		rts	
+; ===========================================================================
+
+VBla_04:
+		bsr.w	sub_106E
+		bsr.w	LoadTilesAsYouMove_BGOnly
+		jsr 	ProcessDMAQueue		
+		bsr.w	sub_1642
+		tst.w	(v_demolength).w
+		beq.w	@end
+		subq.w	#1,(v_demolength).w
+
+	@end:
+		rts	
+; ===========================================================================
+
+VBla_06:
+		bsr.w	sub_106E
+		rts	
 ; ===========================================================================
 
 VBla_10:
@@ -565,15 +610,37 @@ VBla_10:
 		beq.w	VBla_0A		; if yes, branch
 
 VBla_08:
-		bsr.w   VBla_06
-		move.w	(v_hbla_hreg).w,(a5)
-		jsr     ProcessDMAQueue(pc)
+		stopZ80
+		waitZ80
+		bsr.w	ReadJoypads
+		tst.b	(f_wtr_state).w
+		bne.s	@waterabove
 
-	@nochg:		
+		writeCRAM	v_pal_dry,$80,0
+		bra.s	@waterbelow
+
+@waterabove:
+		writeCRAM	v_pal_water,$80,0
+
+	@waterbelow:
+		move.w	(v_hbla_hreg).w,(a5)
+
+		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
+		writeVRAM	v_spritetablebuffer,$280,vram_sprites
+		jsr	(ProcessDMAQueue).l
+
+	@nochg:
+		startZ80
 		movem.l	(v_screenposx).w,d0-d7
 		movem.l	d0-d7,(v_screenposx_dup).w
 		movem.l	(v_fg_scroll_flags).w,d0-d1
 		movem.l	d0-d1,(v_fg_scroll_flags_dup).w
+		cmpi.b	#96,(v_hbla_line).w
+		bhs.s	Demo_Time
+		move.b	#1,($FFFFF64F).w
+		addq.l	#4,sp
+		bra.w	VBla_Exit
+
 ; ---------------------------------------------------------------------------
 ; Subroutine to	run a demo for an amount of time
 ; ---------------------------------------------------------------------------
@@ -586,104 +653,97 @@ Demo_Time:
 		jsr	(AnimateLevelGfx).l
 		jsr	(HUD_Update).l
 		bsr.w	ProcessDPLC2
-
-VBla_14:
-		tst.w	(v_demolength).w
-		beq.s	@end
-		subq.w	#1,(v_demolength).w
+		tst.w	(v_demolength).w ; is there time left on the demo?
+		beq.w	@end		; if not, branch
+		subq.w	#1,(v_demolength).w ; subtract 1 from time left
 
 	@end:
-		rts
+		rts	
+; End of function Demo_Time
+
 ; ===========================================================================
 
-VBla_04:
-		bsr.w	LoadTilesAsYouMove_BGOnly
-		bsr.w	sub_1642
-; ===========================================================================
+VBla_0A:
+		stopZ80
+		waitZ80
+		bsr.w	ReadJoypads
+		writeCRAM	v_pal_dry,$80,0
+		writeVRAM	v_spritetablebuffer,$280,vram_sprites
+		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
+		startZ80
+		bsr.w	PalCycle_SS
+		jsr	(ProcessDMAQueue).l
 
-VBla_02:
-		bsr.s	VBla_06
-		bra.s	VBla_14
+	@nochg:
+		tst.w	(v_demolength).w	; is there time left on the demo?
+		beq.w	@end	; if not, return
+		subq.w	#1,(v_demolength).w	; subtract 1 from time left in demo
+
+	@end:
+		rts	
 ; ===========================================================================
 
 VBla_0C:
-		bsr.s   VBla_08
-		bra.w	sub_1642
+		stopZ80
+		waitZ80
+		bsr.w	ReadJoypads
+		tst.b	(f_wtr_state).w
+		bne.s	@waterabove
+
+		writeCRAM	v_pal_dry,$80,0
+		bra.s	@waterbelow
+
+@waterabove:
+		writeCRAM	v_pal_water,$80,0
+
+	@waterbelow:
+		move.w	(v_hbla_hreg).w,(a5)
+		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
+		writeVRAM	v_spritetablebuffer,$280,vram_sprites
+		jsr	(ProcessDMAQueue).l
+
+	@nochg:
+		startZ80
+		movem.l	(v_screenposx).w,d0-d7
+		movem.l	d0-d7,(v_screenposx_dup).w
+		movem.l	(v_fg_scroll_flags).w,d0-d1
+		movem.l	d0-d1,(v_fg_scroll_flags_dup).w
+		bsr.w	LoadTilesAsYouMove
+		jsr	(AnimateLevelGfx).l
+		jsr	(HUD_Update).l
+		bsr.w	sub_1642
+		rts	
 ; ===========================================================================
 
 VBla_0E:
-		bsr.s	VBla_06
+		bsr.w	sub_106E
 		addq.b	#1,($FFFFF628).w
 		move.b	#$E,(v_vbla_routine).w
-		rts
+		rts	
 ; ===========================================================================
 
 VBla_12:
-		bsr.s	VBla_06
+		bsr.w	sub_106E
 		move.w	(v_hbla_hreg).w,(a5)
 		bra.w	sub_1642
 ; ===========================================================================
 
-VBla_0A:
-		bsr.w	PalCycle_SS
-
 VBla_16:
-		bsr.s   CRAMWriteDry
-		jsr     ProcessDMAQueue(pc)
-		
-	@nochg:			
-		bsr.s	VBla_14
-
-; ---------------------------------------------------------------------------
-; Subroutine to	read joypad input, and send it to the RAM
-; ---------------------------------------------------------------------------
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
-ReadJoypads:
-		lea	(v_jpadhold1).w,a0 ; address where joypad states are written
-		lea	($A10003).l,a1	; first	joypad port
-		bsr.s	@read		; do the first joypad
-		addq.w	#2,a1		; do the second	joypad
-
-	@read:
-		move.b	#0,(a1)
-		move.b	(a1),d0
-		lsl.b	#2,d0
-		andi.b	#$C0,d0
-		move.b	#$40,(a1)
-		move.b	(a1),d1
-		andi.b	#$3F,d1
-		or.b	d1,d0
-		not.b	d0
-		move.b	(a0),d1
-		eor.b	d0,d1
-		move.b	d0,(a0)+
-		and.b	d0,d1
-		move.b	d1,(a0)+
-		rts
-; End of function ReadJoypads
-
-; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
-
-
-VBla_06:
-		bsr.s	ReadJoypads
-		tst.b	(f_wtr_state).w ; is water above top of screen?
-		bne.s	AboveWater1	; if yes, branch
-	CRAMWriteDry:
+		stopZ80
+		waitZ80
+		bsr.w	ReadJoypads
 		writeCRAM	v_pal_dry,$80,0
-		bra.s	BelowWater
-
-	AboveWater1:
-		writeCRAM	v_pal_water,$80,0
-
-	BelowWater:
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		rts
-; End of function VBla_06
+		startZ80
+		jsr	(ProcessDMAQueue).l
+	@nochg:
+		tst.w	(v_demolength).w
+		beq.w	@end
+		subq.w	#1,(v_demolength).w
 
+	@end:
+		rts	
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -757,10 +817,20 @@ HBlank:
 		move.l	(a0)+,(a1)
 		move.w	#$8A00+223,4(a1) ; reset HBlank register
 		movem.l	(sp)+,a0-a1
+		tst.b	($FFFFF64F).w
+		bne.s	loc_119E
 
 	@nochg:
 		rte	
 ; ===========================================================================
+
+loc_119E:
+		clr.b	($FFFFF64F).w
+		movem.l	d0-a6,-(sp)
+		bsr.w	Demo_Time
+		jsr	(UpdateMusic).l
+		movem.l	(sp)+,d0-a6
+		rte	
 ; End of function HBlank
 
 ; ---------------------------------------------------------------------------
@@ -780,6 +850,40 @@ JoypadInit:
 		startZ80
 		rts	
 ; End of function JoypadInit
+
+; ---------------------------------------------------------------------------
+; Subroutine to	read joypad input, and send it to the RAM
+; ---------------------------------------------------------------------------
+; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
+
+
+ReadJoypads:
+		lea	(v_jpadhold1).w,a0 ; address where joypad states are written
+		lea	($A10003).l,a1	; first	joypad port
+		bsr.s	@read		; do the first joypad
+		addq.w	#2,a1		; do the second	joypad
+
+	@read:
+		move.b	#0,(a1)
+		nop	
+		nop	
+		move.b	(a1),d0
+		lsl.b	#2,d0
+		andi.b	#$C0,d0
+		move.b	#$40,(a1)
+		nop	
+		nop	
+		move.b	(a1),d1
+		andi.b	#$3F,d1
+		or.b	d1,d0
+		not.b	d0
+		move.b	(a0),d1
+		eor.b	d0,d1
+		move.b	d0,(a0)+
+		and.b	d0,d1
+		move.b	d1,(a0)+
+		rts	
+; End of function ReadJoypads
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -2618,7 +2722,9 @@ Tit_ResetCheat:
 Tit_CountC:
 		move.b	(v_jpadpress1).w,d0
 		andi.b	#btnC,d0	; is C button pressed?
-
+		beq.s	loc_3230	; if not, branch
+		addq.w	#1,(v_title_ccount).w ; increment C counter
+		
 loc_3230:
 		tst.w	(v_demolength).w
 		beq.w	GotoDemo

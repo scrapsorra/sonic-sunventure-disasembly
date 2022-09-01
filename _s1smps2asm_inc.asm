@@ -343,7 +343,7 @@ smpsAlterNote macro val
 	endm
 
 smpsDetune macro val
-	smpsAlterNote val
+	dc.b		$E1, val
 	endm
 
 ; E2xx - Useless
