@@ -11,7 +11,8 @@
 	include	"Constants.asm"
 	include	"Variables.asm"
 	include	"Macros.asm"
-
+    include   "Debugger.asm"
+	
 EnableSRAM:	equ 0	; change to 1 to enable SRAM
 BackupSRAM:	equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
@@ -107,7 +108,7 @@ loc_E0:
 		dc.l ErrorTrap
 		dc.l ErrorTrap
 	endif
-Console:	dc.b "SEGA MEGA DRIVE " ; Hardware system ID (Console name)
+Console1:	dc.b "SEGA MEGA DRIVE " ; Hardware system ID (Console name)
 Date:		dc.b "(C)SEGA 1991.APR" ; Copyright holder and release date (generally year)
 Title_Local:	dc.b "SONIC SUNVENTURE                                " ; Domestic name
 Title_Int:	dc.b "SONIC SUNVENTURE                                " ; International name
@@ -2739,10 +2740,12 @@ Tit_ChkLevSel:
 		bra.w	Tit_LevelSelect
 
 	@cont:		
-		moveq   #0,d2
-		move.b   (Title_screen_option).w,d2   ; load the choice
-		add.w   d2,d2            ; multiply by 2
-		move.w   Tit_Menu_Choice(pc,d2.w),d2
+		cmp.b	#6,($FFFFD0A4).w   ; is Title Menu on
+		beq.w	Tit_MainLoop         ; if it not was deleted, branch  	
+		moveq	#0,d2
+		move.b	(Title_screen_option).w,d2   ; load the choice
+		add.w	d2,d2            ; multiply by 2
+		move.w	Tit_Menu_Choice(pc,d2.w),d2
 		jmp   Tit_Menu_Choice(pc,d2.w)   ; jump to the choice code
 
 ; ===========================================================================
@@ -2752,8 +2755,8 @@ Tit_Menu_Choice:
 ; ===========================================================================
 
 Menu_Options:
-	move.b	#$20,(v_gamemode).w
-	rts
+		move.b	#$20,(v_gamemode).w
+		rts
 
 Tit_LevelSelect:	
 		moveq	#palid_LevelSel,d0
@@ -3041,15 +3044,15 @@ LevSel_SndTest:
 		beq.s	LevSel_Right	; if not, branch
 		subq.w	#1,d0		; subtract 1 from sound	test
 		bhs.s	LevSel_Right
-		moveq	#$5F,d0		; if sound test	moves below 0, set to $4F
+		moveq	#$55,d0		; if sound test	moves below 0, set to $55
 
 LevSel_Right:
 		btst	#bitR,d1	; is right pressed?
 		beq.s	LevSel_Refresh2	; if not, branch
 		addq.w	#1,d0		; add 1	to sound test
-		cmpi.w	#$50,d0
+		cmpi.w	#$56,d0
 		blo.s	LevSel_Refresh2
-		moveq	#0,d0		; if sound test	moves above $4F, set to	0
+		moveq	#0,d0		; if sound test	moves above $55, set to	0
 
 LevSel_Refresh2:
 		move.w	d0,(v_levselsound).w ; set sound test number
@@ -10033,66 +10036,12 @@ SHC2022:    incbin "SHC22_Full_Sonic12.bin"
 Art_Dust:	incbin	artunc\spindust.bin
 
 ; ===============================================================
-; ---------------------------------------------------------------
-; Error handling module
-; ---------------------------------------------------------------
- 
-BusError:   jsr ErrorHandler(pc)
-        dc.b    "BUS ERROR",0           ; text
-        dc.b    1               ; extended stack frame
-        even
- 
-AddressError:   jsr ErrorHandler(pc)
-        dc.b    "ADDRESS ERROR",0       ; text
-        dc.b    1               ; extended stack frame
-        even
- 
-IllegalInstr:   jsr ErrorHandler(pc)
-        dc.b    "ILLEGAL INSTRUCTION",0     ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-ZeroDivide: jsr ErrorHandler(pc)
-        dc.b    "ZERO DIVIDE",0         ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-ChkInstr:   jsr ErrorHandler(pc)
-        dc.b    "CHK INSTRUCTION",0         ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-TrapvInstr: jsr ErrorHandler(pc)
-        dc.b    "TRAPV INSTRUCTION",0       ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-PrivilegeViol:  jsr ErrorHandler(pc)
-        dc.b    "PRIVILEGE VIOLATION",0     ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-Trace:      jsr ErrorHandler(pc)
-        dc.b    "TRACE",0           ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-Line1010Emu:    jsr ErrorHandler(pc)
-        dc.b    "LINE 1010 EMULATOR",0      ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-Line1111Emu:    jsr ErrorHandler(pc)
-        dc.b    "LINE 1111 EMULATOR",0      ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-ErrorExcept:    jsr ErrorHandler(pc)
-        dc.b    "ERROR EXCEPTION",0         ; text
-        dc.b    0               ; extended stack frame
-        even
- 
-ErrorHandler:   incbin  "ErrorHandler.bin"
+; ==============================================================
+; --------------------------------------------------------------
+; Debugging modules
+; --------------------------------------------------------------
+
+   include   "ErrorHandler.asm"
 
 ; end of 'ROM'
 		even

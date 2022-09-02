@@ -13,7 +13,7 @@ MenuScreen:
 		jsr	PaletteFadeOut
 		move	#$2700,sr
 		move.w	($FFFFF60C).w,d0
-		andi.b	#$BF,d0
+		andi.b	#-$41,d0
 		move.w	d0,($00C00004).l
 		jsr	ClearScreen
 		lea		($00C00004).l,a6
@@ -24,11 +24,9 @@ MenuScreen:
 		move.w	#$8700,(a6)
 		move.w	#$8C81,(a6)
 		move.w	#$9001,(a6)
-
-
-		lea	(v_objspace).w,a1
+		lea	($FFFFAC00).w,a1
 		moveq	#0,d0
-		move.w	#$7FF,d1
+		move.w	#$FF,d1
 
 MenuScreen_ClrObjRam:
 		move.l	d0,(a1)+
@@ -88,8 +86,8 @@ MenuScreen_Options:
 		clr.b	($FFFFF711).w		
 		clr.w	($FFFFF7F0).w					 
 ;-------------------------------------------------------------------------------
-		clr.w	($FFFFF7B8).w
-		lea		(Anim_SonicMilesBG).l,a2
+		clr.w	($FFFFF5B8).w
+		lea	(Sonic_Miles_Spr).l,a2 ; sonic/miles background load
 		bsr.w	Dynamic_Menu
 ;-------------------------------------------------------------------------------
 		moveq	#palid_Options,d0
@@ -113,7 +111,7 @@ OptionScreen_Main:
 		bsr.w	OptionScreen_Controls			
 		bsr.w	OptionScreen_DrawSelected
 		move	#$2300,sr
-		lea		(Anim_SonicMilesBG).l,a2		
+		lea	(Sonic_Miles_Spr).l,a2 ; sonic/miles background load	
 		bsr.w	Dynamic_Menu		
 		andi.b	#btnStart,(v_jpadpress1).w ; check if Start is pressed
 
@@ -305,70 +303,40 @@ loc_9296:
 		rts
 
 Dynamic_Menu:
-	lea	($FFFFF7B8).w,a3
-
-loc_3FF30:
-	move.w	(a2)+,d6	; loop counter. We start off with 00 the first time.
-
-loc_3FF32:
-	subq.b	#1,(a3)		; decrement timer
-	bcc.s	loc_3FF78	; if time remains, branch ahead
-	moveq	#0,d0
-	move.b	1(a3),d0	; load animation counter from animation data table
-	cmp.b	6(a2),d0
-	blo.s	loc_3FF48
-	moveq	#0,d0
-	move.b	d0,1(a3)	; set animation counter
-
-loc_3FF48:
-	addq.b	#1,1(a3)	; increment animation counter
-	move.b	(a2),(a3)	; set timer
-	bpl.s	loc_3FF56
-	add.w	d0,d0
-	move.b	9(a2,d0.w),(a3)
-
-loc_3FF56:
-	move.b	8(a2,d0.w),d0
-	lsl.w	#5,d0
-	move.w	4(a2),d2
-	move.l	(a2),d1
-	andi.l	#$FFFFFF,d1		; Filter out the first byte, which contains the first PLC ID, leaving the address of the zone's art in d0
-	add.l	d0,d1
-	moveq	#0,d3
-	move.b	7(a2),d3
-	lsl.w	#4,d3
-	jsr	(QueueDMATransfer).l	; Use d1, d2, and d3 to locate the decompressed art and ready for transfer to VRAM
-
-loc_3FF78:
-	move.b	6(a2),d0
-	tst.b	(a2)
-	bpl.s	loc_3FF82
-	add.b	d0,d0
-
-loc_3FF82:
-	addq.b	#1,d0
-	andi.w	#$FE,d0
-	lea	8(a2,d0.w),a2
-	addq.w	#2,a3
-	dbf	d6,loc_3FF32
-	rts
-; ------------------------------------------------------------------------
-; MENU ANIMATION SCRIPT
-; ------------------------------------------------------------------------
-;word_87C6:
-Anim_SonicMilesBG:
-	dc.w   0
-; Sonic/Miles animated background
-	dc.l $FF<<24|Sonic_Miles_Spr
-	dc.w $20
-	dc.b 6
-	dc.b $A
-	dc.b   0,$C7    ; "SONIC"
-	dc.b  $A,  5	; 2
-	dc.b $14,  5	; 4
-	dc.b $1E,$C7	; "TAILS"
-	dc.b $14,  5	; 8
-	dc.b  $A,  5	; 10	
+                subq.b  #$01, ($FFFFF5B9).w          ; remove 1 from frame count
+                bpl.s   Exit_Dinamic_Menu            ; exit menu
+                move.b  #$07, ($FFFFF5B9).w          ; Set time for frame display
+                move.b  ($FFFFF5B8).w, D0            ; Current Frame D0
+                addq.b  #$01, ($FFFFF5B8).w          ; Advance frame $FFFFFFB8
+                andi.w  #$001F, D0
+                move.b  Sonic_Miles_Frame_Select(PC, D0), D0  ; Id frame D0
+              ; muls.w  #$0140, D0                   ; as above
+                lsl.w   #$06, D0
+                lea     ($00C00000), A6
+                move.l  #$40200000, $0004(A6)
+                lea     (Sonic_Miles_Spr), A1
+                lea     $00(A1, D0), A1
+                move.w  #$0009, D0                   ; load tiles
+                
+Menu_Loop_Load_Tiles:
+                move.l  (A1)+, (A6)
+                move.l  (A1)+, (A6)     
+                move.l  (A1)+, (A6)     
+                move.l  (A1)+, (A6)     
+                move.l  (A1)+, (A6)     
+                move.l  (A1)+, (A6)
+                move.l  (A1)+, (A6)
+                move.l  (A1)+, (A6)
+                dbra    D0, Menu_Loop_Load_Tiles
+Exit_Dinamic_Menu:                
+               
+                rts      
+                        
+Sonic_Miles_Frame_Select:     
+                dc.b    $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+                dc.b    $05, $0A
+                dc.b    $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F, $0F
+                dc.b    $0A, $05   
 ; ===========================================================================
 ; off_92BA:
 OptScrBoxData:
@@ -432,7 +400,7 @@ TextOptScr_Null:				asc	"FINISH THE GAME"	; byte_9870:
 TextOptScr_Null2:				asc	"      NULLS       "	; byte_9870:
 ; ============================================================================
 
-Sonic_Miles_Spr:incbin  "artunc/Sonic and Miles text.bin"
+Sonic_Miles_Spr:	incbin  "artunc/Sonic and Miles text.bin"
 		even
 Eni_MenuBg:    incbin    "tilemaps/menubgeni.bin"
 		even
