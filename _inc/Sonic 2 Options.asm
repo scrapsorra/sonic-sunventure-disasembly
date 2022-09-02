@@ -399,7 +399,7 @@ TextOptScr_SoundTest:		asc	"* NEW MOVESTYLES *"	; byte_985E:
 TextOptScr_Null:				asc	"FINISH THE GAME"	; byte_9870:
 TextOptScr_Null2:				asc	"      NULLS       "	; byte_9870:
 ; ============================================================================
-
+		even
 Sonic_Miles_Spr:	incbin  "artunc/Sonic and Miles text.bin"
 		even
 Eni_MenuBg:    incbin    "tilemaps/menubgeni.bin"
