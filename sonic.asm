@@ -3182,7 +3182,7 @@ MusicList:
         	dc.b bgm_SBZ3    ; LZ4
         	dc.b bgm_MZ    ; MZ1
         	dc.b bgm_SBZ    ; MZ2
-        	dc.b bgm_ToxicLandfill   ; MZ3
+        	dc.b bgm_RRZ2   ; MZ3
         	dc.b bgm_SBZ    ; MZ4
         	dc.b bgm_LZ    ; SLZ1
         	dc.b bgm_LZ    ; SLZ2

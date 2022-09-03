@@ -202,7 +202,7 @@ dCrashCymbal equ $85
 dHiTimpani equ $88
 dMidTimpani equ $89
 dLowTimpani equ $8A
-dVLowTimpani equ $8B
+dFloorTimpani equ $8B
 ; ---------------------------------------------------------------------------------------------
 ; Channel IDs for SFX
 cPSG1				EQU $80

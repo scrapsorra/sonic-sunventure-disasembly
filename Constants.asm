@@ -216,6 +216,7 @@ bgm_SBZ3:		equ ((ptr_mus96-MusicIndex)/4)+bgm__First
 bgm_Granada:	equ ((ptr_mus97-MusicIndex)/4)+bgm__First
 bgm_Options:	equ ((ptr_mus98-MusicIndex)/4)+bgm__First
 bgm_ToxicLandfill:	equ ((ptr_mus99-MusicIndex)/4)+bgm__First
+bgm_RRZ2:	equ ((ptr_mus9A-MusicIndex)/4)+bgm__First
 bgm__Last:	equ ((ptr_musend-MusicIndex-4)/4)+bgm__First
 
 ; Sound effects
