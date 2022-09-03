@@ -396,7 +396,7 @@ ToxicLandfill_Loop2C:
 ; FM5 Data
 ToxicLandfill_FM5:
 	smpsPan             panCenter, $00
-	smpsAlterVol			-$04		
+	smpsAlterVol			-$06		
 	smpsDetune			$02	
 	smpsSetvoice        $00
 	dc.b	nRst, $7F, $7F, $78, nE3, $02, nF3, $01, nFs3, $02, nG3, $01
@@ -465,9 +465,9 @@ ToxicLandfill_Loop1B:
 	smpsLoop            $00, $02, ToxicLandfill_Loop1B
 	dc.b	nC5, nF4, nG4, nBb4, $03, nC5, $09, nF4, $06, nG4, nBb4, nC5
 	dc.b	nF4, nG4, nBb4, $03, nC5, $09, nF4, $06, nG4, nBb4, $02, nRst
-	smpsSetvoice        $00
+	smpsSetvoice        $02
 	smpsDetune			-$02
-	smpsAlterVol		$04
+	smpsAlterVol		$06
 	
 ToxicLandfill_Loop1C:
 	dc.b	nC4, $06, nG3, nBb3, nB3, $03, nC4, $09, nG3, $06, nBb3, nB3	
@@ -482,11 +482,11 @@ ToxicLandfill_Loop1E:
 	smpsLoop            $00, $02, ToxicLandfill_Loop1E
 
 ToxicLandfill_Loop1F:
-	dc.b	nC5, nF5, nG4, nBb4, $03, nC5, $09, nF5, $06, nG4, nBb4
+	dc.b	nC5, nF4, nG4, nBb4, $03, nC5, $09, nF4, $06, nG4, nBb4
 	smpsLoop            $00, $02, ToxicLandfill_Loop1F
-	smpsSetvoice        $01
+	smpsSetvoice        $00
 	smpsDetune			$02
-	smpsAlterVol		-$04	
+	smpsAlterVol		-$06	
 	smpsJump            ToxicLandfill_Jump01
 
 ; PSG1 Data
