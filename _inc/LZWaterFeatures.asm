@@ -207,13 +207,13 @@ DynWater_LZ3:
 ; ===========================================================================
 
 DynWater_SBZ3:
-		move.w	#$228,d1
-		cmpi.w	#$F00,(v_screenposx).w
-		bcs.s	@setwater
-		move.w	#$4C8,d1
+	;	move.w	#$228,d1
+	;	cmpi.w	#$F00,(v_screenposx).w
+	;	bcs.s	@setwater
+	;	move.w	#$4C8,d1
 
-	@setwater:
-		move.w	d1,(v_waterpos3).w
+	;@setwater:
+		;move.w	d1,(v_waterpos3).w
 		rts
 
 ; ---------------------------------------------------------------------------

@@ -54,6 +54,10 @@
       <ArtFile filename="../artnem/Monitors.bin" />
       <MapFile type="ASM" filename="../_maps/Monitor.asm" frame="13" startpal="0" />
     </ImageFromMappings>
+	<ImageFromMappings id="silver shield">
+      <ArtFile filename="../artnem/Monitors.bin" />
+      <MapFile type="ASM" filename="../_maps/Monitor.asm" frame="14" startpal="0" />
+    </ImageFromMappings>
   </Images>
   <Subtypes>
     <Subtype id="00" name="Static" image="static" />
@@ -68,6 +72,7 @@
     <Subtype id="09" name="Broken" image="broken" />
     <Subtype id="0A" name="Red Shield" image="red shield" />
     <Subtype id="0B" name="Gold Shield" image="gold shield" />
+    <Subtype id="0C" name="Silver Shield" image="silver shield" />
   </Subtypes>
   <Properties>
     <BitsProperty name="Contents" type="MonitorType" startbit="0" length="4" />
@@ -86,6 +91,7 @@
       <EnumMember name="Broken" />
       <EnumMember name="Red Shield" />
       <EnumMember name="Gold Shield" />
+      <EnumMember name="Silver Shield" />
     </Enum>
   </Enums>
 </ObjDef>

@@ -354,9 +354,11 @@ DLE_MZ3boss2:
 		bne.s	loc_72C0
 		move.b	#id_ScrapEggman,(a1) ; load SBZ2 Eggman object
 		addq.b	#2,(v_dle_routine).w
+		music	bgm_Boss,0,1,0	; play boss music
 
 loc_72C0:
 		move.b	#1,(f_lockscreen).w ; lock screen
+		
 
 loc_72C6:
 		bra.w	loc_72C2

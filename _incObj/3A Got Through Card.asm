@@ -243,7 +243,6 @@ Got_SBZ2:
 		addq.b	#2,obRoutine(a0)
 		clr.b	(f_lockctrl).w	; unlock controls
 		move.b  #0,($FFFFF5C2).w ; Clear victory animation flag
-		music	bgm_Boss,1,0,0	; play FZ music
 ; ===========================================================================
 
 loc_C766:	; Routine $10

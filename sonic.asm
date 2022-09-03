@@ -7722,8 +7722,8 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		bsr.w	Sonic_Peelout
-		bsr.w	Sonic_SpinDash
+		;bsr.w	Sonic_Peelout
+		;bsr.w	Sonic_SpinDash
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
 		bsr.w	Sonic_Move
