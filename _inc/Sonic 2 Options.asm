@@ -191,7 +191,7 @@ Option_Controls_NoMove:
 ; ===========================================================================
 ; word_917A:
 OptionScreen_Choices:
-		dc.l ($A-1)<<24|($FFFFBE&$FFFFFF)
+		dc.l ($B-1)<<24|($FFFFBE&$FFFFFF)
 		dc.l (2-1)<<24|($FFFF8A&$FFFFFF)
 		even
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
@@ -345,7 +345,8 @@ off_92D2:
 		dc.l TextOptScr_RHS
 		dc.l TextOptScr_Socket
 		dc.l TextOptScr_Cringe
-		dc.l TextOptScr_Dark		
+		dc.l TextOptScr_Dark	
+		dc.l TextOptScr_DeltaWooloo			
 off_92DE:
 		dc.l TextOptScr_Default
 		dc.l TextOptScr_Original
@@ -356,7 +357,8 @@ off_92DE:
 		dc.l TextOptScr_RHS
 		dc.l TextOptScr_Socket
 		dc.l TextOptScr_Cringe
-		dc.l TextOptScr_Dark	
+		dc.l TextOptScr_Dark
+		dc.l TextOptScr_DeltaWooloo		
 off_92EA:
 		dc.l TextOptScr_On
 		dc.l TextOptScr_Off
@@ -367,12 +369,13 @@ TextOptScr_Default:			asc	"    DEFAULT      "	; byte_97FC:
 TextOptScr_Original:			asc	"    ORIGINAL   "	; byte_980C:
 TextOptScr_Beta:			asc	"     DEMO     "	; byte_981C:
 TextOptScr_Midnight:			asc	"   MIDNIGHT    "
-TextOptScr_C2:			asc	"   CLASSIC      "
+TextOptScr_C2:			asc	"   ALSO BLUE     "
 TextOptScr_Clackers:			asc	"   CRACKERS     "
 TextOptScr_RHS:			asc	"  REDHOTSONIC   "
 TextOptScr_Socket:			asc	"    SOCKET    "
 TextOptScr_Cringe:			asc	"    CRINGE    "
 TextOptScr_Dark:			asc	"    DARKER    "
+TextOptScr_DeltaWooloo:			asc	"   DELTAWOOLOO "
 TextOptScr_LivesSystem:		asc	"*   SCD CAMERA   *"	; byte_982C:
 TextOptScr_On:				asc	"    DISABLED     "	; byte_984E:
 TextOptScr_Off:				asc	"    ENABLED    "	; byte_984E:

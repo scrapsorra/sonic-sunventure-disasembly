@@ -2390,6 +2390,7 @@ Pal_Sonic7:	incbin	"palette\Sonic Pal\07 Red Hot.bin"
 Pal_Sonic8:	incbin	"palette\Sonic Pal\08 Socket.bin"
 Pal_Sonic9:	incbin	"palette\Sonic Pal\09 Cringe.bin"
 Pal_Sonic10:	incbin	"palette\Sonic Pal\10 Dark.bin"
+Pal_Sonic11:	incbin	"palette\Sonic Pal\11 DeltaWooloo.bin"
 Pal_SonWater2:	incbin	"palette\Sonic Pal\02 Sonic 1 Underwater.bin"
 Pal_SonWater3:	incbin	"palette\Sonic Pal\03 Beta Underwater.bin"
 Pal_SonWater4:	incbin	"palette\Sonic Pal\04 Midnight Underwater.bin"
@@ -2399,6 +2400,7 @@ Pal_SonWater7:	incbin	"palette\Sonic Pal\07 Red Hot Underwater.bin"
 Pal_SonWater8:	incbin	"palette\Sonic Pal\08 Socket Underwater.bin"
 Pal_SonWater9:	incbin	"palette\Sonic Pal\09 Cringe Underwater.bin"
 Pal_SonWater10:	incbin	"palette\Sonic Pal\10 Dark Underwater.bin"
+Pal_SonWater11:	incbin	"palette\Sonic Pal\11 DeltaWooloo Underwater.bin"
 Pal_SBZ3SonWat2:	incbin	"palette\Sonic Pal\02 Sonic 1 SBZ3.bin"
 Pal_SBZ3SonWat3:	incbin	"palette\Sonic Pal\03 Beta SBZ3.bin"
 Pal_SBZ3SonWat4:	incbin	"palette\Sonic Pal\04 Midnight SBZ3.bin"
@@ -2408,6 +2410,7 @@ Pal_SBZ3SonWat7:	incbin	"palette\Sonic Pal\07 Red Hot SBZ3.bin"
 Pal_SBZ3SonWat8:	incbin	"palette\Sonic Pal\08 Socket SBZ3.bin"
 Pal_SBZ3SonWat9:	incbin	"palette\Sonic Pal\09 Cringe SBZ3.bin"
 Pal_SBZ3SonWat10:	incbin	"palette\Sonic Pal\10 Dark SBZ3.bin"
+Pal_SBZ3SonWat11:	incbin	"palette\Sonic Pal\11 DeltaWooloo SBZ3.bin"
 ; ---------------------------------------------------------------------------
 ; Subroutine to	wait for VBlank routines to complete
 ; ---------------------------------------------------------------------------
@@ -7589,7 +7592,8 @@ LoadPlayerPal:
 
 	@palLUT:
 		dc.b	palid_Sonic, palid_Sonic2, palid_Sonic3, palid_Sonic4, palid_Sonic5
-		dc.b	palid_Sonic6, palid_Sonic7, palid_Sonic8, palid_Sonic9, palid_Sonic10
+		dc.b	palid_Sonic6, palid_Sonic7, palid_Sonic8, palid_Sonic9, palid_Sonic10, palid_Sonic11
+		even
 
 LoadPlayerWaterPal:
 		moveq	#0,d0
@@ -7599,7 +7603,8 @@ LoadPlayerWaterPal:
 
 	@palLUT:
 		dc.b	palid_SBZ3SonWat, palid_SonWater2, palid_SonWater3, palid_SonWater4, palid_SonWater5
-		dc.b	palid_SonWater6, palid_SonWater7, palid_SonWater8, palid_SonWater9, palid_SonWater10
+		dc.b	palid_SonWater6, palid_SonWater7, palid_SonWater8, palid_SonWater9, palid_SonWater10, palid_SonWater11
+		even
 
 ; ---------------------------------------------------------------------------
 ; Object 01 - Sonic
