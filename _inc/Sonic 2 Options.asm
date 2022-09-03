@@ -128,14 +128,9 @@ OptionScreen_Select:
 ; ===========================================================================
 ; loc_90B6:
 OptionScreen_Select_Not1P:
-		subq.b	#1,d0
-		bne.s	OptionScreen_Select_Other
-		bra.s	OptionScreen_Main
-; ===========================================================================
-; loc_90D8:
-OptionScreen_Select_Other:
-		move.b	#id_Sega,(v_gamemode).w ; => SegaScreen
+		move.b	#id_Title,(v_gamemode).w ; => SegaScreen
 		rts
+; ===========================================================================
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -148,13 +143,13 @@ OptionScreen_Controls:
 		beq.s	Option_Controls_Down	; if not, branch
 		subq.b	#1,d2					; move up 1 selection
 		bcc.s	Option_Controls_Down
-		move.b	#2,d2
+		move.b	#1,d2
 
 Option_Controls_Down:
 		btst	#1,d0			; is down pressed?
 		beq.s	Option_Controls_Refresh	; if not, branch
 		addq.b	#1,d2					; move down 1 selection
-		cmpi.b	#3,d2
+		cmpi.b	#2,d2
 		blo.s	Option_Controls_Refresh
 		moveq	#0,d2
 
@@ -198,7 +193,6 @@ Option_Controls_NoMove:
 OptionScreen_Choices:
 		dc.l ($A-1)<<24|($FFFFBE&$FFFFFF)
 		dc.l (2-1)<<24|($FFFF8A&$FFFFFF)
-		dc.l (2-1)<<24|($FFFF84&$FFFFFF)
 		even
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -216,8 +210,6 @@ OptionScreen_DrawSelected:
 		bsr.w	MenuScreenTextToRAM
 		lea	($FFFF00B6).l,a2
 		moveq	#0,d1
-		cmpi.b	#2,(Options_menu_box).w
-		beq.s	loc_9186
 		move.b	(Options_menu_box).w,d1
 		lsl.w	#2,d1
 		lea	OptionScreen_Choices(pc),a1
@@ -254,8 +246,8 @@ OptionScreen_DrawUnselected:
 		bsr.w	MenuScreenTextToRAM
 		lea	($FFFF0216).l,a2
 		moveq	#0,d1
-		cmpi.b	#2,(Options_menu_box).w
-		beq.s	loc2_91F8
+		;cmpi.b	#2,(Options_menu_box).w
+		;beq.s	loc2_91F8
 		move.b	(Options_menu_box).w,d1
 		lsl.w	#2,d1
 		lea	OptionScreen_Choices(pc),a1
@@ -287,13 +279,8 @@ loc_9268:
 
 loc2_9268:
 		tst.b	(Options_menu_box).w
-		beq.s	loc3_9268
+		beq.s	loc4_9268
 		lea	(off_92EA).l,a4
-
-loc3_9268:
-		cmpi.b	#2,(Options_menu_box).w
-		bne.s	loc4_9268		; rts
-		lea	(off_92F2).l,a4
 
 loc4_9268:
 		rts
@@ -347,9 +334,6 @@ OptScrBoxData:
 		dc.l TextOptScr_LivesSystem
 		dc.w $4592
 		dc.w 3
-		dc.l TextOptScr_SoundTest
-		dc.w $4992
-		dc.w 3
 
 off_92D2:
 		dc.l TextOptScr_Default
@@ -376,9 +360,6 @@ off_92DE:
 off_92EA:
 		dc.l TextOptScr_On
 		dc.l TextOptScr_Off
-off_92F2:
-		dc.l TextOptScr_Null
-		dc.l TextOptScr_Null2
 ; ===========================================================================
 
 TextOptScr_PlayerSelect:	asc	"* PALETTE PICKER *"	; byte_97CA:
@@ -395,9 +376,6 @@ TextOptScr_Dark:			asc	"    DARKER    "
 TextOptScr_LivesSystem:		asc	"*   SCD CAMERA   *"	; byte_982C:
 TextOptScr_On:				asc	"    DISABLED     "	; byte_984E:
 TextOptScr_Off:				asc	"    ENABLED    "	; byte_984E:
-TextOptScr_SoundTest:		asc	"* NEW MOVESTYLES *"	; byte_985E:
-TextOptScr_Null:				asc	"FINISH THE GAME"	; byte_9870:
-TextOptScr_Null2:				asc	"      NULLS       "	; byte_9870:
 ; ============================================================================
 		even
 Sonic_Miles_Spr:	incbin  "artunc/Sonic and Miles text.bin"
