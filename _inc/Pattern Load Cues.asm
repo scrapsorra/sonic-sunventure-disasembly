@@ -104,12 +104,12 @@ PLC_GHZ2:	dc.w ((PLC_GHZ2end-PLC_GHZ2-2)/6)-1
 ; ---------------------------------------------------------------------------
 PLC_LZ:		dc.w ((PLC_LZ2-PLC_LZ-2)/6)-1
 		plcm	Nem_LZ,0		; LZ main patterns
-		plcm	Nem_LzBlock1, $6500	; block
-		plcm	Nem_LzBlock2, $6700	; blocks
+		plcm	Nem_LzBlock1, $3C00	; block
+		;plcm	Nem_LzBlock2, $3E00	; blocks
 		;plcm	Nem_Splash, $4B20	; waterfalls and splash
 		plcm	Nem_Water, $6000	; water	surface
 		plcm	Nem_LzSpikeBall, $6200	; spiked ball
-		;plcm	Nem_FlapDoor, $6500	; flapping door
+		plcm	Nem_FlapDoor, $6500	; flapping door
 		plcm	Nem_Bubbles, $6900	; bubbles and numbers
 		plcm	Nem_LzBlock3, $7780	; block
 		plcm	Nem_LzDoor1, $7880	; vertical door

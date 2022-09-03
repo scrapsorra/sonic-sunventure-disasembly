@@ -215,7 +215,7 @@ Pow_ChkGShield:
 		move.b	#0,(v_shield).w ; remove shield
 		move.b	#0,(v_rshield).w ; remove r shield
 		move.b	#0,(v_spshield).w ; remove s shield
-		move.b	#1,(v_gshield).w ; give Sonic a g shield
+		move.b	#2,(v_gshield).w ; give Sonic a g shield
 		move.b	#id_GShieldItem,(v_objspace+$180).w ; load g shield object ($38)
 		
 		addi.w	#35,(v_rings).w	; add 35 rings to the number of rings you have

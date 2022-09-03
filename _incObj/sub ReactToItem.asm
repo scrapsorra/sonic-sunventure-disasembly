@@ -347,18 +347,23 @@ HurtSonic:
 		beq.w 	breakenemy
 		cmpi.b	#$78,(a2)	; was damage caused by Catterkiller?
 		beq.w 	breakenemy
-		cmpi.b	#$5F,(a2)	; was damage caused by Bomb enemy?
+		cmpi.b	#$2D,(a2)	; was damage caused by Burrobot enemy?
 		beq.w 	breakenemy
 
 
 	@hurtcont:
 		move.b	#0,(v_shield).w		; remove shield
-		move.b	#0,(v_gshield).w	; remove g shield
+		;move.b	#0,(v_gshield).w	; remove g shield
 		move.b	#0,(v_spshield).w	; remove sp shield
 		
 		cmpi.b	#0,(v_rshield).w ; do you have no r shield?
-		beq.s	@hurtcont2	;if not, branch
+		beq.s	@gshieldcheck	;if not, branch
 		subq.b	#1,(v_rshield).w
+		
+	@gshieldcheck:
+		cmpi.b	#0,(v_gshield).w 	; do you have no g shield?
+		beq.s	@hurtcont2			;if not, branch
+		subq.b	#1,(v_gshield).w	
 		
 	@hurtcont2:
 		move.b	#4,obRoutine(a0)

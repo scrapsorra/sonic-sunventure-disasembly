@@ -330,6 +330,10 @@ loc_70D0:
 
 locret_70E8:
 		rts	
+		
+;DLE_MZ3end:
+;		move.w	(v_screenposx).w,(v_limitleft2).w
+;		rts	
 ; ===========================================================================		
 		
 DLE_MZ3cutscene:
@@ -358,10 +362,9 @@ DLE_MZ3boss2:
 
 loc_72C0:
 		move.b	#1,(f_lockscreen).w ; lock screen
-		
 
 loc_72C6:
-		bra.w	loc_72C2
+		bra.s	loc_72D2
 ; ===========================================================================
 
 DLE_MZ3end:
