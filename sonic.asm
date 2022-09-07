@@ -6285,29 +6285,32 @@ M_Card_GHZ:	dc.b 9 			; GREEN HILL
 		dc.b $F8, 5, 0,	$26, $2C
 		dc.b $F8, 5, 0,	$26, $3C
 		even
-M_Card_LZ:	dc.b 9			; LABYRINTH
-		dc.b $F8, 5, 0,	$26, $BC
-		dc.b $F8, 5, 0,	0, $CC
-		dc.b $F8, 5, 0,	4, $DC
-		dc.b $F8, 5, 0,	$4A, $EC
-		dc.b $F8, 5, 0,	$3A, $FC
-		dc.b $F8, 1, 0,	$20, $C
-		dc.b $F8, 5, 0,	$2E, $14
-		dc.b $F8, 5, 0,	$42, $24
-		dc.b $F8, 5, 0,	$1C, $34
-		even
+M_Card_LZ:	dc.b $D	;  LABYRINTH | ROBOTIC ABYSS
+		dc.b $F8, 5, 0, $3A, $9C	; R
+		dc.b $F8, 5, 0, $32, $AC	; O
+		dc.b $F8, 5, 0, 4, $BC		; B
+		dc.b $F8, 5, 0, $32, $CC	; O
+		dc.b $F8, 5, 0, $42, $DC	; T
+		dc.b $F8, 1, 0, $20, $EC	; I
+		dc.b $F8, 5, 0, 8, $F4		; C
+		dc.b $F8, 0, 0, $56, $4	; Space
+		dc.b $F8, 5, 0, 0, $14		; A
+		dc.b $F8, 5, 0, 4, $24		; B
+		dc.b $F8, 5, 0, $4A, $34	; Y
+		dc.b $F8, 5, 0, $3E, $44	; S
+		dc.b $F8, 5, 0, $3E, $54	; S
 M_Card_MZ:	dc.b $B	;  MARBLE | SCRAP RUINS
-		dc.b $F8, 5, 0, $3E, $80	; S
-		dc.b $F8, 5, 0, 8, $90		; C
-		dc.b $F8, 5, 0, $3A, $A0	; R
-		dc.b $F8, 5, 0, 0, $B0		; A
-		dc.b $F8, 5, 0, $36, $C0	; P
-		dc.b $F8, 0, 0, $56, $D0	; Space
-		dc.b $F8, 5, 0, $3A, $E0	; R
-		dc.b $F8, 5, 0, $46, $F0	; U
-		dc.b $F8, 1, 0, $20, $0	; I
-		dc.b $F8, 5, 0, $2E, $8	; N
-		dc.b $F8, 5, 0, $3E, $18	; S
+		dc.b $F8, 5, 0, $3E, $A4	; S
+		dc.b $F8, 5, 0, 8, $B4		; C
+		dc.b $F8, 5, 0, $3A, $C4	; R
+		dc.b $F8, 5, 0, 0, $D4		; A
+		dc.b $F8, 5, 0, $36, $E4	; P
+		dc.b $F8, 0, 0, $56, $F4	; Space
+		dc.b $F8, 5, 0, $3A, $4	; R
+		dc.b $F8, 5, 0, $46, $14	; U
+		dc.b $F8, 1, 0, $20, $24	; I
+		dc.b $F8, 5, 0, $2E, $2C	; N
+		dc.b $F8, 5, 0, $3E, $3C	; S
 M_Card_SLZ:	dc.b 9			; STAR LIGHT
 		dc.b $F8, 5, 0,	$3E, $B4
 		dc.b $F8, 5, 0,	$42, $C4
@@ -6319,18 +6322,17 @@ M_Card_SLZ:	dc.b 9			; STAR LIGHT
 		dc.b $F8, 5, 0,	$1C, $2C
 		dc.b $F8, 5, 0,	$42, $3C
 		even
-M_Card_SYZ:	dc.b $A			; SPRING YARD
-		dc.b $F8, 5, 0,	$3E, $AC
-		dc.b $F8, 5, 0,	$36, $BC
-		dc.b $F8, 5, 0,	$3A, $CC
-		dc.b $F8, 1, 0,	$20, $DC
-		dc.b $F8, 5, 0,	$2E, $E4
-		dc.b $F8, 5, 0,	$18, $F4
-		dc.b $F8, 5, 0,	$4A, $14
-		dc.b $F8, 5, 0,	0, $24
-		dc.b $F8, 5, 0,	$3A, $34
-		dc.b $F8, 5, 0,	$C, $44
-		even
+M_Card_SYZ:	dc.b $A	;  SPRING YARD | FUTURE BAY
+		dc.b $F8, 5, 0, $14, $AC	; F
+		dc.b $F8, 5, 0, $46, $BC	; U
+		dc.b $F8, 5, 0, $42, $CC	; T
+		dc.b $F8, 5, 0, $46, $DC	; U
+		dc.b $F8, 5, 0, $3A, $EC	; R
+		dc.b $F8, 5, 0, $10, $FC	; E
+		dc.b $F8, 0, 0, $56, $C	; Space
+		dc.b $F8, 5, 0, 4, $1C		; B
+		dc.b $F8, 5, 0, 0, $2C		; A
+		dc.b $F8, 5, 0, $4A, $3C	; Y
 M_Card_SBZ:	dc.b $A			; SCRAP BRAIN
 		dc.b $F8, 5, 0,	$3E, $AC
 		dc.b $F8, 5, 0,	8, $BC

@@ -106,10 +106,8 @@ PLC_LZ:		dc.w ((PLC_LZ2-PLC_LZ-2)/6)-1
 		plcm	Nem_LZ,0		; LZ main patterns
 		plcm	Nem_LzBlock1, $3C00	; block
 		;plcm	Nem_LzBlock2, $3E00	; blocks
-		;plcm	Nem_Splash, $4B20	; waterfalls and splash
 		plcm	Nem_Water, $6000	; water	surface
 		plcm	Nem_LzSpikeBall, $6200	; spiked ball
-		plcm	Nem_FlapDoor, $6500	; flapping door
 		plcm	Nem_Bubbles, $6900	; bubbles and numbers
 		plcm	Nem_LzBlock3, $7780	; block
 		plcm	Nem_LzDoor1, $7880	; vertical door
@@ -119,7 +117,7 @@ PLC_LZ:		dc.w ((PLC_LZ2-PLC_LZ-2)/6)-1
 PLC_LZ2:	dc.w ((PLC_LZ2end-PLC_LZ2-2)/6)-1
 		plcm	Nem_LzPole, $7BC0	; pole that breaks
 		plcm	Nem_LzDoor2, $7CC0	; large	horizontal door
-		plcm	Nem_LzWheel, $7EC0	; wheel
+		;plcm	Nem_LzWheel, $7EC0	; wheel
 		;plcm	Nem_Gargoyle, $5D20	; gargoyle head
 		if Revision=0
 		plcm	Nem_LzSonic, $8800	; Sonic	holding	his breath
@@ -189,13 +187,13 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_SYZ,0		; SYZ main patterns
 		;plcm	Nem_Stomper, $5800	; moving platform and stomper
 		;plcm	Nem_SbzDoor1, $5D40	; door
-		plcm	Nem_Bubbles, $6900	; bubbles and numbers
-		plcm	Nem_Buzz, $8880		; buzz bomber enemy
+		plcm	Nem_Bubbles, $7EA0	; bubbles and numbers
+		;plcm	Nem_Buzz, $8880		; buzz bomber enemy
 		plcm	Nem_Yadrin, $8F60	; yadrin enemy
 		plcm	Nem_Roller, $9700	; roller enemy
 		plcm	Nem_FlamePipe, $7B20	; flaming pipe
-		plcm	Nem_SbzFloor, $7EA0	; collapsing floor
-		;plcm	Nem_SbzBlock, $9860	; vanishing block
+		plcm	Nem_SbzFloor, $7840	; collapsing floor
+		plcm	Nem_SbzBlock, $9860	; vanishing block
 
 PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		;plcm	Nem_Cater, $5600	; caterkiller enemy
@@ -203,7 +201,7 @@ PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		plcm	Nem_SyzSpike1, $72C0	; large	spikeball
 		plcm	Nem_SyzSpike2, $7740	; small	spikeball
 		;plcm	Nem_TrapDoor, $9240	; trapdoor
-		plcm	Nem_SbzFloor, $7F20	; collapsing floor
+		plcm	Nem_SbzFloor, $78C0	; collapsing floor
 		;plcm	Nem_SpinPform, $9BE0	; small	spinning platform
 		plcm	Nem_LzSwitch, $A1E0	; switch
 		plcm	Nem_Spikes, $A360	; spikes

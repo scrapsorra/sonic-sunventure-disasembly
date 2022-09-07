@@ -35,7 +35,12 @@ id_Drown_AirLeft:	equ ptr_Drown_AirLeft-Drown_Index		; $C
 Drown_Main:	; Routine 0
 		addq.b	#2,obRoutine(a0)
 		move.l	#Map_Bub,obMap(a0)
-		move.w	#$8348,obGfx(a0)
+		move.w	#$83F5,obGfx(a0)
+		cmpi.b	#id_SYZ,(v_zone).w ; is level Spring Yard Zone?
+		beq.s	Drown_IsSYZ	; if yes, branch
+		move.w	#$8348,obGfx(a0)	; LZ
+
+	Drown_IsSYZ:	
 		move.b	#$84,obRender(a0)
 		move.b	#$10,obActWid(a0)
 		move.w	#$80,obPriority(a0)

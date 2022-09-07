@@ -160,6 +160,7 @@ Pow_ChkS:
 
 PowS2:
 		addi.w	#50,(v_rings).w	; add 50 rings to the number of rings you have
+		move.b	#0,(f_emeraldm).w
 		ori.b	#5,(f_ringcount).w ; update the ring counter
 		cmpi.w	#100,(v_rings).w ; check if you have 100 rings
 		bcs.s	PowSPlay

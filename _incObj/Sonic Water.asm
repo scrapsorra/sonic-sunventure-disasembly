@@ -32,7 +32,6 @@ Sonic_Water:
 		bne.w	Sonic_Water_Exit
 		bsr.w	ResumeMusic
 		move.w	(v_player+obY).w,(v_watersplashpos).w	;TIS copy y-pos
-
 		move.b	#id_DrownCount,(v_objspace+$340).w ; load bubbles object from Sonic's mouth
 		move.b	#$81,(v_objspace+$340+obSubtype).w
 		move.w	#$300,(v_sonspeedmax).w ; change Sonic's top speed

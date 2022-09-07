@@ -92,7 +92,7 @@ MenuScreen_Options:
 ;-------------------------------------------------------------------------------
 		moveq	#palid_Options,d0
 		jsr		PalLoad1
-		move.b	#$98,d0
+		move.b	#$91,d0
 		jsr	PlaySound_Special ; play options music
 		clr.l	(v_screenposx).w
 		clr.l	(v_screenposy).w
@@ -367,11 +367,11 @@ off_92EA:
 TextOptScr_PlayerSelect:	asc	"* PALETTE PICKER *"	; byte_97CA:
 TextOptScr_Default:			asc	"    DEFAULT      "	; byte_97FC:
 TextOptScr_Original:			asc	"    ORIGINAL   "	; byte_980C:
-TextOptScr_Beta:			asc	"     DEMO     "	; byte_981C:
-TextOptScr_Midnight:			asc	"   MIDNIGHT    "
-TextOptScr_C2:			asc	"   ALSO BLUE     "
-TextOptScr_Clackers:			asc	"   CRACKERS     "
-TextOptScr_RHS:			asc	"  REDHOTSONIC   "
+TextOptScr_Beta:			asc	"    CLASSIC     "	; byte_981C:
+TextOptScr_Midnight:			asc	"    MIDNIGHT    "
+TextOptScr_C2:			asc	"    VIBRANT    "
+TextOptScr_Clackers:			asc	"    CRACKERS    "
+TextOptScr_RHS:			asc	"    RED HOT    "
 TextOptScr_Socket:			asc	"    SOCKET    "
 TextOptScr_Cringe:			asc	"    CRINGE    "
 TextOptScr_Dark:			asc	"    DARKER    "

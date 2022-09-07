@@ -32,8 +32,9 @@ ptr_Pal_LZSonWater:	palp	Pal_LZSonWater,v_pal_dry,$10	; $F (15) - LZ Sonic under
 ptr_Pal_SBZ3SonWat:	palp	Pal_SBZ3SonWat,v_pal_dry,$10	; $10 (16) - SBZ3 Sonic underwater
 ptr_Pal_SSResult:	palp	Pal_SSResult,v_pal_dry,$40		; $11 (17) - special stage results
 ptr_Pal_Continue:	palp	Pal_Continue,v_pal_dry,$20		; $12 (18) - special stage results continue
-ptr_Pal_Ending:		palp	Pal_Ending,v_pal_dry,$40		; $13 (19) - ending sequence
 ptr_Pal_Options:		palp	Pal_Options,v_pal_dry,$40		; $14 (20) - options screen
+ptr_Pal_Ending2:		palp	Pal_Ending,v_pal_dry,$40		; $13 (19) - ending sequence
+ptr_Pal_Ending:		palp	Pal_Ending,v_pal_dry,$40		; $13 (19) - ending sequence
 ptr_Pal_Sonic2:		palp	Pal_Sonic2,v_pal_dry,$10		; $15 (20) - Sonic (Sonic 1)
 ptr_Pal_Sonic3:		palp	Pal_Sonic3,v_pal_dry,$10		; $16 (21) - Sonic (Beta)
 ptr_Pal_Sonic4:		palp	Pal_Sonic4,v_pal_dry,$10		; $17 (22) - Sonic (Midnight)
@@ -92,6 +93,7 @@ ptr_Pal_SBZ3SonWat_D:	palp	Pal_SBZ3SonWat,v_pal_dry,$10	; $10 (16) - SBZ3 Sonic 
 ptr_Pal_SSResult_D:	palp	Pal_SSResult,v_pal_dry,$40		; $11 (17) - special stage results
 ptr_Pal_Continue_D:	palp	Pal_Continue,v_pal_dry,$20		; $12 (18) - special stage results continue
 ptr_Pal_Options_D:		palp	Pal_Options,v_pal_dry,$40		; $13 (20) - options screen
+ptr_Pal_Ending2_D:		palp	Pal_Ending,v_pal_dry,$40		; $14 (21) - ending sequence
 ptr_Pal_Ending_D:		palp	Pal_Ending,v_pal_dry,$40		; $14 (21) - ending sequence
 ptr_Pal_Sonic2_D:		palp	Pal_Sonic2,v_pal_dry,$10		; $15 (22) - Sonic (Sonic 1)
 ptr_Pal_Sonic3_D:		palp	Pal_Sonic3,v_pal_dry,$10		; $16 (23) - Sonic (Beta)
@@ -149,8 +151,9 @@ ptr_Pal_LZSonWatr2E:	palp	Pal_LZSonWatr2,v_pal_dry,$10	; $F (15) - LZ Sonic unde
 ptr_Pal_SBZ3SonWat_E:	palp	Pal_SBZ3SonWat,v_pal_dry,$10	; $10 (16) - SBZ3 Sonic underwater
 ptr_Pal_SSResult_E:	palp	Pal_SSResult,v_pal_dry,$40		; $11 (17) - special stage results
 ptr_Pal_Continue_E:	palp	Pal_Continue,v_pal_dry,$20		; $12 (18) - special stage results continue
-ptr_Pal_Ending_E:		palp	Pal_Ending,v_pal_dry,$40		; $13 (19) - ending sequence
 ptr_Pal_Options_E:		palp	Pal_Options,v_pal_dry,$40		; $14 (21) - options screen
+ptr_Pal_Ending2_E:		palp	Pal_Ending,v_pal_dry,$40		; $13 (19) - ending sequence
+ptr_Pal_Ending_E:		palp	Pal_Ending,v_pal_dry,$40		; $13 (19) - ending sequence
 ptr_Pal_Sonic2_E:		palp	Pal_Sonic2,v_pal_dry,$10		; $15 (22) - Sonic (Sonic 1)
 ptr_Pal_Sonic3_E:		palp	Pal_Sonic3,v_pal_dry,$10		; $16 (23) - Sonic (Beta)
 ptr_Pal_Sonic4_E:		palp	Pal_Sonic4,v_pal_dry,$10		; $17 (24) - Sonic (Midnight)
@@ -203,8 +206,9 @@ palid_LZSonWater:	equ (ptr_Pal_LZSonWater-PalPointers)/8
 palid_SBZ3SonWat:	equ (ptr_Pal_SBZ3SonWat-PalPointers)/8
 palid_SSResult:		equ (ptr_Pal_SSResult-PalPointers)/8
 palid_Continue:		equ (ptr_Pal_Continue-PalPointers)/8
-palid_Ending:		equ (ptr_Pal_Ending-PalPointers)/8
 palid_Options:		equ (ptr_Pal_Options-PalPointers)/8
+palid_Ending2:		equ (ptr_Pal_Ending-PalPointers)/8
+palid_Ending:		equ (ptr_Pal_Ending-PalPointers)/8
 palid_GHZ2:		equ (ptr_Pal_GHZ-PalPointers)/8
 palid_LZ2:		equ (ptr_Pal_LZ-PalPointers)/8
 palid_MZ2:		equ (ptr_Pal_MZ-PalPointers)/8

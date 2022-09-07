@@ -21,7 +21,7 @@ SpShield_Index:
 ; ===========================================================================
 SpShield_Init:
 		addq.b #2,$24(a0)
-		move.l #Map_Shield,$4(A0) ; Load Shield Map into place
+		move.l #Map_Shield2,$4(A0) ; Load Shield Map into place
 		move.b #4,1(a0)
 		move.w #$80,$18(a0)
 		move.b #$18,obActWid(a0)

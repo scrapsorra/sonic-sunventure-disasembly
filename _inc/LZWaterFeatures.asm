@@ -313,7 +313,7 @@ LZWind_Data:	dc.w $A80, $300, $C10,  $380 ; act 1 values (set 1)
 		dc.w $F80, $100, $1410,	$180 ; act 1 values (set 2)
 		dc.w $460, $400, $710,  $480 ; act 2 values
 		dc.w $A20, $600, $1610, $6E0 ; act 3 values
-		dc.w $C80, $600, $13D0, $680 ; SBZ act 3 values
+		dc.w $C80, $600, $13D0, $780 ; SBZ act 3 values
 		even
 
 ; ---------------------------------------------------------------------------

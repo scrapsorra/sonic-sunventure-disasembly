@@ -331,12 +331,8 @@ loc_70D0:
 locret_70E8:
 		rts	
 		
-;DLE_MZ3end:
-;		move.w	(v_screenposx).w,(v_limitleft2).w
-;		rts	
-; ===========================================================================		
-		
 DLE_MZ3cutscene:
+		move.w	(v_screenposx).w,(v_limitleft2).w
 		cmpi.w	#$19B0,(v_screenposx).w
 		bcs.s	locret_8298
 		bsr.w	FindFreeObj
@@ -461,6 +457,10 @@ DLE_SYZx:	dc.w DLE_SYZ1-DLE_SYZx
 ; ===========================================================================
 
 DLE_SYZ1:
+		move.w	#$520,(v_limitbtm1).w
+		cmpi.w	#$1600,(v_screenposx).w
+		bcs.s	locret_71A2
+		move.w	#$420,(v_limitbtm1).w
 		rts	
 ; ===========================================================================
 

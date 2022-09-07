@@ -118,7 +118,7 @@ SonAni_MaxRun:  dc.b $FF, fr_peelout11, fr_peelout12, fr_peelout13, fr_peelout14
 		even
 SonAni_SpinDash: dc.b 0, fr_Spindash1, fr_spindash2, fr_spindash1, fr_spindash3, fr_spindash1, fr_spindash4, fr_spindash1, fr_spindash5, fr_spindash1, fr_spindash6, afEnd
 		even
-SonAni_Hurt2:	dc.b 2, fr_skele1, fr_skele2, afEnd	
+SonAni_Hurt2:	dc.b 2, fr_skele1, fr_injury, fr_skele2, afEnd	
 		even
 SonAni_GetUp:	dc.b 3, $B,$FD,  0
 		even

@@ -79,31 +79,24 @@ loc_12F70:
 ; ===========================================================================
 
 Sonic_LookUp:
-		btst	#0,($FFFFF602).w ; is up being pressed?
+		btst	#bitUp,(v_jpadhold2).w ; is up being pressed?
 		beq.s	Sonic_Duck	; if not, branch
-		move.b	#7,$1C(a0)	; use "looking up" animation
-		addq.b	#1,($FFFFC903).w
-		cmp.b	#$78,($FFFFC903).w
-		bcs.s	Sonic_ResetScr_Part2
-		move.b	#$78,($FFFFC903).w
-		cmpi.w	#$C8,($FFFFF73E).w
+		move.b	#id_LookUp,obAnim(a0) ; use "looking up" animation
+		cmpi.w	#$C8,(v_lookshift).w
 		beq.s	loc_12FC2
-		addq.w	#2,($FFFFF73E).w
+		addq.w	#2,(v_lookshift).w
 		bra.s	loc_12FC2
 ; ===========================================================================
 
 Sonic_Duck:
-		btst	#1,($FFFFF602).w ; is down being pressed?
+		btst	#bitDn,(v_jpadhold2).w ; is down being pressed?
 		beq.s	Sonic_ResetScr	; if not, branch
-		move.b	#8,$1C(a0)	; use "ducking"	animation
-		addq.b	#1,($FFFFC903).w
-		cmpi.b	#$78,($FFFFC903).w
-		bcs.s	Sonic_ResetScr_Part2
-		move.b	#$78,($FFFFC903).w
-		cmpi.w	#8,($FFFFF73E).w
+		move.b	#id_Duck,obAnim(a0) ; use "ducking" animation
+		cmpi.w	#8,(v_lookshift).w
 		beq.s	loc_12FC2
-		subq.w	#2,($FFFFF73E).w
+		subq.w	#2,(v_lookshift).w
 		bra.s	loc_12FC2
+; =============================================
 ; ===========================================================================
 
 Sonic_ResetScr:

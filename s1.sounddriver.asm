@@ -84,6 +84,7 @@ ptr_mus97:	dc.l Music97
 ptr_mus98:	dc.l Music98
 ptr_mus99:	dc.l Music99
 ptr_mus9A:	dc.l Music9A
+ptr_mus9B:	dc.l Music9B
 ptr_musend
 ; ---------------------------------------------------------------------------
 ; Priority of sound. New music or SFX must have a priority higher than or equal
@@ -2590,7 +2591,7 @@ Music94:	incbin	"sound/music/Mus94 - Final Boss Pinch.bin"
 		even
 Music95:		incbin	"sound/music/Mus95 - Seaside Front.bin"
 		even
-Music96:		incbin	"sound/music/Mus96 - TTZ BF US.bin"
+Music96:		incbin	"sound/music/Mus96 - Big Water.bin"
 		even
 Music97:		incbin	"sound/music/Mus97 - Granada Game Over.bin"
 		even
@@ -2600,6 +2601,8 @@ Music99:		include	"sound/music/Mus99 - Toxic Landfill.asm"
 		even			
 Music9A:		include	"sound/music/Mus9A - RRZ2.asm"
 		even				
+Music9B:		incbin	"sound/music/Mus9B - TTZ BF US.bin"
+		even
 ; ---------------------------------------------------------------------------
 ; Sound	effect pointers
 ; ---------------------------------------------------------------------------
