@@ -20,7 +20,12 @@ vanp_timelen:	equ $32		; time between events (general)
 VanP_Main:	; Routine 0
 		addq.b	#6,obRoutine(a0)
 		move.l	#Map_VanP,obMap(a0)
-		move.w	#$44C3,obGfx(a0)
+		move.w	#$445D,obGfx(a0)
+		cmpi.b	#id_SYZ,(v_zone).w ; is level Spring Yard Zone?
+		beq.s	VanP_IsSYZ	; if yes, branch
+		move.w	#$44C3,obGfx(a0)	; SBZ
+
+	VanP_IsSYZ:	
 		ori.b	#4,obRender(a0)
 		move.b	#$10,obActWid(a0)
 		move.w	#$200,obPriority(a0)

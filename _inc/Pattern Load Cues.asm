@@ -193,7 +193,7 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_Roller, $9700	; roller enemy
 		plcm	Nem_FlamePipe, $7B20	; flaming pipe
 		plcm	Nem_SbzFloor, $7840	; collapsing floor
-		plcm	Nem_SbzBlock, $9860	; vanishing block
+		plcm	Nem_SbzBlock, $8BA0	; vanishing block
 
 PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		;plcm	Nem_Cater, $5600	; caterkiller enemy
