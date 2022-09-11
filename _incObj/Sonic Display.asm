@@ -44,9 +44,17 @@ Sonic_Display:
 		cmpi.w	#$C,(v_air).w
 		bcs.s	@removeinvincible	
 		cmpi.b	#$1,(f_lockscreen).w	
-		beq.b	@removeinvincible				
+		beq.s	@removeinvincible	
+		cmpi.b	#$1,(v_shoes).w	; does Sonic have speed shoes?
+		bne.s	@haveshoes	; if no, branch, and load regular stage music
+		move.b	#$8B,d0		; if yes, load regular speed shoes music
+		bra.s	@playtune
+		
+@haveshoes:		
 		move.b  (v_Saved_music),d0    ; loads song number from RAM
-        	jsr	(PlaySound).l    ; play normal music
+
+@playtune: 
+		jsr	(PlaySound).l    ; play normal music
 
 	@removeinvincible:
 		move.b	#0,(v_invinc).w ; cancel invincibility
@@ -63,9 +71,15 @@ Sonic_Display:
 		move.w	#$80,(v_sonspeeddec).w ; restore Sonic's deceleration
 		move.b	#0,(v_shoes).w	; cancel speed shoes
 		cmpi.b	#$1,(f_lockscreen).w	
-		beq.b	@exit		
+		beq.s	@exit
+		cmpi.b	#$1,($FFFFFE2D).w	; does Sonic have invincibility?
+		bne.s	@isinvincible	; if no, branch, and load regular stage music
+		move.b	#$87,d0		; if yes, load regular invincibility music
+		bra.b	@playtune2
+@isinvincible:		
 		move.b  (v_Saved_music),d0    ; loads song number from RAM
-        	jsr	(PlaySound).l    ; play normal music
+@playtune2:
+		jsr	(PlaySound).l    ; play normal music
 		
 	@exit:
 		rts	
