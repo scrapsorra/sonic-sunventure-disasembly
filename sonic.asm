@@ -2802,10 +2802,10 @@ LevelSelect:
 		bne.s	LevSel_Level_SS	; if not, go to	Level/SS subroutine
 		move.w	(v_levselsound).w,d0
 		addi.w	#$80,d0
-		cmpi.w	#$9F,d0		; is sound $9F being played?
-		beq.s	LevSel_Ending	; if yes, branch
-		cmpi.w	#$9E,d0		; is sound $9E being played?
-		beq.s	LevSel_Credits	; if yes, branch
+		;cmpi.w	#$9F,d0		; is sound $9F being played?
+		;beq.s	LevSel_Ending	; if yes, branch
+		;cmpi.w	#$9E,d0		; is sound $9E being played?
+		;beq.s	LevSel_Credits	; if yes, branch
 
 LevSel_PlaySnd:
 		bsr.w	PlaySound_Special
