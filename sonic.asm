@@ -2820,7 +2820,7 @@ LevSel_Ending:
 
 LevSel_Credits:
 		move.b	#id_Credits,(v_gamemode).w ; set screen mode to $1C (Credits)
-		sfx	bgm_Credits,0,1,1 ; play credits music
+		sfx	bgm_Tribute,0,1,1 ; play credits music
 		move.w	#0,(v_creditsnum).w
 		rts	
 ; ===========================================================================
@@ -4348,7 +4348,7 @@ End_LoadData:
 		bsr.w	KosDec
 		jsr		LoadPlayerPal
 		bsr.w	PalLoad1	; load Sonic's palette
-		music	bgm_Invincible,0,1,0	; play ending sequence music
+		music	bgm_Tribute,0,1,0	; play ending sequence music
 		btst	#bitA,(v_jpadhold1).w ; is button A pressed?
 		beq.s	End_LoadSonic	; if not, branch
 		move.b	#1,(f_debugmode).w ; enable debug mode
@@ -4358,7 +4358,7 @@ End_LoadSonic:
 		bset	#0,(v_player+obStatus).w ; make Sonic face left
 		move.b	#1,(f_lockctrl).w ; lock controls
 		move.w	#(btnL<<8),(v_jpadhold2).w ; move Sonic to the left
-		move.w	#$F800,(v_player+obInertia).w ; set Sonic's speed
+		move.w	#$F600,(v_player+obInertia).w ; set Sonic's speed
 		move.b	#id_HUD,(v_objspace+$40).w ; load HUD object
 		jsr	(ObjPosLoad).l
 		jsr	(ExecuteObjects).l
@@ -4408,7 +4408,6 @@ End_MainLoop:
 		beq.s	End_ChkEmerald	; if yes, branch
 
 		move.b	#id_Credits,(v_gamemode).w ; goto credits
-		sfx	bgm_Credits,0,1,1 ; play credits music
 		move.w	#0,(v_creditsnum).w ; set credits index number to 0
 		rts	
 ; ===========================================================================
@@ -4556,7 +4555,7 @@ GM_Credits:
 		move.b	#id_EndEggman,(v_objspace+$80).w ; load Eggman object
 		jsr	(ExecuteObjects).l
 		jsr	(BuildSprites).l
-		move.w	#1800,(v_demolength).w ; show screen for 30 seconds
+		move.w	#2880,(v_demolength).w ; show screen for 48 seconds
 		bsr.w	PaletteFadeIn
 
 ; ---------------------------------------------------------------------------

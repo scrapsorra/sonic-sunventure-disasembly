@@ -85,6 +85,7 @@ ptr_mus98:	dc.l Music98
 ptr_mus99:	dc.l Music99
 ptr_mus9A:	dc.l Music9A
 ptr_mus9B:	dc.l Music9B
+ptr_mus9C:	dc.l Music9C
 ptr_musend
 ; ---------------------------------------------------------------------------
 ; Priority of sound. New music or SFX must have a priority higher than or equal
@@ -2603,6 +2604,8 @@ Music9A:		include	"sound/music/Mus9A - RRZ2.asm"
 		even				
 Music9B:		incbin	"sound/music/Mus9B - TTZ BF US.bin"
 		even
+Music9C:		include	"sound/music/Mus9C - Tribute.asm"
+		even		
 ; ---------------------------------------------------------------------------
 ; Sound	effect pointers
 ; ---------------------------------------------------------------------------
