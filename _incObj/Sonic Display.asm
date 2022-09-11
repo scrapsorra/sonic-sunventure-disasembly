@@ -42,7 +42,9 @@ Sonic_Display:
 		tst.b	(f_lockscreen).w
 		bne.s	@removeinvincible
 		cmpi.w	#$C,(v_air).w
-		bcs.s	@removeinvincible
+		bcs.s	@removeinvincible	
+		cmpi.b	#$1,(f_lockscreen).w	
+		beq.b	@removeinvincible				
 		move.b  (v_Saved_music),d0    ; loads song number from RAM
         	jsr	(PlaySound).l    ; play normal music
 
@@ -60,6 +62,8 @@ Sonic_Display:
 		move.w	#$C,(v_sonspeedacc).w ; restore Sonic's acceleration
 		move.w	#$80,(v_sonspeeddec).w ; restore Sonic's deceleration
 		move.b	#0,(v_shoes).w	; cancel speed shoes
+		cmpi.b	#$1,(f_lockscreen).w	
+		beq.b	@exit		
 		move.b  (v_Saved_music),d0    ; loads song number from RAM
         	jsr	(PlaySound).l    ; play normal music
 		
