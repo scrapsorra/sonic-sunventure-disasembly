@@ -107,7 +107,7 @@ v_jpadhold2:	equ $FFFFF602	; joypad input - held, duplicate
 v_jpadpress2:	equ $FFFFF603	; joypad input - pressed, duplicate
 v_jpadhold1:	equ $FFFFF604	; joypad input - held
 v_jpadpress1:	equ $FFFFF605	; joypad input - pressed
-
+v_loadhud:		equ	$FFFFF608
 v_vdp_buffer1:	equ $FFFFF60C	; VDP instruction buffer (2 bytes)
 
 v_demolength:	equ $FFFFF614	; the length of a demo in frames (2 bytes)
@@ -364,3 +364,16 @@ v_gshield:	equ $FFFFF5C9	; shield status (00 = no; 01 = yes)
 v_spshield:	equ $FFFFF5CA	; shield status (00 = no; 01 = yes)
 
 Options_menu_box:	equ  $FFFFFF8C
+
+; Ring managers-related stuff
+Max_Rings:	equ 511 ; default. maximum number possible is 759
+Rings_Space:	equ (Max_Rings+1)*2
+
+Ring_Positions:	equ $FFFF8300
+Ring_start_addr_ROM:	equ Ring_Positions+Rings_Space
+Ring_end_addr_ROM:	equ Ring_Positions+Rings_Space+4
+Ring_start_addr_RAM:	equ Ring_Positions+Rings_Space+8
+Perfect_rings_left:		equ Ring_Positions+Rings_Space+$A
+Rings_manager_routine:		equ Ring_Positions+Rings_Space+$C
+v_level_started_flag:		equ Ring_Positions+Rings_Space+$D
+Ring_consumption_table:		equ Ring_Positions+Rings_Space+$E
