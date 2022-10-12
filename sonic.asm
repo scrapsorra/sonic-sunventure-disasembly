@@ -6634,16 +6634,11 @@ BldSpr_ScrPos:	dc.l 0				; blank
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 BuildSprites:                ; XREF: TitleScreen; et al
-        lea    (v_spritetablebuffer).w,a2 ; set address for sprite table
-        moveq    #0,d5
-        moveq    #0,d4
-        tst.b    (Level_Started_Flag).w ; this was level_started_flag
-        beq.s    BuildSprites_2
-        jsr    loc_40804
-BuildSprites_2:
-        lea    ($FFFFAC00).w,a4
-        moveq    #7,d7
-
+		lea	(v_spritetablebuffer).w,a2 ; set address for sprite table
+		moveq	#0,d5
+		lea	(v_spritequeue).w,a4
+		moveq	#7,d7
+		
 loc_D66A:
 		tst.w	(a4)
 		beq.w	loc_D72E
@@ -7024,126 +7019,6 @@ locret_D87C:
 ; End of function BuildSpr_Normal
 
 ; ===========================================================================
-
-BuildSpr_FlipX:
-		btst	#1,d4		; is object also y-flipped?
-		bne.w	BuildSpr_FlipXY	; if yes, branch
-
-	@loop:
-		cmpi.b	#$50,d5		; check sprite limit
-		beq.s	@return
-		move.b	(a1)+,d0	; y position
-		ext.w	d0
-		add.w	d2,d0
-		move.w	d0,(a2)+
-		move.b	(a1)+,d4	; size
-		move.b	d4,(a2)+	
-		addq.b	#1,d5		; link
-		move.b	d5,(a2)+
-		move.b	(a1)+,d0	; art tile
-		lsl.w	#8,d0
-		move.b	(a1)+,d0	
-		add.w	a3,d0
-		eori.w	#$800,d0	; toggle flip-x in VDP
-		move.w	d0,(a2)+	; write to buffer
-		move.b	(a1)+,d0	; get x-offset
-		ext.w	d0
-		neg.w	d0			; negate it
-		add.b	d4,d4		; calculate flipped position by size
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0	; keep within 512px
-		bne.s	@writeX
-		addq.w	#1,d0
-
-	@writeX:
-		move.w	d0,(a2)+	; write to buffer
-		dbf	d1,@loop		; process next sprite piece
-
-	@return:
-		rts	
-; ===========================================================================
-
-BuildSpr_FlipY:
-		cmpi.b	#$50,d5		; check sprite limit
-		beq.s	@return
-		move.b	(a1)+,d0	; get y-offset
-		move.b	(a1),d4		; get size
-		ext.w	d0
-		neg.w	d0		; negate y-offset
-		lsl.b	#3,d4	; calculate flip offset
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d2,d0	; add y-position
-		move.w	d0,(a2)+	; write to buffer
-		move.b	(a1)+,(a2)+	; size
-		addq.b	#1,d5
-		move.b	d5,(a2)+	; link
-		move.b	(a1)+,d0	; art tile
-		lsl.w	#8,d0
-		move.b	(a1)+,d0
-		add.w	a3,d0
-		eori.w	#$1000,d0	; toggle flip-y in VDP
-		move.w	d0,(a2)+
-		move.b	(a1)+,d0	; x-position
-		ext.w	d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0
-		bne.s	@writeX
-		addq.w	#1,d0
-
-	@writeX:
-		move.w	d0,(a2)+	; write to buffer
-		dbf	d1,BuildSpr_FlipY	; process next sprite piece
-
-	@return:
-		rts	
-; ===========================================================================
-
-BuildSpr_FlipXY:
-		cmpi.b	#$50,d5		; check sprite limit
-		beq.s	@return
-		move.b	(a1)+,d0	; calculated flipped y
-		move.b	(a1),d4
-		ext.w	d0
-		neg.w	d0
-		lsl.b	#3,d4
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d2,d0
-		move.w	d0,(a2)+	; write to buffer
-		move.b	(a1)+,d4	; size
-		move.b	d4,(a2)+	; link
-		addq.b	#1,d5
-		move.b	d5,(a2)+	; art tile
-		move.b	(a1)+,d0
-		lsl.w	#8,d0
-		move.b	(a1)+,d0
-		add.w	a3,d0
-		eori.w	#$1800,d0	; toggle flip-x/y in VDP
-		move.w	d0,(a2)+
-		move.b	(a1)+,d0	; calculate flipped x
-		ext.w	d0
-		neg.w	d0
-		add.b	d4,d4
-		andi.w	#$18,d4
-		addq.w	#8,d4
-		sub.w	d4,d0
-		add.w	d3,d0
-		andi.w	#$1FF,d0
-		bne.s	@writeX
-		addq.w	#1,d0
-
-	@writeX:
-		move.w	d0,(a2)+	; write to buffer
-		dbf	d1,BuildSpr_FlipXY	; process next sprite piece
-
-	@return:
-		rts	
 
 		include	"_incObj\sub ChkObjectVisible.asm"
 
@@ -8123,7 +7998,7 @@ Map_Drown:	include	"_maps\Drowning Countdown.asm"
 		include	"_anim\Shield and Invincibility.asm"
 Map_Shield:	include	"_maps\Shield and Invincibility.asm"
 Map_Shield2:	include	"_maps\Shield 2.asm"
-
+Map_InvStars:	include	"_maps\Invincibility Stars.asm"
 Map_Shield3:	include	"_maps\Shield 3.asm"
 		include	"_anim\Special Stage Entry (Unused).asm"
 Map_Vanish:	include	"_maps\Special Stage Entry (Unused).asm"
@@ -8904,7 +8779,7 @@ loc_1B210:
 		move.b	(a1)+,d1
 		subq.b	#1,d1
 		bmi.s	loc_1B268
-		jsr	(BuildSpr_Normal).l
+		jsr	(sub_D762).l
 
 loc_1B268:
 		addq.w	#4,a4
