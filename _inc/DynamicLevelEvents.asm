@@ -145,7 +145,7 @@ DLE_GHZ3main:
 		move.w	#$4C0,(v_limitbtm2).w
 
 loc_6E8E:
-		cmpi.w	#$1700,(v_screenposx).w
+		cmpi.w	#$1300,(v_screenposx).w
 		bcc.s	loc_6E98
 
 locret_6E96:

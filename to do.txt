@@ -1,4 +1,15 @@
--finish future bay chunks
--finish editing robotnik sprites
--change shield placements in GHZ 1 & 2
--fix title screen vram issue
+-complete layout for FBZ3
+-layout improvements to FBZ1 & 2
+-finished title screen sonic sprites
+-fix TM not appearing
+-unlockable super sonic for beating the game with all emeralds
+-water palette bug fixes
+-water tag bug fixes
+-emerald count in act results
+-blue shield attracts rings
+-more music
+-disable act count for robotic abyss
+-separate LZ4 from LZ art
+-cd style checkpoint animation
+-sonic 2 contextual animations (get up, balance 2)
+-gold shield has homing attack

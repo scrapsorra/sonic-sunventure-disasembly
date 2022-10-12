@@ -18,10 +18,10 @@ Sonic_PanCamera:
 ; going up the very first giant ramp in Palmtree Panic Zone Act 1.
 ; However, given that no such object exists in Sonic 1, I just went
 ; ahead and commented these out.
-;        btst    #1,$2C(a0)                ; is sonic going up a giant ramp in PPZ?
-;        beq.s    @skip                    ; if not, branch
-;        cmpi.w    #$1B00,obX(a0)            ; is sonic's x position lower than $1B00?
-;        bcs.s    @reset_pan                ; if so, branch
+        ;tst.b	($FFFFF5C2).w               ; is sonic going up a giant ramp in PPZ?
+       ; bne.s	@reset_pan                   ; if not, branch
+        ;cmpi.w 	#$1B00,obX(a0)            ; is sonic's x position lower than $1B00?
+        ;bcs.s    @reset_pan                ; if so, branch
 
 ; These lines aren't part of the original routine; I added them myself.
 ; If you've ported the Spin Dash, uncomment the following lines of code

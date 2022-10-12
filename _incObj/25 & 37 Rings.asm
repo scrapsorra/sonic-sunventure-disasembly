@@ -115,7 +115,7 @@ loc_9C0E:
 		bne.w	DeleteObject
 
 Ring_Animate:	; Routine 2
-		tst.b	(v_gshield).w
+		tst.b	(v_shield).w
 		beq.s	@skip
 		tst.b	obRender(a0)
 		bpl.s	@skip
@@ -175,7 +175,7 @@ Ring_Delete:	; Routine 8
 		bra.w	DeleteObject
 
 Ring_Attract:	; Routine $A
-		tst.b	(v_gshield).w
+		tst.b	(v_shield).w
 		bne.s	@skip
 		move.b	#id_RingLoss,0(a0)
 		move.b	#2,obRoutine(a0)
@@ -362,7 +362,7 @@ RLoss_Bounce:	; Routine 2
 		addi.w	#$E0,d0
 		cmp.w	obY(a0),d0	   ; has object moved below level boundary?
 		bcs.w	RLoss_Delete	   ; if yes, branch
-		tst.b	(v_gshield).w
+		tst.b	(v_shield).w
 		beq.s	@skip
 		tst.b	obRender(a0)
 		bpl.s	@skip

@@ -436,6 +436,7 @@ KillSonic:
 		move.b	#0,(v_invinc).w	; remove invincibility
 		move.b  #0,(v_shoes).w
 		move.b  #0,(f_emeraldm).w
+		move.b  #0,($FFFFF5C2).w  ;clear victory animation flag
 		move.b	#6,obRoutine(a0)
 		jsr		Sonic_ResetOnFloor
 		bset	#1,obStatus(a0)

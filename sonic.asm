@@ -2531,7 +2531,7 @@ GM_Title:
 		move.w	#$8720,(a6)	; set background colour (palette line 2, entry 0)
 		clr.b	(f_wtr_state).w
 		bsr.w	ClearScreen
-		jsr		SHC2022 
+		;jsr		SHC2022 
 
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
@@ -7729,7 +7729,7 @@ MusicList2:
 
 Sonic_MdNormal:
 		;bsr.w	Sonic_Peelout
-		;bsr.w	Sonic_SpinDash
+		bsr.w	Sonic_SpinDash
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
 		bsr.w	Sonic_Move

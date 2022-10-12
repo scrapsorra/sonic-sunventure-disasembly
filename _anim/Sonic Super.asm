@@ -1,47 +1,47 @@
 ; ---------------------------------------------------------------------------
-; Animation script - Sonic
+; Animation script - Super Sonic
 ; ---------------------------------------------------------------------------
-Ani_Sonic:
+Ani_SuperSonic:
 
-ptr_Walk:	dc.w SonAni_Walk-Ani_Sonic
-ptr_Run:	dc.w SonAni_Run-Ani_Sonic
+ptr_Walk:	dc.w SonAni_Walk-Ani_SuperSonic
+ptr_Run:	dc.w SonAni_Run-Ani_SuperSonic
 ptr_Roll:	dc.w SonAni_Roll-Ani_Sonic
 ptr_Roll2:	dc.w SonAni_Roll2-Ani_Sonic
-ptr_Push:	dc.w SonAni_Push-Ani_Sonic
-ptr_Wait:	dc.w SonAni_Wait-Ani_Sonic
-ptr_Balance:	dc.w SonAni_Balance-Ani_Sonic
-ptr_LookUp:	dc.w SonAni_LookUp-Ani_Sonic
-ptr_Duck:	dc.w SonAni_Duck-Ani_Sonic
+ptr_Push:	dc.w SonAni_Push-Ani_SuperSonic
+ptr_Wait:	dc.w SonAni_Wait-Ani_SuperSonic
+ptr_Balance:	dc.w SonAni_Balance-Ani_SuperSonic
+ptr_LookUp:	dc.w SonAni_LookUp-Ani_SuperSonic
+ptr_Duck:	dc.w SonAni_Duck-Ani_SuperSonic
 ptr_Warp1:	dc.w SonAni_Warp1-Ani_Sonic
 ptr_Warp2:	dc.w SonAni_Warp2-Ani_Sonic
 ptr_Warp3:	dc.w SonAni_Warp3-Ani_Sonic
 ptr_Warp4:	dc.w SonAni_Warp4-Ani_Sonic
-ptr_Stop:	dc.w SonAni_Stop-Ani_Sonic
-ptr_Float1:	dc.w SonAni_Float1-Ani_Sonic
-ptr_Float2:	dc.w SonAni_Float2-Ani_Sonic
-ptr_Spring:	dc.w SonAni_Spring-Ani_Sonic
-ptr_Hang:	dc.w SonAni_Hang-Ani_Sonic
+ptr_Stop:	dc.w SuperSonAni_Stop-Ani_SuperSonic
+ptr_Float1:	dc.w SonAni_Float1-Ani_SuperSonic
+ptr_Float2:	dc.w SonAni_Float2-Ani_SuperSonic
+ptr_Spring:	dc.w SonAni_Spring-Ani_SuperSonic
+ptr_Hang:	dc.w SonAni_Hang-Ani_SuperSonic
 ptr_Leap1:	dc.w SonAni_Leap1-Ani_Sonic
 ptr_Leap2:	dc.w SonAni_Leap2-Ani_Sonic
-ptr_Surf:	dc.w SonAni_Surf-Ani_Sonic
-ptr_GetAir:	dc.w SonAni_GetAir-Ani_Sonic
+ptr_Surf:	dc.w SonAni_Surf-Ani_SuperSonic
+ptr_GetAir:	dc.w SonAni_GetAir-Ani_SuperSonic
 ptr_Burnt:	dc.w SonAni_Burnt-Ani_Sonic
 ptr_Drown:	dc.w SonAni_Drown-Ani_Sonic
 ptr_Death:	dc.w SonAni_Death-Ani_Sonic
 ptr_Hurt:	dc.w SonAni_Hurt-Ani_Sonic
 ptr_WaterSlide:	dc.w SonAni_WaterSlide-Ani_Sonic
 ptr_Null:	dc.w SonAni_Null-Ani_Sonic
-ptr_Float3:	dc.w SonAni_Float3-Ani_Sonic
-ptr_Float4:	dc.w SonAni_Float4-Ani_Sonic
-ptr_MaxRun:	dc.w SonAni_MaxRun-Ani_Sonic
+ptr_Float3:	dc.w SonAni_Float3-Ani_SuperSonic
+ptr_Float4:	dc.w SonAni_Float4-Ani_SuperSonic
+ptr_MaxRun:	dc.w SonAni_MaxRun-Ani_SuperSonic
 ptr_Spindash:	dc.w SonAni_SpinDash-Ani_Sonic ;1F
 ptr_Hurt2:	dc.w SonAni_Hurt2-Ani_Sonic
 ptr_GetUp:	dc.w SonAni_GetUp-Ani_Sonic
-ptr_Blink:	dc.w SonAni_Blink-Ani_Sonic
+ptr_Blink:	dc.w SonAni_Blink-Ani_SuperSonic
 ptr_Sit:	dc.w SonAni_Sit-Ani_Sonic
-ptr_Peelout:	dc.w SonAni_Peelout-Ani_Sonic
-ptr_Hang2:	dc.w SonAni_Hang2-Ani_Sonic
-ptr_Transform:	dc.w SonAni_Transform-Ani_Sonic
+ptr_Peelout:	dc.w SonAni_Peelout-Ani_SuperSonic
+ptr_Hang2:	dc.w SonAni_Hang2-Ani_SuperSonic
+ptr_Transform:	dc.w SonAni_Transform-Ani_SuperSonic
 
 SonAni_Walk:	dc.b $FF, fr_walk13, fr_walk14,	fr_walk15, fr_walk16, fr_walk17, fr_walk18, fr_walk11, fr_walk12, afEnd, afEnd, afEnd, afEnd
 		even
@@ -135,10 +135,6 @@ SonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		even
 SonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
 		even
-SonAni_Transform:
-				dc.b 2, $A1,$A1,$A2,$A3,$A3,$A4,$A4,$A4,$A5
-		dc.b	$A6,$A5,$A7,$A7,$A9,$A8,$A9,$A8,$A9,$A8, afchange, id_Walk
-		even
 
 id_Walk:	equ (ptr_Walk-Ani_Sonic)/2	; 0
 id_Run:		equ (ptr_Run-Ani_Sonic)/2	; 1
@@ -178,4 +174,3 @@ id_Blink:	equ (ptr_Blink-Ani_Sonic)/2	; $23
 id_Sit:		equ (ptr_Sit-Ani_Sonic)/2	; $24
 id_Peelout:	equ (ptr_Peelout-Ani_Sonic)/2	; $25
 id_Hang2:		equ	(ptr_Hang2-Ani_Sonic)/2
-id_Transform:		equ	(ptr_Transform-Ani_Sonic)/2
