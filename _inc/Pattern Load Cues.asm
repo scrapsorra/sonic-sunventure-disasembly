@@ -213,7 +213,6 @@ PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 ; ---------------------------------------------------------------------------
 PLC_SBZ:	dc.w ((PLC_SBZ2-PLC_SBZ-2)/6)-1
 		plcm	Nem_SBZ,0		; SBZ main patterns
-		plcm	Nem_Splash, $4B20	; waterfalls and splash
 		;plcm	Nem_Stomper, $5800	; moving platform and stomper
 		;plcm	Nem_SbzDoor1, $5D00	; door
 		;plcm	Nem_Girder, $5E00	; girder
@@ -226,7 +225,7 @@ PLC_SBZ:	dc.w ((PLC_SBZ2-PLC_SBZ-2)/6)-1
 		plcm	Nem_SbzBlock, $9860	; vanishing block
 
 PLC_SBZ2:	dc.w ((PLC_SBZ2end-PLC_SBZ2-2)/6)-1
-		;plcm	Nem_Cater, $5600	; caterkiller enemy
+		plcm	Nem_Cater, $5600	; caterkiller enemy
 		plcm	Nem_Bomb, $8000		; bomb enemy
 		plcm	Nem_SlideFloor, $8C00	; floor	that slides away
 		;plcm	Nem_SbzDoor2, $8DE0	; horizontal door

@@ -320,10 +320,14 @@ HurtSonic:
 
 	@hasspshield:
 		cmpi.b	#1,(v_spshield).w     ; does sonic have a sp Shield?
-		bne.s	@hurtcont           ; if yes, make him invulnerable to metal objects
+		bne.w	@hurtcont           ; if yes, make him invulnerable to metal objects
 		cmpi.b	#$15,(a2)	; was damage caused by SBZ Spiked Ball?
 		beq.w 	isflashing
 		cmpi.b	#$16,(a2)	; was damage caused by LZ Harpoon?
+		beq.w 	isflashing
+		cmpi.b	#$17,(a2)	; was damage caused by helix of spikes?
+		beq.w 	isflashing
+		cmpi.b	#$17,(a2)	; was damage caused by taga-taga?
 		beq.w 	isflashing
 		cmpi.b	#$31,(a2)	; was damage caused by Chained Stompers?
 		beq.w 	isflashing
@@ -339,6 +343,7 @@ HurtSonic:
 		beq.w 	isflashing
 		cmpi.b	#$5E,(a2)	; was damage caused by Seesaw ball?
 		beq.w 	isflashing
+
 		cmpi.b	#$06,(a2)	; was damage caused by Mozzietron?
 		beq.w 	breakenemy
 		cmpi.b	#$50,(a2)	; was damage caused by Yadrin?

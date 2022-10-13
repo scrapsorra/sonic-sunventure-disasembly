@@ -7838,8 +7838,8 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		;bsr.w	Sonic_Peelout
-		bsr.w	Sonic_SpinDash
+		bsr.w	Sonic_Peelout
+		;bsr.w	Sonic_SpinDash
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
 		bsr.w	Sonic_Move
@@ -7988,6 +7988,46 @@ ResumeMusic:
 		include	"_anim\Drowning Countdown.asm"
 Map_Drown:	include	"_maps\Drowning Countdown.asm"
 
+; --------------------------------------------------
+; Subroutine to load the shield's art over DMA
+; --------------------------------------------------
+
+PLCLoad_Shields:
+		moveq	#0,d0
+		move.b	obFrame(a0),d0	; load frame number
+		cmp.b	shield_LastLoadedDPLC(a0),d0
+		beq.s	locret2_13C96
+		move.b	d0,shield_LastLoadedDPLC(a0)
+		move.l  shield_DPLC_Address(A0),a2
+		add.w   d0,d0
+		adda.w  (a2,D0),a2
+		move.w  (a2)+,d5
+		subq.w  #1,d5
+		bmi.s	locret2_13C96
+		move.w  shield_vram_art(A0),d4
+
+loc_199BE:
+		moveq	#0,d1
+		move.b	(a2)+,d1
+		lsl.w	#8,d1
+		move.b	(a2)+,d1
+		move.w	d1,d3
+		lsr.w	#8,d3
+		andi.w	#$F0,d3
+		addi.w	#$10,d3
+		andi.w	#$FFF,d1
+		lsl.l	#5,d1
+		add.l   shield_Art_Address(a0),d1
+		move.w  d4,d2
+		add.w   d3,d4
+		add.w   d3,d4
+		jsr     (QueueDMATransfer).l
+		dbf     d5,loc_199BE	; repeat for number of entries
+
+locret2_13C96:
+		rts	
+; End of function PLCLoad_Shields
+
 		include	"_incObj\4E Silver Shield.asm"
 		include	"_incObj\04 Gold Shield.asm"
 		include	"_incObj\07 Red Shield.asm"
@@ -7996,10 +8036,9 @@ Map_Drown:	include	"_maps\Drowning Countdown.asm"
 		include	"_incObj\4A Special Stage Entry (Unused).asm"
 		include	"_incObj\08 Water Splash.asm"
 		include	"_anim\Shield and Invincibility.asm"
-Map_Shield:	include	"_maps\Shield and Invincibility.asm"
-Map_Shield2:	include	"_maps\Shield 2.asm"
+Map_Shield:	include	"_maps\Shield.asm"
+DPLC_Shield:	include	"_maps\Shield - Dynamic Gfx Script.asm"
 Map_InvStars:	include	"_maps\Invincibility Stars.asm"
-Map_Shield3:	include	"_maps\Shield 3.asm"
 		include	"_anim\Special Stage Entry (Unused).asm"
 Map_Vanish:	include	"_maps\Special Stage Entry (Unused).asm"
 		include	"_anim\Water Splash.asm"
@@ -9401,13 +9440,13 @@ Nem_SyzSparkle:	incbin	"artnem\Unused - SYZ Sparkles.bin"
 		even
 		else
 		endc
-Unc_GShield:	incbin	"artunc\Gold Shield.bin"
+Art_GShield:	incbin	"artunc\Gold Shield.bin"
 		even
-Unc_RedShield:	incbin	"artunc\Red Shield.bin"
+Art_RedShield:	incbin	"artunc\Red Shield.bin"
 		even
-Unc_SpShield:	incbin	"artunc\Gray Shield.bin"
+Art_SpShield:	incbin	"artunc\Gray Shield.bin"
 		even
-Unc_Shield:	incbin	"artunc\Shield.bin"
+Art_Shield:	incbin	"artunc\Shield.bin"
 		even
 Unc_Stars:	incbin	"artunc\Invincibility Stars.bin"
 		even

@@ -1,48 +1,63 @@
 ; ---------------------------------------------------------------------------
-; Object 04 - Gold shield
+; Object 04 - Gold Shield
 ; ---------------------------------------------------------------------------
+GShieldItem: ; XREF: Obj_Index
+		moveq	#0,d0
+		move.b	obRoutine(a0),d0
+		move.w	GShieldItem_Index(pc,d0.w),d1
+		jmp	GShieldItem_Index(pc,d1.w)
+; ===========================================================================
+; off_1D900:
+GShieldItem_Index:
+		dc.w GShieldItem_Init-GShieldItem_Index	; 0
+		dc.w GShieldItem_Main-GShieldItem_Index	; 2
+; ===========================================================================
+; loc_1D904:
+GShieldItem_Init:
+		move.l	#Map_Shield,obMap(a0)
+		move.l	#DPLC_Shield,shield_DPLC_Address(a0)	; Used by PLCLoad_Shields
+		move.l	#Art_GShield,shield_Art_Address(a0)	; Used by PLCLoad_Shields
+		move.b	#4,obRender(a0)
+		move.w	#$80,obPriority(a0)
+		move.b	#$18,obActWid(a0)
+		move.w	#$541,obGfx(a0)
+		move.w	#$A820,shield_vram_art(a0)	; Used by PLCLoad_Shields
+		btst	#7,(v_player+obGfx).w
+		beq.s	@animclear
+		bset	#7,obGfx(a0)
 
-GShieldItem:
-		move.l #Unc_GShield,d1 ; Call for Gold Shield Art
-		move.w #$A820,d2 ; Load Art from this location (VRAM location*20)
-		; In this case, VRAM = $541*20
-		move.w #$200,d3
-		jsr (QueueDMATransfer).l
+@animclear:
+		move.w	#1,obAnim(a0)	; Clear anim and set prev_anim to 1
+		move.b	#-1,shield_LastLoadedDPLC(a0)	; Reset LastLoadedDPLC (used by PLCLoad_Shields)
+		addq.b	#2,obRoutine(a0) ; => ShieldItem_Main
+; loc_1D92C:
+GShieldItem_Main:
+		lea	(v_player).w,a2 ; a2=character
+		tst.b	(v_invinc).w
+		bne.s	@return
+		;cmpi.b	#id_Null,obAnim(a2)	; Is player in their 'blank' animation?
+		;beq.s	@return	; If so, do not display and do not update variables
+		tst.b	(v_GShield).w
+		beq.w	GShieldItem_Destroy	; If not, change to Insta-Shield
+		move.w	obX(a2),obX(a0)
+		move.w	obY(a2),obY(a0)
+		andi.w	#$7FFF,obGFX(a0)
+		tst.w	obGFX(a2)
+		bpl.s	@nothighpriority
+		ori.w	#$8000,obGFX(a0)
+
+		@nothighpriority:
+		lea	(Ani_Shield).l,a1
+		jsr	(AnimateSprite).l
+		jsr	(PLCLoad_Shields).l
+		jmp	(DisplaySprite).l
 ; ---------------------------------------------------------------------------
-GShieldObj_Main:
-		moveq #0,d0
-		move.b $24(a0),d0
-		move.w GShield_Index(pc,d0.w),d1
-		jmp GShield_Index(pc,d1.w)
 ; ===========================================================================
-GShield_Index:
-		dc.w GShield_Init-GShield_Index
-		dc.w GShieldChecks-GShield_Index
-; ===========================================================================
-GShield_Init:
-		addq.b #2,$24(a0)
-		move.l #Map_Shield3,$4(A0) ; Load Shield Map into place
-		move.b #4,1(a0)
-		move.w #$80,$18(a0)
-		move.b #$18,obActWid(a0)
-		move.w #$541,2(a0) ; Set VRAM location
-		btst #7,($FFFFD002).w
-		beq.s GShieldChecks
-		bset #7,2(a0)
-; ---------------------------------------------------------------------------
-GShieldChecks:
-		tst.b ($FFFFFE2D).w ; Test if Sonic has a shield
-		bne.s GSonicHasShield ; If so, branch to do nothing
-		tst.b (v_GShield).w ; Test if Sonic got invisibility
-		beq.s Gjmp_DeleteObj38 ; If so, delete object temporarily
-GShieldProperties:
-		move.w ($FFFFD008).w,8(a0) ; Load Main Character X-position
-		move.w ($FFFFD00C).w,$C(a0) ; Load Main Character Y-position
-		move.b ($FFFFD022).w,$22(a0) ; Something about Character status
-		lea (Ani_Shield).l, a1 ; Load Animation Scripts into a1
-		jsr AnimateSprite
-		jmp DisplaySprite
-GSonicHasShield:
+
+@return:
 		rts
-Gjmp_DeleteObj38: ; loc_12648:
-		jmp DeleteObject
+
+GShieldItem_Destroy:
+		clr.b	(v_shield).w		; remove shield				
+		rts
+; ===========================================================================

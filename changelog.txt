@@ -1,0 +1,6 @@
+-sonic 2 invcinbility stars
+-gray shield now protects from ghz spike helix and robotic abyss yago
+-buzz bomber 2/poh-bee art has been changed
+-minor level design tweaks to GHZ 1
+-minor palette tweaks to scrap ruins
+-added another door in robotic abyss to further prevent needless backtracking

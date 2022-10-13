@@ -155,6 +155,12 @@ flashtime:	equ $30	; time between flashes after getting hit
 invtime:	equ $32	; time left for invincibility
 shoetime:	equ $34	; time left for speed shoes
 
+; Shield variables
+shield_LastLoadedDPLC:    equ $33
+shield_DPLC_Address:    equ $3C
+shield_Art_Address:    equ $38
+shield_vram_art:    equ $36
+
 ; Object variables (Sonic 2 disassembly nomenclature)
 render_flags:	equ 1	; bitfield for x/y flip, display mode
 art_tile:	equ 2	; palette line & VRAM setting (2 bytes)

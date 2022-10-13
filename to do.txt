@@ -6,7 +6,6 @@
 -water palette bug fixes
 -water tag bug fixes
 -emerald count in act results
--blue shield attracts rings
 -more music
 -disable act count for robotic abyss
 -separate LZ4 from LZ art
