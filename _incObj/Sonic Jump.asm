@@ -44,7 +44,7 @@ loc_1341C:
 Result_Check:
 		tst.b   ($FFFFF5C2).w ; Has the victory animation flag been set?
 		beq.s   NormalJump ; If not, branch
-		move.b  #$13,$1C(a0) ; Play the victory animation
+		move.b  #id_Leap2,$1C(a0) ; Play the victory animation
 		bra.s   cont ; Continue
 NormalJump:
 		move.b  #2,$1C(a0)    ; use "jumping"    animation

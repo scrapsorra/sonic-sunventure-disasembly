@@ -41,6 +41,7 @@ ptr_Blink:	dc.w SonAni_Blink-Ani_Sonic
 ptr_Sit:	dc.w SonAni_Sit-Ani_Sonic
 ptr_Peelout:	dc.w SonAni_Peelout-Ani_Sonic
 ptr_Hang2:	dc.w SonAni_Hang2-Ani_Sonic
+ptr_GetAir2:	dc.w SonAni_GetAir2-Ani_Sonic
 ptr_Transform:	dc.w SonAni_Transform-Ani_Sonic
 
 SonAni_Walk:	dc.b $FF, fr_walk13, fr_walk14,	fr_walk15, fr_walk16, fr_walk17, fr_walk18, fr_walk11, fr_walk12, afEnd, afEnd, afEnd, afEnd
@@ -90,13 +91,13 @@ SonAni_Spring:	dc.b 7, fr_spring, fr_spring2, fr_spring, fr_spring2, fr_spring, 
 		even
 SonAni_Hang:	dc.b 4,	fr_hang1, fr_hang2, afEnd
 		even
-SonAni_Leap1:	dc.b $F, fr_leap1, fr_leap1, fr_leap1,	afBack, 1
+SonAni_Leap1:	dc.b $3, fr_leap3, fr_leap2, fr_leap2, fr_leap2, fr_leap2, fr_leap2, fr_leap2, fr_leap3, fr_leap1, afBack, 1
 		even
-SonAni_Leap2:	dc.b $F, fr_leap1, fr_leap2, afBack, 1
+SonAni_Leap2:	dc.b $D, fr_leap1, afChange, id_Leap1
 		even
 SonAni_Surf:	dc.b $3F, fr_surf, afEnd
 		even
-SonAni_GetAir:	dc.b $B, fr_getair, fr_getair, fr_walk15, fr_walk16, afChange, id_Walk
+SonAni_GetAir:	dc.b $B, fr_getair, afChange, id_GetAir2
 		even
 SonAni_Burnt:	dc.b $20, fr_burnt, afEnd
 		even
@@ -134,6 +135,8 @@ SonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		dc.b	$4E, $4F, $50,  $51, -2, 4, $FE
 		even
 SonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
+		even
+SonAni_GetAir2: dc.b $5, fr_getair2, afChange, id_Roll
 		even
 SonAni_Transform:
 				dc.b 2, $A1,$A1,$A2,$A3,$A3,$A4,$A4,$A4,$A5
@@ -178,4 +181,5 @@ id_Blink:	equ (ptr_Blink-Ani_Sonic)/2	; $23
 id_Sit:		equ (ptr_Sit-Ani_Sonic)/2	; $24
 id_Peelout:	equ (ptr_Peelout-Ani_Sonic)/2	; $25
 id_Hang2:		equ	(ptr_Hang2-Ani_Sonic)/2
+id_GetAir2:	equ (ptr_GetAir2-Ani_Sonic)/2
 id_Transform:		equ	(ptr_Transform-Ani_Sonic)/2

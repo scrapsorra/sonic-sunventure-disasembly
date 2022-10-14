@@ -440,14 +440,14 @@ fr_Stop1:	equ $6B
 fr_Stop2:	equ $6C
 fr_Stop3:	equ $6D
 fr_Stop4:	equ $6E
-fr_Duck3:	equ $6F
+fr_Leap3:	equ $6F
 fr_Duck2:	equ $70
 fr_Duck:	equ $71
 fr_Balance1:	equ $72
 fr_Balance2:	equ $73
 fr_Balance3:	equ $74
 fr_Balance4:	equ $75
-fr_Balance5:	equ $76
+fr_GetAir2:		equ $76
 fr_Blank:		equ $77
 fr_VHang1:		equ $78
 fr_VHang2:		equ $79

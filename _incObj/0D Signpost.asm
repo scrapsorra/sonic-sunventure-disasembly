@@ -43,7 +43,11 @@ Sign_Touch:	; Routine 2
 		clr.b	(f_timecount).w	; stop time counter
 		move.w	(v_limitright2).w,(v_limitleft2).w ; lock screen position
 		addq.b	#2,obRoutine(a0)
+		cmpi.w	#(id_MZ<<8)+2,(v_zone).w ; is level MZ3?
+		beq.s	@normal
 		move.b  #1,($FFFFF5C2).w ; Set victory animation flag
+
+	@normal:
 		tst.b	(f_emeraldm).w
 		beq.s	@notouch
 		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
