@@ -65,10 +65,19 @@ Drown_Animate:	; Routine 2
 		jsr	(AnimateSprite).l
 
 Drown_ChkWater:	; Routine 4
+		cmpi.b	#id_SYZ,(v_zone).w ; is level Spring Yard Zone? TIS
+		bne.s	Normal_Water_Level	; if not, branch TIS
+		move.w	(v_watersplashpos).w,d0	;TIS
+		add.w	#$10,d0	;Lower it a little - TIS
+		cmp.w	obY(a0),d0	; has bubble reached the water tag surface? - TIS
+		bhi.s	Display_Next		; if so, branch TIS
+		
+
+Normal_Water_Level:
 		move.w	(v_waterpos1).w,d0
 		cmp.w	obY(a0),d0	; has bubble reached the water surface?
-		bcs.s	@wobble		; if not, branch
-
+		bcs.s	Wobble		; if not, branch
+Display_Next:	;TIS		
 		move.b	#id_Drown_Display,obRoutine(a0) ; goto Drown_Display next
 		addq.b	#7,obAnim(a0)
 		cmpi.b	#$D,obAnim(a0)
@@ -76,7 +85,7 @@ Drown_ChkWater:	; Routine 4
 		bra.s	Drown_Display
 ; ===========================================================================
 
-@wobble:
+Wobble:
 		tst.b	(f_wtunnelmode).w ; is Sonic in a water tunnel?
 		beq.s	@notunnel	; if not, branch
 		addq.w	#4,drown_origX(a0)

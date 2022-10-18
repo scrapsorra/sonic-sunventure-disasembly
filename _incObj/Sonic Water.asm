@@ -25,7 +25,7 @@ Sonic_Water:
 		beq.w	Abovewater	; if yes, branch
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_LZSonWatr2),a1  ;Palette location
-    ;    lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
+    ;    	lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
 	;	jsr	Palload_Loop
 	WaterStatus:
 		bset	#6,obStatus(a0)
@@ -42,7 +42,7 @@ Sonic_Water:
 		asr	obVelY(a0)	; slow Sonic
 		beq.w	Sonic_Water_Exit		; branch if Sonic stops moving
 		;move.w	(v_player+obY).w,(v_watersplashpos).w	;TIS copy y-pos
-        move.w    #$100,($FFFFD1DC).w    ; set the spin dash dust animation to splash
+        	move.w    #$100,($FFFFD1DC).w    ; set the spin dash dust animation to splash
 		sfx	sfx_Splash,1,0,0	 ; play splash sound
 		cmpi.b	#0,(v_tagwater).w	;TIS Lava Tag?
 		bne.w	@return
