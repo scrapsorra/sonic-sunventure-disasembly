@@ -97,7 +97,7 @@ loc_19E3E:
 
 loc_19E5A:
 		move.w	#0,$34(a0)
-		move.b	#6,obColProp(a0) ; set number of hits to 8
+		move.b	#6,obColProp(a0) ; set number of hits to 6
 		move.w	#-1,$30(a0)
 
 Obj85_Eggman:	; Routine 2

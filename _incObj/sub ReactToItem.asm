@@ -476,6 +476,66 @@ Kill_Lava:
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
+React_Bottomless:
+
+		tst.b	(v_shield).w	; does Sonic have a shield?
+		bne.s	@hasshield	; if yes, branch
+		tst.b	(v_rshield).w	; does Sonic have a red shield?
+		bne.s	@hasshield	; if yes, branch
+		tst.b	(v_gshield).w	; does Sonic have a gold shield?
+		bne.s	@hasshield	; if yes, branch
+		tst.b	(v_spshield).w	; does Sonic have a silver shield?
+		bne.s	@hasshield	; if yes, branch
+		tst.w	(v_rings).w	; does Sonic have any rings?
+		beq.w	@norings	; if not, branch
+
+		jsr	(FindFreeObj).l
+		bne.s	@hasshield
+		move.b	#id_RingLoss,0(a1) ; load bouncing multi rings object
+		move.w	obX(a0),obX(a1)
+		move.w	obY(a0),obY(a1)
+
+	@hasshield:
+		move.b	#0,(v_shield).w		; remove shield
+		move.b	#0,(v_gshield).w	; remove g shield
+		move.b	#0,(v_spshield).w	; remove sp shield
+		move.b	#0,(v_rshield).w
+	
+		move.b	#4,obRoutine(a0)
+		jsr		Sonic_ResetOnFloor
+		bset	#1,obStatus(a0)
+		move.w	#$A00,obVelY(a0) ; move Sonic upwards
+		btst	#6,obStatus(a0)	; is Sonic underwater?
+		beq.s	@isdry		; if not, branch
+
+		move.w	#$1000,obVelY(a0) ; move Sonic upwards
+
+	@isdry:
+		move.w	obX(a0),d0
+		cmp.w	obX(a2),d0
+		bcs.s	@isleft		; if Sonic is left of the object, branch
+		neg.w	obVelX(a0)	; if Sonic is right of the object, reverse
+
+	@isleft:
+		move.b	#0,f_spindash(a0) ; clear Spin Dash flag 
+		move.w	#0,obInertia(a0) 
+		move.b	#id_Hurt,obAnim(a0) 
+		move.w	#$120,$30(a0)
+		move.w	#0,obInertia(a0)
+		move.b	#id_Hurt,obAnim(a0)
+		move.w	#120,$30(a0)	; set temp invincible time to 2 seconds
+		move.w	#sfx_Death,d0	; load normal damage sound
+		
+	@sound:
+		jsr	(PlaySound_Special).l
+		moveq	#-1,d0
+		rts	
+
+@norings:
+		tst.w	(f_debugmode).w	; is debug mode	cheat on?
+		bne.w	@hasshield	; if yes, branch
+		jmp		KillSonic
+
 
 React_Special:
 		move.b	obColType(a1),d1

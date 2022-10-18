@@ -88,13 +88,13 @@ Anml_FromEnemy:
 		lsl.w	#3,d0
 		lea	Anml_Variables(pc),a1
 		adda.w	d0,a1
-		move.w	(a1)+,$32(a0)	; load horizontal speed
-		move.w	(a1)+,$34(a0)	; load vertical	speed
-		move.l	(a1)+,obMap(a0)	; load mappings
-		move.w	#$580,obGfx(a0)	; VRAM setting for 1st animal
-		btst	#0,$30(a0)	; is 1st animal	used?
-		beq.s	loc_90C0	; if yes, branch
-		move.w	#$592,obGfx(a0)	; VRAM setting for 2nd animal
+		;move.w	(a1)+,$32(a0)	; load horizontal speed
+		;move.w	(a1)+,$34(a0)	; load vertical	speed
+		;move.l	(a1)+,obMap(a0)	; load mappings
+		;move.w	#$580,obGfx(a0)	; VRAM setting for 1st animal
+		;btst	#0,$30(a0)	; is 1st animal	used?
+		;beq.s	loc_90C0	; if yes, branch
+		;move.w	#$592,obGfx(a0)	; VRAM setting for 2nd animal
 
 loc_90C0:
 		move.b	#$C,obHeight(a0)

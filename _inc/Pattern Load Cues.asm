@@ -54,7 +54,7 @@ PLC_Main:	dc.w ((PLC_Mainend-PLC_Main-2)/6)-1
 		plcm	Nem_Hud, $D940		; HUD
 		plcm	Nem_Lives, $FA80	; lives	counter
 		plcm	Nem_Ring, $F300		; rings
-		plcm	Nem_Points, $ACA0 	; points from enemy
+		plcm	Nem_Points, $ADA0 	; points from enemy
 	PLC_Mainend:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - standard block 2
@@ -194,6 +194,7 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_FlamePipe, $7B20	; flaming pipe
 		plcm	Nem_SbzFloor, $7840	; collapsing floor
 		plcm	Nem_SbzBlock, $8BA0	; vanishing block
+		plcm	Nem_Splats, $9C80	; Splats
 
 PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		;plcm	Nem_Cater, $5600	; caterkiller enemy

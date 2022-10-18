@@ -59,6 +59,6 @@ Sonic_LevelBound:
 		bra.s	@chkbottom
 
 Kill_transport: 
-        	jmp        (KillSonic).l
+        	jmp        (React_Bottomless).l
 
 ; End of function Sonic_LevelBound
