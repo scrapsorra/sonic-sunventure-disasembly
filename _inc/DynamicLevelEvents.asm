@@ -98,7 +98,7 @@ DLE_GHZ2:
 		bcs.s	locret_6E3A
 		cmpi.w	#$280,(v_screenposy).w
 		bcs.s	loc_6E9A
-		move.w	#$500,(v_limitbtm1).w
+		move.w	#$400,(v_limitbtm1).w
 		cmpi.w	#$1200,(v_screenposx).w
 		bcc.s	loc_6E8F
 		move.w	#$4C0,(v_limitbtm1).w
