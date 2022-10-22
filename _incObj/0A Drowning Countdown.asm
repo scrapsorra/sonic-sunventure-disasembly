@@ -240,6 +240,7 @@ Drown_Countdown:; Routine $A
 		bsr.w	ResumeMusic
 		move.b	#$81,(f_lockmulti).w ; lock controls
 		sfx	sfx_Drown,0,0,0	; play drowning sound
+		move.w	#0,(v_watersplashpos).w	;max it out for now - TIS
 		move.b	#$A,$34(a0)
 		move.w	#1,$36(a0)
 		move.w	#$78,$2C(a0)
