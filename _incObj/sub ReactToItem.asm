@@ -327,8 +327,6 @@ HurtSonic:
 		beq.w 	isflashing
 		cmpi.b	#$17,(a2)	; was damage caused by helix of spikes?
 		beq.w 	isflashing
-		cmpi.b	#$17,(a2)	; was damage caused by taga-taga?
-		beq.w 	isflashing
 		cmpi.b	#$31,(a2)	; was damage caused by Chained Stompers?
 		beq.w 	isflashing
 		cmpi.b	#$36,(a2)	; was damage caused by Spikes?
@@ -346,15 +344,18 @@ HurtSonic:
 
 		cmpi.b	#$06,(a2)	; was damage caused by Mozzietron?
 		beq.w 	breakenemy
+		cmpi.b	#$2D,(a2)	; was damage caused by Burrobot?
+		beq.w 	breakenemy
+		cmpi.b	#$17,(a2)	; was damage caused by Jaws?
+		beq.w 	isflashing
 		cmpi.b	#$50,(a2)	; was damage caused by Yadrin?
 		beq.w 	breakenemy
+		;cmpi.b	#$5F,(a2)	; was damage caused by Bomb?
+		;beq.w 	breakenemy
 		cmpi.b	#$60,(a2)	; was damage caused by Orbinaut?
 		beq.w 	breakenemy
 		cmpi.b	#$78,(a2)	; was damage caused by Catterkiller?
 		beq.w 	breakenemy
-		cmpi.b	#$2D,(a2)	; was damage caused by Burrobot enemy?
-		beq.w 	breakenemy
-
 
 	@hurtcont:
 		move.b	#0,(v_shield).w		; remove shield

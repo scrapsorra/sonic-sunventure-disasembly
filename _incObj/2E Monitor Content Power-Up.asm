@@ -207,7 +207,7 @@ Pow_ChkRShield:
 		move.b	#0,(v_shield).w ; remove red shield
 		move.b	#0,(v_gshield).w ; remove g shield
 		move.b	#0,(v_spshield).w ; remove s shield
-        move.b    #id_ShieldItem,(v_objspace+$180).w ; load shield object ($38)
+        move.b    #id_RShieldItem,(v_objspace+$180).w ; load shield object ($38)
         clr.b    (v_objspace+$180+obRoutine).w
         move.w    #sfx_FireShield,d0
         jmp    (PlaySound_Special).l    ; play shield sound
@@ -220,7 +220,7 @@ Pow_ChkGShield:
 		move.b	#0,(v_shield).w ; remove red shield
 		move.b	#0,(v_rshield).w ; remove g shield
 		move.b	#0,(v_spshield).w ; remove s shield
-        move.b    #id_ShieldItem,(v_objspace+$180).w ; load shield object ($38)
+        move.b    #id_GShieldItem,(v_objspace+$180).w ; load shield object ($38)
         clr.b    (v_objspace+$180+obRoutine).w
         move.w    #sfx_LightningShield,d0
         jmp    (PlaySound_Special).l    ; play shield sound
@@ -233,7 +233,7 @@ Pow_ChkSpShield:
 		move.b	#0,(v_shield).w ; remove red shield
 		move.b	#0,(v_rshield).w ; remove g shield
 		move.b	#0,(v_gshield).w ; remove s shield
-        move.b    #id_ShieldItem,(v_objspace+$180).w ; load shield object ($38)
+        move.b    #id_SpShieldItem,(v_objspace+$180).w ; load shield object ($38)
         clr.b    (v_objspace+$180+obRoutine).w
         move.w    #sfx_SpikesMove,d0
         jmp    (PlaySound_Special).l    ; play shield sound

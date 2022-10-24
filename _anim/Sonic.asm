@@ -54,7 +54,7 @@ SonAni_Roll:	dc.b $FE, fr_Roll1, fr_Roll6, fr_Roll2, fr_Roll7, fr_Roll3, fr_Roll
 SonAni_Roll2:	dc.b $FE, fr_Roll1, fr_Roll6, fr_Roll2, fr_Roll7, fr_Roll3, fr_Roll5
 		dc.b fr_Roll8, fr_Roll4, fr_Roll9, fr_Roll5, afEnd, afEnd
 		even
-SonAni_Push:	dc.b $FD,  fr_push1,  fr_push2,  fr_push3,  fr_push4, fr_push5,  fr_push6,  fr_push7,  fr_push8, afEnd, afEnd, afEnd, afEnd
+SonAni_Push:	dc.b $D,  fr_push1,  fr_push2,  fr_push3,  fr_push4, fr_push5,  fr_push6,  fr_push7,  fr_push8, afEnd, afEnd, afEnd, afEnd
 		even
 SonAni_Wait:	
 		dc.b   5,  1,  1,  1,  1,  1,  1,  1,  1,  2,  1,  1,  1,  1,  1

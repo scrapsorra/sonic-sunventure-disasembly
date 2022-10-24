@@ -98,6 +98,7 @@ PLC_GHZ2:	dc.w ((PLC_GHZ2end-PLC_GHZ2-2)/6)-1
 		plcm	Nem_Ball, $7540		; giant	ball
 		plcm	Nem_GhzWall1, $A1E0	; breakable wall
 		plcm	Nem_GhzWall2, $6980	; normal wall
+		;plcm	Nem_Lives, $FA80	; lives	counter
 	PLC_GHZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Labyrinth
@@ -131,12 +132,14 @@ PLC_LZ2:	dc.w ((PLC_LZ2end-PLC_LZ2-2)/6)-1
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
 		plcm	Nem_VSpring, $A660	; vertical spring
+		;plcm	Nem_Lives, $FA80	; lives	counter
 	PLC_LZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Marble
 ; ---------------------------------------------------------------------------
 PLC_MZ:		dc.w ((PLC_MZ2-PLC_MZ-2)/6)-1
 		plcm	Nem_MZ,0		; MZ main patterns
+		plcm	Nem_Cater, $9FE0	; caterkiller enemy
 		plcm	Nem_BallHog, $6040	; ball hog enemy
 		plcm	Nem_MzFire, $68A0	; fireballs
 		plcm	Nem_MzGlass, $71C0	; green	glassy block
@@ -145,7 +148,6 @@ PLC_MZ:		dc.w ((PLC_MZ2-PLC_MZ-2)/6)-1
 		plcm	Nem_Buzz, $8880		; buzz bomber enemy
 		plcm	Nem_Electric, $8FC0	; electric orb
 		plcm	Nem_Basaran, $9700	; basaran enemy
-		plcm	Nem_Splats, $9C80	; Splats
 
 PLC_MZ2:	dc.w ((PLC_MZ2end-PLC_MZ2-2)/6)-1
 		plcm	Nem_Swing, $7000	; swinging platform
@@ -156,6 +158,7 @@ PLC_MZ2:	dc.w ((PLC_MZ2end-PLC_MZ2-2)/6)-1
 		plcm	Nem_VSpring, $A660	; vertical spring
 		plcm	Nem_MzBlock, $5700	; green	stone block
 		plcm	Nem_SlzWall, $A260	; breakable wall
+		plcm	Nem_Future, $FA80	; lives	counter
 	PLC_MZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Star Light
@@ -179,6 +182,7 @@ PLC_SLZ2:	dc.w ((PLC_SLZ2end-PLC_SLZ2-2)/6)-1
 		plcm	Nem_SlzSwing, $7B80	; swinging platform
 		plcm	Nem_SlzCannon, $9B00	; fireball launcher
 		plcm	Nem_SlzSpike, $9E00	; spikeball
+		;plcm	Nem_Lives, $FA80	; lives	counter
 	PLC_SLZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Spring Yard
@@ -187,6 +191,7 @@ PLC_SYZ:	dc.w ((PLC_SYZ2-PLC_SYZ-2)/6)-1
 		plcm	Nem_SYZ,0		; SYZ main patterns
 		;plcm	Nem_Stomper, $5800	; moving platform and stomper
 		;plcm	Nem_SbzDoor1, $5D40	; door
+		plcm	Nem_Ball, $7540		; giant	ball
 		plcm	Nem_Bubbles, $7EA0	; bubbles and numbers
 		;plcm	Nem_Buzz, $8880		; buzz bomber enemy
 		plcm	Nem_Yadrin, $8F60	; yadrin enemy
@@ -208,6 +213,7 @@ PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
 		plcm	Nem_VSpring, $A660	; vertical spring
+		plcm	Nem_Future, $FA80	; lives	counter
 	PLC_SYZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Scrap Brain
@@ -238,6 +244,7 @@ PLC_SBZ2:	dc.w ((PLC_SBZ2end-PLC_SBZ2-2)/6)-1
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
 		plcm	Nem_VSpring, $A660	; vertical spring
+		plcm	Nem_Future, $FA80	; lives	counter
 	PLC_SBZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - title card

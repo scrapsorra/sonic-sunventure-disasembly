@@ -7840,7 +7840,7 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		bsr.w	Sonic_Peelout
+		;bsr.w	Sonic_Peelout
 		;bsr.w	Sonic_SpinDash
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
@@ -9698,6 +9698,8 @@ Nem_TitleCard:	incbin	"artnem\Title Cards.bin"
 Nem_Hud:	incbin	"artnem\HUD.bin"	; HUD (rings, time, score)
 		even
 Nem_Lives:	incbin	"artnem\HUD - Life Counter Icon.bin"
+		even
+Nem_Future:	incbin	"artnem\HUD - Life Counter Icon Future.bin"
 		even
 Nem_Ring:	incbin	"artnem\Rings.bin"
 		even

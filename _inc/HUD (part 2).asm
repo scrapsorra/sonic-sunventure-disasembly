@@ -159,6 +159,7 @@ Hud_Lives:
 		moveq	#1,d6
 		moveq	#0,d4
 		lea	Art_LivesNums(pc),a1
+		
 
 Hud_LivesLoop:
 		move.l	d0,4(a6)
