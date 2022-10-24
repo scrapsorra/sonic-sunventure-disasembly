@@ -3241,7 +3241,8 @@ GM_Level:
 loc_37FC:
 		moveq	#plcid_Main2,d0
 		bsr.w	AddPLC		; load standard	patterns
-
+		jsr		LoadLifeIcon
+		
 Level_ClrRam:
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
@@ -7717,6 +7718,22 @@ LoadPlayerWaterPal:
 	@palLUT:
 		dc.b	palid_SBZ3SonWat, palid_SonWater2, palid_SonWater3, palid_SonWater4, palid_SonWater5
 		dc.b	palid_SonWater6, palid_SonWater7, palid_SonWater8, palid_SonWater9, palid_SonWater10, palid_SonWater11
+		even
+
+LoadLifeIcon:
+		moveq	#0,d0
+		move.b	(v_zone).w,d0	
+		move.b	LoadLifeIcon_Table(pc,d0.w),d0	
+		jsr		AddPLC	
+		rts
+
+LoadLifeIcon_Table:
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIconF	
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF		
 		even
 
 ; ---------------------------------------------------------------------------

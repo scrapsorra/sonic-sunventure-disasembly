@@ -40,6 +40,8 @@ ptr_PLC_TryAgain:	dc.w PLC_TryAgain-ArtLoadCues
 ptr_PLC_EggmanSBZ2:	dc.w PLC_EggmanSBZ2-ArtLoadCues
 ptr_PLC_FZBoss:		dc.w PLC_FZBoss-ArtLoadCues
 ptr_PLC_Egg:		dc.w PLC_Egg-ArtLoadCues
+ptr_PLC_LifeIcon:		dc.w PLC_LifeIcon-ArtLoadCues
+ptr_PLC_LifeIconF:		dc.w PLC_LifeIconF-ArtLoadCues
 
 plcm:	macro gfx,vram
 	dc.l gfx
@@ -52,8 +54,7 @@ plcm:	macro gfx,vram
 PLC_Main:	dc.w ((PLC_Mainend-PLC_Main-2)/6)-1
 		plcm	Nem_Lamp, $D800		; lamppost
 		plcm	Nem_Hud, $D940		; HUD
-		plcm	Nem_Lives, $FA80	; lives	counter
-		plcm	Nem_Ring, $F300		; rings
+		plcm	Nem_Ring, $F300		; rings		
 		plcm	Nem_Points, $ADA0 	; points from enemy
 	PLC_Mainend:
 ; ---------------------------------------------------------------------------
@@ -98,7 +99,6 @@ PLC_GHZ2:	dc.w ((PLC_GHZ2end-PLC_GHZ2-2)/6)-1
 		plcm	Nem_Ball, $7540		; giant	ball
 		plcm	Nem_GhzWall1, $A1E0	; breakable wall
 		plcm	Nem_GhzWall2, $6980	; normal wall
-		;plcm	Nem_Lives, $FA80	; lives	counter
 	PLC_GHZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Labyrinth
@@ -132,7 +132,6 @@ PLC_LZ2:	dc.w ((PLC_LZ2end-PLC_LZ2-2)/6)-1
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
 		plcm	Nem_VSpring, $A660	; vertical spring
-		;plcm	Nem_Lives, $FA80	; lives	counter
 	PLC_LZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Marble
@@ -158,7 +157,6 @@ PLC_MZ2:	dc.w ((PLC_MZ2end-PLC_MZ2-2)/6)-1
 		plcm	Nem_VSpring, $A660	; vertical spring
 		plcm	Nem_MzBlock, $5700	; green	stone block
 		plcm	Nem_SlzWall, $A260	; breakable wall
-		plcm	Nem_Future, $FA80	; lives	counter
 	PLC_MZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Star Light
@@ -182,7 +180,6 @@ PLC_SLZ2:	dc.w ((PLC_SLZ2end-PLC_SLZ2-2)/6)-1
 		plcm	Nem_SlzSwing, $7B80	; swinging platform
 		plcm	Nem_SlzCannon, $9B00	; fireball launcher
 		plcm	Nem_SlzSpike, $9E00	; spikeball
-		;plcm	Nem_Lives, $FA80	; lives	counter
 	PLC_SLZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Spring Yard
@@ -213,7 +210,6 @@ PLC_SYZ2:	dc.w ((PLC_SYZ2end-PLC_SYZ2-2)/6)-1
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
 		plcm	Nem_VSpring, $A660	; vertical spring
-		plcm	Nem_Future, $FA80	; lives	counter
 	PLC_SYZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - Scrap Brain
@@ -244,7 +240,6 @@ PLC_SBZ2:	dc.w ((PLC_SBZ2end-PLC_SBZ2-2)/6)-1
 		plcm	Nem_Spikes, $A360	; spikes
 		plcm	Nem_HSpring, $A460	; horizontal spring
 		plcm	Nem_VSpring, $A660	; vertical spring
-		plcm	Nem_Future, $FA80	; lives	counter
 	PLC_SBZ2end:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - title card
@@ -419,6 +414,20 @@ PLC_Egg:	dc.w ((PLC_Bossend-PLC_Boss-2)/6)-1
 	PLC_Eggend:
 		even
 ; ---------------------------------------------------------------------------
+; Pattern load cues - Life Icon
+; ---------------------------------------------------------------------------	
+PLC_LifeIcon:	dc.w ((PLC_LifeIcon_end-PLC_LifeIcon-2)/6)-1
+		plcm	Nem_Lives, $FA80	; lives	counter	
+	PLC_LifeIcon_end: 
+		even	
+; ---------------------------------------------------------------------------
+; Pattern load cues - Life Icon (Future)
+; ---------------------------------------------------------------------------	
+PLC_LifeIconF:	dc.w ((PLC_LifeIconF_end-PLC_LifeIconF-2)/6)-1
+		plcm	Nem_Future, $FA80	; lives	counter	
+	PLC_LifeIconF_end: ; nahhhhh... too far, bro
+		even			
+; ---------------------------------------------------------------------------
 ; Pattern load cue IDs
 ; ---------------------------------------------------------------------------
 plcid_Main:		equ (ptr_PLC_Main-ArtLoadCues)/2	; 0
@@ -453,4 +462,6 @@ plcid_Ending:		equ (ptr_PLC_Ending-ArtLoadCues)/2	; $1C
 plcid_TryAgain:		equ (ptr_PLC_TryAgain-ArtLoadCues)/2	; $1D
 plcid_EggmanSBZ2:	equ (ptr_PLC_EggmanSBZ2-ArtLoadCues)/2	; $1E
 plcid_FZBoss:		equ (ptr_PLC_FZBoss-ArtLoadCues)/2	; $1F
-plcid_Egg:		equ (ptr_PLC_Egg-ArtLoadCues)/2	; $11
+plcid_Egg:		equ (ptr_PLC_Egg-ArtLoadCues)/2	; $20
+plcid_LifeIcon:		equ (ptr_PLC_LifeIcon-ArtLoadCues)/2	; $21
+plcid_LifeIconF:		equ (ptr_PLC_LifeIconF-ArtLoadCues)/2	; $21

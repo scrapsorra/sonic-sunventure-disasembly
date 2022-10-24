@@ -4,7 +4,7 @@ SndDF_Header:
 	smpsHeaderTempoSFX  $01
 	smpsHeaderChanSFX   $01
 
-	smpsHeaderSFXChannel cFM5, SndDF_FM5,	$04, $08
+	smpsHeaderSFXChannel cFM5, SndDF_FM5,	$04, $0D
 
 ; FM5 Data
 SndDF_FM5:
