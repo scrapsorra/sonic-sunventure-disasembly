@@ -7722,18 +7722,44 @@ LoadPlayerWaterPal:
 
 LoadLifeIcon:
 		moveq	#0,d0
-		move.b	(v_zone).w,d0	
+		move.w	(v_zone).w,d0	
+		ror.b	#2,d0
+        lsr.w 	#6,d0		
 		move.b	LoadLifeIcon_Table(pc,d0.w),d0	
 		jsr		AddPLC	
 		rts
 
 LoadLifeIcon_Table:
+		; GHZ
 		dc.b	plcid_LifeIcon
 		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIcon	
+		dc.b	plcid_LifeIcon	
+		; LZ
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIcon	
 		dc.b	plcid_LifeIconF	
-		dc.b	plcid_LifeIcon
+		; MZ
 		dc.b	plcid_LifeIconF
-		dc.b	plcid_LifeIconF		
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF
+		; SLZ
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIcon
+		dc.b	plcid_LifeIcon	
+		dc.b	plcid_LifeIcon	
+		; SYZ
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF	
+		; SBZ
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF
+		dc.b	plcid_LifeIconF	
 		even
 
 ; ---------------------------------------------------------------------------
