@@ -172,6 +172,7 @@ React_Monitor:
 		bne.s	@donothing
 		neg.w	obVelY(a0)	; reverse Sonic's y-motion
 		addq.b	#2,obRoutine(a1) ; advance the monitor's routine counter
+		jsr		BounceJD
 
 	@donothing:
 		rts	
@@ -221,6 +222,7 @@ breakenemy:
 
 	@lessthan16:
 		bsr.w	AddPoints
+		jsr		BounceJD
 		move.b	#id_ExplosionItem,0(a1) ; change object to explosion
 		move.b	#0,obRoutine(a1)
 		tst.w	obVelY(a0)
@@ -343,6 +345,8 @@ HurtSonic:
 		beq.w 	isflashing
 
 		cmpi.b	#$06,(a2)	; was damage caused by Mozzietron?
+		beq.w 	breakenemy
+		cmpi.b	#$1E,(a2)	; was damage caused by Ball Hog?
 		beq.w 	breakenemy
 		cmpi.b	#$2D,(a2)	; was damage caused by Burrobot?
 		beq.w 	breakenemy

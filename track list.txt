@@ -1,40 +1,50 @@
-Title Screen - Title Screen (Socket)
-Options - Deposit Coins (Battle Mania Daiinjou)
-Green Valley Act 1 - Grass Land Day (Burning Force)
-Green Valley Act 2 - Grass Land Night (Burning Force)
-Future Bay Act 1 - Bay Yard Day (Burning Force)
-Future Bay Act 2 - Bay Yard Night (Burning Force) + Bay of Scattered Song (Ecco Jr)
-Scrap Ruins Act 1 - Volcano Valley Act 1 (Sonic 3D Blast)
-Scrap Ruins Act 2 - Volcano Valley Act 2 (Sonic 3D Blast)
-Boss - Stage 1 Boss: Triple Eye (Dangerous Seed)
-Final Boss - Final Boss (Socket)
-Final Boss (Pinch) - Final Boss 2 (Air Buster)
-Special Stage - Special Zone 1 - Lights (Socket)
-Act Clear - Level Clear (Socket)
-Boss Clear - Intermission (Round Clear) (Raiden Trad)
-Invincibility - Surging Power (Chaotix)
-Speed Shoes - Speed Shoes (Sonic CD US)
-Ending - Tribute (Chaotix)
-Time Over - Broken Oath (Granada)
-Game Over - Game Over (Whip Rush)
-Continue - Continue (Arcus Odyssey)
+songs with an (**) before them have been added to the game
 
-songs 2 add:
 
-ice zone 1 - stage 5-1 (bishoujo senshi sailor moon)
-ice zone 2 - stage 5-1 (bishoujo senshi sailor moon) + ice zone (ecco 1)
-ice zone 3 - fish city (ecco 2)
-aero vortex 1 - aero space day (burning force arcade)
+
+**Title Screen - Title Screen (Socket) [Wooloo]
+**Options - Deposit Coins (Battle Mania Daiinjou) [joker]
+**Green Hill Act 1 - Grass Land Day (Burning Force) [joker]
+**Green Hill Act 2 - Grass Land Night (Burning Force) [joker]
+**Green Hill Act 3 - Seaside Front (Air Buster) [joker]
+Ice Zone 1 - Stage 5-1 (bishoujo senshi sailor moon)
+Ice Zone 2 - Stage 5-1 (bishoujo senshi sailor moon) + ice zone (ecco 1)
+Ice Zone 3 - Fish City (Ecco 2)
+**Future Bay Act 1 - Bay Yard Day (Burning Force) [joker]
+**Future Bay Act 2 - Bay Yard Night (Burning Force) + Bay of Scattered Song (Ecco Jr) [joker]
+Future Bay Act 3 - 
+aero vortex 1 - aero space day (burning force arcade) 
 aero vortex 2 - aero space night (burning force arcade)
 aero vortex 3 -aero space (burning force genesis) + moray abyss (ecco 2)
-final zone (after robotic abyss) - inside (ecco 2)
+**Scrap Ruins Act 1 - Volcano Valley Act 1 (Sonic 3D Blast) [joker]
+**Scrap Ruins Act 2 - Volcano Valley Act 2 (Sonic 3D Blast) [joker]
+**Scrap Ruins Act 3 - Rusty Ruins Act 2 (Sonic 3D Blast) [Wooloo]
+Boss - Boss 1 (Sonic 3D Blast)
+Metal Sonic - Metal Sonic (Sonic 4 Episode 2)
+Theme of Robotnik - Steel Heart (Chaotix)
+Time Travel Cutscene (Ice Zone 3) - Time Travel (Ecco 1)
+Time Travel Cutscene (Future Bay 3/Aero Vortex 3) - Time Travel (Ecco 2)
+**Robotic Abyss Zone - Big Water (Ecco 2) [TIS]
+vortex machine zone (after robotic abyss) - inside (ecco 2)
 final zone (after scrap ruins 3) - tubes of medusa (ecco 2)
-theme of robotnik - steel heart (chaotix)
-boss - boss 1 (sonic 3d blast)
-metal sonic boss - final boss part 1 (trouble shooter)
-super sonic - multi-squid (Dangerous seed)
-time travel cutscene (ice zone 3) - time travel (ecco 1)
-time travel cutscene (future bay 3/aero vortex 3) - time travel (ecco 2)
-high score screen - winners (burning force arcade)
-act clear (emerald) - get emerald (sonic triple trouble)
-time over - unknown jingle (socket)
+**Final Boss - Final Boss (Socket) [joker]
+**Final Boss (Pinch) - Final Boss 2 (Air Buster) [joker]
+**Special Stage - Special Zone 1 - Lights (Socket) [joker]
+**Act Clear - Level Clear (Socket) [joker]
+Act Clear (Emerald) - Get Emerald (Sonic Triple Trouble)
+**Boss Clear - Intermission (Round Clear) (Raiden Trad) [joker]
+**Invincibility - Surging Power (Chaotix) [joker]
+**Speed Shoes - Speed Shoes (Sonic CD US) [joker]
+Super Sonic - Multi-Squid (Dangerous Seed)
+**Ending - Tribute (Chaotix) [Wooloo]
+Time Over - Unknown Jingle (Socket)
+**Game Over - Game Over (Whip Rush) [joker]
+**Continue - Continue (Arcus Odyssey) [joker]
+High Score Screen - Winners (Burning Force Arcade)
+
+
+
+
+
+
+

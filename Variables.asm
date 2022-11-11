@@ -362,6 +362,7 @@ v_Saved_music:	equ $FFFFF5C6
 v_rshield:	equ $FFFFF5C8	; shield status (00 = no; 01 = yes)
 v_gshield:	equ $FFFFF5C9	; shield status (00 = no; 01 = yes)
 v_spshield:	equ $FFFFF5CA	; shield status (00 = no; 01 = yes)
+v_homingattack:	equ $FFFFF5CD
 
 Options_menu_box:	equ  $FFFFFF8C
 

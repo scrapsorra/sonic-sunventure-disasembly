@@ -6,6 +6,7 @@
 
 
 Sonic_ResetOnFloor:            ; XREF: PlatformObject; et al
+		clr.b	(v_homingattack).w
         	bclr    #5,$22(a0)
         	bclr    #1,$22(a0)
         	btst    #2,$22(a0)

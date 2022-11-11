@@ -1704,6 +1704,10 @@ Pal_SBZ3Cyc1:	incbin	"palette\Cycle - SBZ3 Waterfall.bin"
 Pal_SLZCyc:	incbin	"palette\Cycle - SLZ.bin"
 Pal_SYZCyc1:	incbin	"palette\Cycle - SYZ1.bin"
 Pal_SYZCyc2:	incbin	"palette\Cycle - SYZ2.bin"
+Pal_SYZCyc1_2:	incbin	"palette\Cycle - SYZ1 Act 2.bin"
+Pal_SYZCyc2_2:	incbin	"palette\Cycle - SYZ2 Act 2.bin"
+Pal_SYZCyc1_3:	incbin	"palette\Cycle - SYZ1 Act 3.bin"
+Pal_SYZCyc2_3:	incbin	"palette\Cycle - SYZ2 Act 3.bin"
 
 		include	"_inc\SBZ Palette Scripts.asm"
 
@@ -7925,6 +7929,7 @@ Sonic_MdRoll:
 ; ===========================================================================
 
 Sonic_MdJump2:
+		bsr.w	Sonic_HomingAttack
 		bsr.w	Sonic_JumpHeight
 		bsr.w	Sonic_JumpDirection
 		bsr.w	Sonic_LevelBound
@@ -7943,6 +7948,7 @@ loc_12EA6:
 		include	"_incObj\Sonic JumpDirection.asm"
 		include "_incObj\Sonic Peelout.asm"
 		include "_incObj\Sonic Spindash.asm"
+		include	"_incObj\Sonic HomingAttack.asm"
 
 Sonic_AirRoll:
 	cmpi.b  #id_spring,$1C(a0)      ; is sonic in the spring animation?

@@ -373,7 +373,7 @@ TextOptScr_C2:			asc	"    VIBRANT    "
 TextOptScr_Clackers:			asc	"    CRACKERS    "
 TextOptScr_RHS:			asc	"    RED HOT    "
 TextOptScr_Socket:			asc	"    TIDES    "
-TextOptScr_Cringe:			asc	"    CRINGE    "
+TextOptScr_Cringe:			asc	"    GREEN    "
 TextOptScr_Dark:			asc	"    DARKER    "
 TextOptScr_DeltaWooloo:			asc	"   DELTAWOOLOO "
 TextOptScr_LivesSystem:		asc	"*   SCD CAMERA   *"	; byte_982C:

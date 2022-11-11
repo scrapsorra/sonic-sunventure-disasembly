@@ -246,6 +246,13 @@ locret_6F64:
 ; ===========================================================================
 
 DLE_SBZ3:
+        tst.b	(v_dle_routine).w
+        bne.s   loc_6C28
+		tst.b	(f_switch+$1).w	; has switch $F	been pressed?
+		beq.s	loc_6C28	; if not, branch
+		sfx	sfx_Rumbling,0,1,0 ; play rumbling sound
+		move.b	#1, (v_dle_routine).w
+loc_6C28:
 		cmpi.w	#$D00,(v_screenposx).w
 		bcs.s	locret_6F8C
 		cmpi.w	#$18,(v_player+obY).w ; has Sonic reached the top of the level?
@@ -287,7 +294,7 @@ locret_6FE8:
 
 DLE_MZ2:
 		move.w	#$520,(v_limitbtm1).w
-		cmpi.w	#$1700,(v_screenposx).w
+		cmpi.w	#$2110,(v_screenposx).w
 		bcs.s	locret_6FE9
 		move.w	#$110,(v_limitbtm1).w
 		
