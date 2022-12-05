@@ -2545,32 +2545,6 @@ GM_Title:
 		move.l	d0,(a1)+
 		dbf	d1,Tit_ClrObj1	; fill object space ($D000-$EFFF) with 0
 
-		locVRAM	0
-		lea	(Nem_JapNames).l,a0 ; load Japanese credits
-		bsr.w	NemDec
-		locVRAM	$14C0
-		lea	(Nem_CreditText).l,a0 ;	load alphabet
-		bsr.w	NemDec
-		lea	($FF0000).l,a1
-		lea	(Eni_JapNames).l,a0 ; load mappings for	Japanese credits
-		move.w	#0,d0
-		bsr.w	EniDec
-
-		copyTilemap	$FF0000,$C000,$27,$1B
-
-		lea	(v_pal_dry_dup).w,a1
-		moveq	#cBlack,d0
-		move.w	#$1F,d1
-
-	Tit_ClrPal:
-		move.l	d0,(a1)+
-		dbf	d1,Tit_ClrPal	; fill palette with 0 (black)
-
-		jsr		LoadPlayerPal
-		bsr.w	PalLoad1
-		move.b	#id_CreditsText,(v_objspace+$80).w ; load "SONIC TEAM PRESENTS" object
-		jsr	(ExecuteObjects).l
-		jsr	(BuildSprites).l
 		bsr.w	PaletteFadeIn
 		disable_ints
 		locVRAM	$4000

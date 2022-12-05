@@ -376,9 +376,9 @@ TextOptScr_Socket:			asc	"    TIDES    "
 TextOptScr_Cringe:			asc	"    GREEN    "
 TextOptScr_Dark:			asc	"    DARKER    "
 TextOptScr_DeltaWooloo:			asc	"   DELTAWOOLOO "
-TextOptScr_LivesSystem:		asc	"*   SCD CAMERA   *"	; byte_982C:
-TextOptScr_On:				asc	"    DISABLED     "	; byte_984E:
-TextOptScr_Off:				asc	"    ENABLED    "	; byte_984E:
+TextOptScr_LivesSystem:		asc	"*  CAMERA TYPE   *"	; byte_982C:
+TextOptScr_On:				asc	"    DEFAULT     "	; byte_984E:
+TextOptScr_Off:				asc	"    SONIC CD    "	; byte_984E:
 ; ============================================================================
 		even
 Sonic_Miles_Spr:	incbin  "artunc/Sonic and Miles text.bin"
