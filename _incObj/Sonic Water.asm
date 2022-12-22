@@ -37,6 +37,12 @@ Sonic_Water:
 		move.w	#$300,(v_sonspeedmax).w ; change Sonic's top speed
 		move.w	#6,(v_sonspeedacc).w ; change Sonic's acceleration
 		move.w	#$40,(v_sonspeeddec).w ; change Sonic's deceleration
+		tst.b	(Super_Sonic_flag).w	; Is Sonic Super?
+		beq.s	@Skip			; If not branch
+		move.w	#$500,(v_sonspeedmax).w
+		move.w	#$18,(v_sonspeedacc).w
+		move.w	#$80,(v_sonspeeddec).w
+@Skip		
 		asr	obVelX(a0)
 		asr	obVelY(a0)
 		asr	obVelY(a0)	; slow Sonic
@@ -61,6 +67,12 @@ Abovewater:
 		move.w	#$600,(v_sonspeedmax).w ; restore Sonic's speed
 		move.w	#$C,(v_sonspeedacc).w ; restore Sonic's acceleration
 		move.w	#$80,(v_sonspeeddec).w ; restore Sonic's deceleration
+		tst.b	(Super_Sonic_flag).w	; Is Sonic Super?
+		beq.s	@Skip			; If not branch
+		move.w	#$A00,(v_sonspeedmax).w
+		move.w	#$30,(v_sonspeedacc).w
+		move.w	#$100,(v_sonspeeddec).w
+@Skip		
 		asl	obVelY(a0)
 		beq.w	Sonic_Water_Exit
         move.w    #$100,($FFFFD1DC).w    ; set the spin dash dust animation to splash

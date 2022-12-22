@@ -2669,6 +2669,7 @@ ptr_sndD2:	dc.l SoundD2
 ptr_sndD3:	dc.l SoundD3
 ptr_sndD4:	dc.l SoundD4
 ptr_sndD5:	dc.l SoundD5
+ptr_sndD6:	dc.l SoundD6
 ptr_specend
 SoundA0:	include	"sound/sfx/Jump.asm"
 		even
@@ -2777,6 +2778,8 @@ SoundD3:	incbin	"sound/sfx/Peelout_Release.bin"
 SoundD4:	incbin	"sound/sfx/Peelout_Stop.bin"
 		even				
 SoundD5:	incbin	"sound/sfx/Spindash.bin"
+		even		
+SoundD6:	include	"sound/sfx/Transform.asm"
 		even			
 		; Don't let Sega sample cross $8000-byte boundary
 		; (DAC driver doesn't switch banks automatically)

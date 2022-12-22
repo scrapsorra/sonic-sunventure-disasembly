@@ -366,15 +366,9 @@ v_homingattack:	equ $FFFFF5CD
 
 Options_menu_box:	equ  $FFFFFF8C
 
-; Ring managers-related stuff
-Max_Rings:	equ 511 ; default. maximum number possible is 759
-Rings_Space:	equ (Max_Rings+1)*2
-
-Ring_Positions:	equ $FFFF8300
-Ring_start_addr_ROM:	equ Ring_Positions+Rings_Space
-Ring_end_addr_ROM:	equ Ring_Positions+Rings_Space+4
-Ring_start_addr_RAM:	equ Ring_Positions+Rings_Space+8
-Perfect_rings_left:		equ Ring_Positions+Rings_Space+$A
-Rings_manager_routine:		equ Ring_Positions+Rings_Space+$C
-v_level_started_flag:		equ Ring_Positions+Rings_Space+$D
-Ring_consumption_table:		equ Ring_Positions+Rings_Space+$E
+Super_Sonic_palette =        $FFFFF5D8
+Palette_frame =        $FFFFF5DC
+Palette_timer =        $FFFFF5DE
+Palette_Frame_Count =        $FFFFF5CD
+Super_Sonic_frame_count =    $FFFFF670
+Super_Sonic_flag =        $FFFFFE19

@@ -440,6 +440,8 @@ HurtSonic:
 
 
 KillSonic:
+		move.b    #2,(Super_Sonic_palette).w; Remove rotating palette
+		clr.b (Super_Sonic_Flag).w ; Revert Sonic to Normal
 		tst.w	(v_debuguse).w	; is debug mode	active?
 		bne.w	@dontdie	; if yes, branch
 		move.w	#0,(v_rings).w ; clear rings

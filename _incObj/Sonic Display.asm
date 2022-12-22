@@ -35,6 +35,8 @@ Sonic_Display:
 	@chkinvincible:
 		tst.b	(v_invinc).w	; does Sonic have invincibility?
 		beq.s	@chkshoes	; if not, branch
+		cmpi.b	 #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+        beq		 @exit		
 		tst.w	invtime(a0)	; check	time remaining for invinciblity
 		beq.s	@chkshoes	; if no	time remains, branch
 		subq.w	#1,invtime(a0)	; subtract 1 from time
@@ -62,6 +64,8 @@ Sonic_Display:
 	@chkshoes:
 		tst.b	(v_shoes).w	; does Sonic have speed	shoes?
 		beq.s	@exit		; if not, branch
+		cmpi.b	 #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+        beq		 @exit			
 		tst.w	shoetime(a0)	; check	time remaining
 		beq.s	@exit
 		subq.w	#1,shoetime(a0)	; subtract 1 from time

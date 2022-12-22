@@ -67,7 +67,8 @@ Pow_ChkSonic:
 Pow_ChkShoes:
 		cmpi.b	#3,d0		; does monitor contain speed shoes?
 		bne.s	Pow_ChkShield
-
+		cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+		beq 	Pow_NoMus
 		move.b	#1,(v_shoes).w	; speed up the BG music
 		move.w	#$4B0,(v_player+$34).w	; time limit for the power-up
 		move.w	#$C00,(v_sonspeedmax).w ; change Sonic's top speed
@@ -104,7 +105,8 @@ Pow_ChkShield:
 Pow_ChkInvinc:
 		cmpi.b	#5,d0		; does monitor contain invincibility?
 		bne.s	Pow_ChkRings
-
+		cmpi.b #1,(Super_Sonic_Flag).w ; Prevent Sonic from getting (invincibility, shoes) if Super
+		beq 	Pow_NoMusic
 		move.b	#1,(v_invinc).w	; make Sonic invincible
 		move.w	#$560,(v_player+$32).w ; time limit for the power-up
 		move.b	#id_InvStars,(v_objspace+$200).w ; load stars object ($3801)

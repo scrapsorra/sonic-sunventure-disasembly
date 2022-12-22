@@ -57,7 +57,7 @@ InvStars_Index:	dc.w @InitObjects-InvStars_Index
 	@MainObject:
 		lea (v_player).w,a1 ; a1=character
 		tst.b   (v_invinc).w
-		beq.w	DeleteObject
+		beq.w	JmpTo_DeleteObject
 		move.w	obX(a1),d0
 		move.w	d0,obX(a0)
 		move.w	obY(a1),d1
@@ -95,13 +95,13 @@ InvStars_Index:	dc.w @InitObjects-InvStars_Index
 	@display_main:
 		add.b	d0,InvStars_SpeedIndex(a0)
 		move.w	#(1*$80),d0
-		bra.w	DisplaySprite2
+		jmp	DisplaySprite2
 ; ===========================================================================
 
 	@SubObject:
 		lea 	(v_player).w,a1 ; a1=character
 		tst.b   (v_invinc).w
-		beq.w	DeleteObject
+		beq.w	JmpTo_DeleteObject
 		lea		(v_trackpos).w,a5
 		lea		(v_tracksonic).w,a6
 
@@ -154,7 +154,7 @@ InvStars_Index:	dc.w @InitObjects-InvStars_Index
 loc_1DB20:
 		add.b    d0,InvStars_SpeedIndex(a0)
 		move.w    #(1*$80),d0
-		bra.w    DisplaySprite2
+		jmp    DisplaySprite2
 ; ===========================================================================
 
 InvStars_get_speed:
@@ -192,3 +192,6 @@ Ani_InvStars3:	dc.b   8,  7,  6,  5,  4,  3,  2,  3,  4,  5,  6,  7,$FF
 Ani_InvStars4:	dc.b   7,  6,  5,  4,  3,  2,  1,  2,  3,  4,  5,  6,$FF
 		dc.b   1,  2,  3,  4,  5,  6,  7,  6,  5,  4,  3,  2
 		even			
+; ---------------------------------------------------------------------------
+JmpTo_DeleteObject:
+		jmp		(DeleteObject).l

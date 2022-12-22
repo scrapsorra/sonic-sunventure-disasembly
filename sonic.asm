@@ -7777,7 +7777,8 @@ Sonic_Main:	; Routine 0
 		move.w	#$C,(v_sonspeedacc).w ; Sonic's acceleration
 		move.w	#$80,(v_sonspeeddec).w ; Sonic's deceleration
 		move.b	#5,$FFFFD1C0.w
-
+		move.b	#0,(Super_Sonic_flag).w
+		
 Sonic_Control:    ; Routine 2
  		tst.b	($FFFFFF8B).w
 		beq.w	@cont    
@@ -7811,6 +7812,7 @@ loc_12C64:
 
 loc_12C7E:
 		bsr.s	Sonic_Display
+		bsr.w	Sonic_Super
 		bsr.w	Sonic_RecordPosition
 		bsr.w	Sonic_Water
 		move.b	(v_anglebuffer).w,$36(a0)
@@ -7970,6 +7972,7 @@ locret_13302:
 		include	"_incObj\Sonic Loops.asm"
 		include	"_incObj\Sonic Animate.asm"
 		include	"_anim\Sonic.asm"
+		include	"_anim\Super Sonic.asm"		
 		include	"_incObj\Sonic LoadGfx.asm"
 
 		include	"_incObj\0A Drowning Countdown.asm"
@@ -8057,7 +8060,8 @@ locret2_13C96:
 		include	"_incObj\04 Gold Shield.asm"
 		include	"_incObj\07 Red Shield.asm"
 		include	"_incObj\38 Shield.asm"
-		include	"_incObj\19 Invincibility Stars.asm"		
+		include	"_incObj\19 Invincibility Stars.asm"	
+		include	"_incObj\8D Super Stars.asm"			
 		include	"_incObj\4A Special Stage Entry (Unused).asm"
 		include	"_incObj\08 Water Splash.asm"
 		include	"_anim\Shield and Invincibility.asm"

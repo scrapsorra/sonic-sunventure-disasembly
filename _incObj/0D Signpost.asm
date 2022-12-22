@@ -59,6 +59,10 @@ Sign_Touch:	; Routine 2
 ; ===========================================================================
 
 Sign_Spin:	; Routine 4
+		clr.b (Super_Sonic_Flag).w ; Revert Sonic to Normal
+		move.w	#$600,(v_sonspeedmax).w
+		move.w	#$C,(v_sonspeedacc).w
+		move.w	#$80,(v_sonspeeddec).w
 		subq.w	#1,spintime(a0)	; subtract 1 from spin time
 		bpl.s	@chksparkle	; if time remains, branch
 		move.w	#60,spintime(a0) ; set spin cycle time to 1 second

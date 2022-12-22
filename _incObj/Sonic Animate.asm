@@ -7,6 +7,11 @@
 
 Sonic_Animate:				; XREF: Obj01_Control; et al
 		lea	(Ani_Sonic).l,a1
+        tst.b	(Super_Sonic_flag).w	    ; is sonic super?
+		beq.s	 Sonic_Animatecont	    ; if not, branch
+		lea	(Ani_SuperSonic).l,a1	
+
+Sonic_Animatecont:	
 		moveq	#0,d0
 		move.b	obAnim(a0),d0
 		cmp.b	obNextAni(a0),d0 ; is animation set to restart?
@@ -108,9 +113,17 @@ Sonic_Animate:				; XREF: Obj01_Control; et al
 		neg.w	d2		; modulus speed
 
 	@nomodspeed:
-		lea	(SonAni_MaxRun).l,a1 ; use	Dashing	animation
+		tst.b	(Super_Sonic_flag).w		; is sonic super?
+		beq.s	@cont		; if not, branch
+		lea	(SuperSonAni_Run).l,a1 ; use	running	animation
+		cmpi.w	#$600,d2	; is Sonic at running speed?
+		bcc.s	@running	; if yes, branch
+		lea	(SuperSonAni_Walk).l,a1 ; use walking animation
+	
+	@cont:	
+		lea	(SonAni_MaxRun).l,a1 ; use Dashing animation
 		cmpi.w	#$A00,d2	; is Sonic at Dashing speed?
-		bcc.s	@maxrunning	; if yes, branch
+		bcc.s	@running	; if yes, branch
 
 		lea	(SonAni_Run).l,a1 ; use	running	animation
 		cmpi.w	#$600,d2	; is Sonic at running speed?

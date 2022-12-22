@@ -6,6 +6,7 @@
 
 
 PaletteCycle:
+		bsr.w	PalCycle_SuperSonic	
 		moveq	#0,d2
 		moveq	#0,d0
 		move.b	(v_zone).w,d0	; get level number
@@ -264,3 +265,75 @@ loc_1B52:
 locret_1B64:
 		rts	
 ; End of function PalCycle_SBZ
+
+; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
+
+; sub_213E:
+PalCycle_SuperSonic:
+		moveq	#0,d0
+		move.b	(Super_Sonic_palette).w,d0
+		beq.s	PalCycle_SuperSonic_return	; rts	; return, if Sonic isn't super
+		bmi.w	PalCycle_SuperSonic_normal	; branch, if fade-in is done
+		subq.b	#1,d0
+		bne.s	PalCycle_SuperSonic_revert	; branch for values greater than 1
+
+		; fade from Sonic's to Super Sonic's palette
+		; run frame timer
+		subq.b	#1,(Palette_timer).w
+		bpl.s	PalCycle_SuperSonic_return	; rts
+		move.b	#3,(Palette_timer).w
+
+		; increment palette frame and update Sonic's palette
+		lea	(CyclingPal_SSTransformation).l,a0
+		move.w	(Palette_frame).w,d0
+		addq.w	#8,(Palette_frame).w	; 1 palette entry = 1 word, Sonic uses 4 shades of blue
+		cmpi.w	#$30,(Palette_frame).w	; has palette cycle reached the 6th frame?
+		blo.s	PalCycle_SuperSonic_palettes			; if not, branch
+		move.b	#-1,(Super_Sonic_palette).w	; mark fade-in as done
+		move.b	#0,($FFFFF7C8).w ; unfreeze Sonic	
+		bra.s		PalCycle_SuperSonic_palettes
+
+PalCycle_SuperSonic_return:
+		rts
+; ===========================================================================
+; loc_2188:
+PalCycle_SuperSonic_revert:	; runs the fade in transition backwards
+		; run frame timer
+		subq.b	#1,(Palette_timer).w
+		bpl.s	PalCycle_SuperSonic_return	; rts
+		move.b	#3,(Palette_timer).w
+
+		; decrement palette frame and update Sonic's palette
+		lea	(CyclingPal_SSTransformation).l,a0
+		move.w	(Palette_frame).w,d0
+		subq.w	#8,(Palette_frame).w	; previous frame
+		bcc.s	PalCycle_SuperSonic_palettes			; branch, if it isn't the first frame
+		move.w	#0,(Palette_frame).w
+		move.b	#0,(Super_Sonic_palette).w	; stop palette cycle
+
+PalCycle_SuperSonic_palettes:
+		lea	(v_pal_dry+4).w,a1
+		move.l	(a0,d0.w),(a1)+
+		move.l	4(a0,d0.w),(a1)	
+		rts
+; ===========================================================================
+; loc_21E6:
+PalCycle_SuperSonic_normal:
+		; run frame timer
+		subq.b	#1,(Palette_timer).w
+		bpl.s	PalCycle_SuperSonic_return	; rts
+		move.b	#7,(Palette_timer).w
+
+		; increment palette frame and update Sonic's palette
+		lea	(CyclingPal_SSTransformation).l,a0
+		move.w	(Palette_frame).w,d0
+		addq.w	#8,(Palette_frame).w	; next frame
+		cmpi.w	#$78,(Palette_frame).w	; is it the last frame?
+		bls.s	PalCycle_SuperSonic_palettes			; if not, branch
+		move.w	#$30,(Palette_frame).w	; reset frame counter (Super Sonic's normal palette cycle starts at $30. Everything before that is for the palette fade)
+		bra.s	PalCycle_SuperSonic_palettes
+		rts
+; End of function PalCycle_SuperSonic
+
+
+CyclingPal_SSTransformation:	incbin	"palette/Super.bin"
