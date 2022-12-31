@@ -6018,7 +6018,7 @@ Map_CFlo:	include	"_maps\Collapsing Floors.asm"
 		include	"_incObj\1C Scenery.asm"
 Map_Scen:	include	"_maps\Scenery.asm"
 
-		include	"_incObj\1D Unused Switch.asm"
+		include	"_incObj\1D Water Switcher.asm"
 Map_Swi:	include	"_maps\Unused Switch.asm"
 
 		include	"_incObj\2A SBZ Small Door.asm"

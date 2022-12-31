@@ -6,8 +6,8 @@
 
 
 Sonic_Water:
-		cmpi.b	#id_SYZ,(v_zone).w	;TIS is level MZ?
-		beq.s	WaterTagforMZ	; if yes, branch
+		cmpi.b	#id_LZ,(v_zone).w	;TIS is level LZ?
+		bne.s	WaterTagforMZ	; if no, branch
 		cmpi.b	#id_LZ,(v_zone).w	; is level LZ?
 		beq.s	Sonic_Water_LZ	; if yes, branch
 

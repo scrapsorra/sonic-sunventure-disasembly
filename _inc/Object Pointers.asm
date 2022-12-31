@@ -29,7 +29,7 @@ ptr_InvStars:		dc.l InvStarsObj
 ptr_CollapseLedge:	dc.l CollapseLedge
 ptr_WaterSurface:	dc.l WaterSurface
 ptr_Scenery:		dc.l Scenery
-ptr_MagicSwitch:	dc.l MagicSwitch
+ptr_WaterSwitcher:	dc.l WaterSwitcher
 ptr_BallHog:		dc.l BallHog
 ptr_Crabmeat:		dc.l Crabmeat
 ptr_Cannonball:		dc.l Cannonball		; $20
@@ -174,7 +174,7 @@ id_InvStars:		equ ((ptr_InvStars-Obj_Index)/4)+1
 id_CollapseLedge:	equ ((ptr_CollapseLedge-Obj_Index)/4)+1
 id_WaterSurface:	equ ((ptr_WaterSurface-Obj_Index)/4)+1
 id_Scenery:		equ ((ptr_Scenery-Obj_Index)/4)+1
-id_MagicSwitch:		equ ((ptr_MagicSwitch-Obj_Index)/4)+1
+id_WaterSwitcher:		equ ((ptr_WaterSwitcher-Obj_Index)/4)+1
 id_BallHog:		equ ((ptr_BallHog-Obj_Index)/4)+1
 id_Crabmeat:		equ ((ptr_Crabmeat-Obj_Index)/4)+1
 id_Cannonball:		equ ((ptr_Cannonball-Obj_Index)/4)+1		; $20
