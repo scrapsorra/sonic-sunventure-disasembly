@@ -7348,7 +7348,7 @@ Map_Bub:	include	"_maps\Bubbles.asm"
 Map_WFall	include	"_maps\Waterfalls.asm"
 
 
-SpinDash_dust:
+SpinDash_dust:				;TIS - Changed to allow for dynamic positioning
 Sprite_1DD20:				; DATA XREF: ROM:0001600C?o
 		moveq	#0,d0
 		move.b	$24(a0),d0
@@ -7397,7 +7397,11 @@ off_1DDA4:	dc loc_1DE28-off_1DDA4; 0 ; DATA XREF: h+6E30?o h+6E32?o ...
 ; ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
 
 loc_1DDAC:				; DATA XREF: h+6E30?o
-		move	($FFFFF646).w,$C(a0)
+		move	(v_waterpos1).w,$C(a0)	;TIS - Changed to variable name
+		cmpi.b	#id_LZ,(v_zone).w	;TIS is level LZ?
+		beq.s	StandardWaterLevel	;TIS - if no, branch
+		move	(v_watersplashpos).w,$C(a0)	;TIS - Dynamic water position
+	StandardWaterLevel:
 		tst.b	$1D(a0)
 		bne.s	loc_1DE28
 		move	8(a2),8(a0)
