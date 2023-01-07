@@ -165,7 +165,6 @@ PLC_SLZ:	dc.w ((PLC_SLZ2-PLC_SLZ-2)/6)-1
 		plcm	Nem_SLZ,0		; SLZ main patterns
 		plcm	Nem_Bomb, $8000		; bomb enemy
 		plcm	Nem_Orbinaut, $8520	; orbinaut enemy
-		plcm	Nem_Splats, $9C80	; Splats
 		plcm	Nem_MzFire, $9000	; fireballs
 		plcm	Nem_SlzBlock, $9C00	; block
 		plcm	Nem_SlzWall, $A260	; breakable wall
