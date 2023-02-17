@@ -232,15 +232,15 @@ Solid_TopBottom:
 ; ===========================================================================
 
 Solid_Below:
-		tst.w	obVelY(a1)	; is Sonic moving vertically?
-		beq.s	Solid_Squash	; if not, branch
-		bpl.s	Solid_TopBtmAir	; if moving downwards, branch
-		tst.w	d3		; is Sonic above the object?
-		bpl.s	Solid_TopBtmAir	; if yes, branch
-		sub.w	d3,obY(a1)	; correct Sonic's position
-		move.w	#0,obVelY(a1)	; stop Sonic moving
+		tst.w	obVelY(a1) ; is Sonic moving vertically?
+		beq.s	Solid_Squash ; if not, branch
+		bpl.s 	Solid_TopBtmAir ; if moving downwards, branch
+		tst.w	d3 ; is Sonic above the object?
+		bpl.s	Solid_TopBtmAir ; if yes, branch
+		move.w	#0,obVelY(a1) ; stop Sonic moving
 
 Solid_TopBtmAir:
+		sub.w	d3,obY(a1) ; correct Sonic's position
 		moveq	#-1,d4
 		rts	
 ; ===========================================================================
