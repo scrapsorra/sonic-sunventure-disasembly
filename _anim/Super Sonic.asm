@@ -5,8 +5,8 @@ Ani_SuperSonic:
 
 ptr_SuperWalk:	dc.w SuperSonAni_Walk-Ani_SuperSonic
 ptr_SuperRun:	dc.w SuperSonAni_Run-Ani_SuperSonic
-ptr_SuperRoll:	dc.w SuperSonAni_Roll-Ani_Sonic
-ptr_SuperRoll2:	dc.w SuperSonAni_Roll2-Ani_Sonic
+ptr_SuperRoll:	dc.w SuperSonAni_Roll-Ani_SuperSonic
+ptr_SuperRoll2:	dc.w SuperSonAni_Roll2-Ani_SuperSonic
 ptr_SuperPush:	dc.w SuperSonAni_Push-Ani_SuperSonic
 ptr_SuperWait:	dc.w SuperSonAni_Wait-Ani_SuperSonic
 ptr_SuperBalance:	dc.w SuperSonAni_Balance-Ani_SuperSonic
@@ -21,14 +21,14 @@ ptr_SuperFloat1:	dc.w SuperSonAni_Float1-Ani_SuperSonic
 ptr_SuperFloat2:	dc.w SuperSonAni_Float2-Ani_SuperSonic
 ptr_SuperSpring:	dc.w SuperSonAni_Spring-Ani_SuperSonic
 ptr_SuperHang:	dc.w SuperSonAni_Hang-Ani_SuperSonic
-ptr_SuperLeap1:	dc.w SuperSonAni_Leap1-Ani_Sonic
-ptr_SuperLeap2:	dc.w SuperSonAni_Leap2-Ani_Sonic
+ptr_SuperLeap1:	dc.w SuperSonAni_Leap1-Ani_SuperSonic
+ptr_SuperLeap2:	dc.w SuperSonAni_Leap2-Ani_SuperSonic
 ptr_SuperSurf:	dc.w SuperSonAni_Surf-Ani_SuperSonic
 ptr_SuperGetAir:	dc.w SuperSonAni_GetAir-Ani_SuperSonic
-ptr_SuperBurnt:	dc.w SuperSonAni_Burnt-Ani_Sonic
-ptr_SuperDrown:	dc.w SuperSonAni_Drown-Ani_Sonic
-ptr_SuperDeath:	dc.w SuperSonAni_Death-Ani_Sonic
-ptr_SuperHurt:	dc.w SuperSonAni_Hurt-Ani_Sonic
+ptr_SuperBurnt:	dc.w SuperSonAni_Burnt-Ani_SuperSonic
+ptr_SuperDrown:	dc.w SuperSonAni_Drown-Ani_SuperSonic
+ptr_SuperDeath:	dc.w SuperSonAni_Death-Ani_SuperSonic
+ptr_SuperHurt:	dc.w SuperSonAni_Hurt-Ani_SuperSonic
 ptr_SuperWaterSlide:	dc.w SuperSonAni_WaterSlide-Ani_Sonic
 ptr_SuperNull:	dc.w SuperSonAni_Null-Ani_Sonic
 ptr_SuperFloat3:	dc.w SuperSonAni_Float3-Ani_SuperSonic
@@ -41,11 +41,11 @@ ptr_SuperBlink:	dc.w SuperSonAni_Blink-Ani_SuperSonic
 ptr_SuperSit:	dc.w SuperSonAni_Sit-Ani_Sonic
 ptr_SuperPeelout:	dc.w SuperSonAni_Peelout-Ani_SuperSonic
 ptr_SuperHang2:	dc.w SuperSonAni_Hang2-Ani_SuperSonic
-ptr_SuperTransform:	dc.w SuperSonAni_Transform-Ani_SuperSonic
+
 
 SuperSonAni_Walk:	dc.b $FF, fr_walk13, fr_walk14,	fr_walk15, fr_walk16, fr_walk17, fr_walk18, fr_walk11, fr_walk12, afEnd, afEnd, afEnd, afEnd
 		even
-SuperSonAni_Run:	dc.b $FF, fr_run11,  fr_run12,  fr_run13,  fr_run14, fr_run15,  fr_run16,  fr_run17,  fr_run18, afEnd, afEnd, afEnd, afEnd
+SuperSonAni_Run:	dc.b $FF, $CD,  $CE,  $CF,  $D0,  $CD,  $CE,  $CF,  $D0, afEnd, afEnd, afEnd, afEnd
 		even
 SuperSonAni_Roll:	dc.b $FE, fr_Roll1, fr_Roll6, fr_Roll2, fr_Roll7, fr_Roll3, fr_Roll5
 		dc.b fr_Roll8, fr_Roll4, fr_Roll9, fr_Roll5, afEnd, afEnd
@@ -56,15 +56,7 @@ SuperSonAni_Roll2:	dc.b $FE, fr_Roll1, fr_Roll6, fr_Roll2, fr_Roll7, fr_Roll3, f
 SuperSonAni_Push:	dc.b $FD,  fr_push1,  fr_push2,  fr_push3,  fr_push4, fr_push5,  fr_push6,  fr_push7,  fr_push8, afEnd, afEnd, afEnd, afEnd
 		even
 SuperSonAni_Wait:	
-		dc.b   5,  1,  1,  1,  1,  1,  1,  1,  1,  2,  1,  1,  1,  1,  1
-		dc.b   1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  1,  1,  1,  1,  1
-		dc.b   1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  1,  1,  1,  1,  1
-		dc.b   2,  3,  3,  3,  4,  4,  5,  5,  5,  6,  6,  6,  7,  7,  7
-		dc.b   6,  6,  6,  7,  7,  7,  6,  6,  6,  7,  7,  7,  6,  6,  6
-		dc.b   7,  7,  7,  6,  6,  6,  7,  7,  7,  6,  6,  6,  7,  7,  7
-		dc.b   6,  6,  6,  7,  7,  7,  6,  6,  6,  7,  7,  7,  6,  6,  6
-		dc.b   7,  7,  7,  6,  6,  6,  7,  7,  7,  6,  6,  6,  7,  7,  7
-		dc.b   8,  8,  9,  9,  $A, $A, $FE, 4
+		dc.b   5,  $AA, $AA, $AB, $AB, $AC, $AC, $FE, 6
 		even
 SuperSonAni_Balance:	dc.b $F, fr_balance1, fr_balance2, fr_balance3, fr_balance4, afEnd
 		even
@@ -115,7 +107,7 @@ SuperSonAni_Float3:	dc.b 3,	fr_float1, fr_float2, fr_float5, fr_float3, fr_float
 		even
 SuperSonAni_Float4:	dc.b 3,	fr_float1, afChange, id_Walk
 		even
-SuperSonAni_MaxRun:  dc.b $FF, fr_peelout11, fr_peelout12, fr_peelout13, fr_peelout14, afEnd, afEnd, afEnd, afEnd, afEnd, afEnd, afEnd, afEnd
+SuperSonAni_MaxRun:  dc.b $FF, $DD, $DE, $DD, $DE, afEnd, afEnd, afEnd, afEnd, afEnd, afEnd, afEnd, afEnd
 		even
 SuperSonAni_SpinDash: dc.b 0, fr_Spindash1, fr_spindash2, fr_spindash1, fr_spindash3, fr_spindash1, fr_spindash4, fr_spindash1, fr_spindash5, fr_spindash1, fr_spindash6, afEnd
 		even
@@ -134,8 +126,21 @@ SuperSonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		dc.b	$4E, $4F, $50,  $51, -2, 4, $FE
 		even
 SuperSonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
-		even
-SuperSonAni_Transform:
-				dc.b 2, $A1,$A1,$A2,$A3,$A3,$A4,$A4,$A4,$A5
-		dc.b	$A6,$A5,$A7,$A7,$A9,$A8,$A9,$A8,$A9,$A8, afchange, id_Walk
-		even		
+		even	
+		
+id_SuperWalk:	equ (ptr_Walk-Ani_SuperSonic)/2	; 0
+id_SuperRun:		equ (ptr_Run-Ani_SuperSonic)/2	; 1
+id_SuperRoll:	equ (ptr_Roll-Ani_SuperSonic)/2	; 2
+id_SuperRoll2:	equ (ptr_Roll2-Ani_SuperSonic)/2	; 3
+id_SuperPush:	equ (ptr_Push-Ani_SuperSonic)/2	; 4
+id_SuperWait:	equ (ptr_Wait-Ani_SuperSonic)/2	; 5
+id_SuperBalance:	equ (ptr_Balance-Ani_SuperSonic)/2	; 6
+id_SuperLookUp:	equ (ptr_LookUp-Ani_SuperSonic)/2	; 7
+id_SuperDuck:	equ (ptr_Duck-Ani_SuperSonic)/2	; 8
+id_SuperStop:	equ (ptr_Stop-Ani_SuperSonic)/2	; $D
+id_SuperSpring:	equ (ptr_Spring-Ani_SuperSonic)/2	; $10
+id_SuperHang:	equ (ptr_Hang-Ani_SuperSonic)/2	; $11
+id_SuperMaxRun:	equ (ptr_MaxRun-Ani_SuperSonic)/2	; $1E
+id_SuperSpindash:	equ (ptr_Spindash-Ani_SuperSonic)/2	; $1F
+id_SuperPeelout:	equ (ptr_Peelout-Ani_SuperSonic)/2	; $25
+id_SuperHang2:		equ	(ptr_Hang2-Ani_SuperSonic)/2

@@ -123,7 +123,7 @@ Sonic_Animatecont:
 	@cont:	
 		lea	(SonAni_MaxRun).l,a1 ; use Dashing animation
 		cmpi.w	#$A00,d2	; is Sonic at Dashing speed?
-		bcc.s	@running	; if yes, branch
+		bcc.s	@maxrunning	; if yes, branch
 
 		lea	(SonAni_Run).l,a1 ; use	running	animation
 		cmpi.w	#$600,d2	; is Sonic at running speed?
