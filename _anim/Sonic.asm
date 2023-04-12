@@ -134,7 +134,7 @@ SonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		dc.b	$33, $34, $35
 		dc.b	$4E, $4F, $50,  $51, -2, 4, $FE
 		even
-SonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
+SonAni_Hang2:	dc.b $19, fr_vhang1, fr_vhang2, $FF	
 		even
 SonAni_GetAir2: dc.b $5, fr_getair2, afChange, id_Roll
 		even
