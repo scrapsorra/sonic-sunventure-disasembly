@@ -133,7 +133,7 @@ SonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		dc.b	$33, $34, $35
 		dc.b	$4E, $4F, $50,  $51, -2, 4, $FE
 		even
-SonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
+SonAni_Hang2:	dc.b $10, fr_dvhang1, fr_vhang2, $FF	
 		even
 
 id_Walk:	equ (ptr_Walk-Ani_Sonic)/2	; 0

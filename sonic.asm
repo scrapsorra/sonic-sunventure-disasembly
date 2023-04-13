@@ -3155,7 +3155,7 @@ LevelMenuText:	if Revision=0
 MusicList:
 			dc.b bgm_GHZ    ; GHZ1
         	dc.b bgm_LZ    ; GHZ2
-        	dc.b bgm_Stop   ; GHZ3
+        	dc.b bgm_Seaside   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
         	dc.b bgm_Stop    ; LZ1
         	dc.b bgm_Stop   ; LZ2
@@ -3165,17 +3165,17 @@ MusicList:
         	dc.b bgm_SBZ    ; MZ2
         	dc.b bgm_RRZ2   ; MZ3
         	dc.b bgm_SBZ    ; MZ4
-        	dc.b bgm_LZ    ; SLZ1
-        	dc.b bgm_LZ    ; SLZ2
-        	dc.b bgm_LZ    ; SLZ3
+        	dc.b bgm_Stop    ; SLZ1
+        	dc.b bgm_Stop    ; SLZ2
+        	dc.b bgm_Stop    ; SLZ3
         	dc.b bgm_LZ    ; SLZ4
-        	dc.b bgm_SYZ    ; SYZ1
-        	dc.b bgm_SLZ    ; SYZ2
-        	dc.b bgm_SLZ    ; SYZ3
+        	dc.b bgm_Stop    ; SYZ1
+        	dc.b bgm_Stop    ; SYZ2
+        	dc.b bgm_Stop    ; SYZ3
         	dc.b bgm_SLZ    ; SYZ4
-        	dc.b bgm_SBZ    ; SBZ1
-        	dc.b bgm_SBZ    ; SBZ2
-        	dc.b bgm_FZ		; SBZ3
+        	dc.b bgm_Stop    ; SBZ1
+        	dc.b bgm_Stop    ; SBZ2
+        	dc.b bgm_Stop		; SBZ3
         	dc.b bgm_SBZ    ; SBZ4
         	dc.b bgm_GHZ    ; GHZ1
         	dc.b bgm_GHZ    ; GHZ1

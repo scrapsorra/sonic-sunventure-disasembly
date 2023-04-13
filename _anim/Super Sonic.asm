@@ -125,8 +125,8 @@ SuperSonAni_Peelout: dc.b 	0, $E, $E, $E, $E, $E, $E, $F, $F
 		dc.b	$33, $34, $35
 		dc.b	$4E, $4F, $50,  $51, -2, 4, $FE
 		even
-SuperSonAni_Hang2:	dc.b $13, fr_vhang3, fr_vhang1, fr_vhang2, fr_vhang1, $FF	
-		even	
+SuperSonAni_Hang2:	dc.b $10, fr_vhang1, fr_vhang2, $FF	
+		even
 		
 id_SuperWalk:	equ (ptr_Walk-Ani_SuperSonic)/2	; 0
 id_SuperRun:		equ (ptr_Run-Ani_SuperSonic)/2	; 1

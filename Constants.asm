@@ -250,7 +250,7 @@ bgm_Emerald:	equ ((ptr_mus93-MusicIndex)/4)+bgm__First
 bgm_Pinch:		equ ((ptr_mus94-MusicIndex)/4)+bgm__First
 bgm_Seaside:	equ ((ptr_mus95-MusicIndex)/4)+bgm__First
 bgm_SBZ3:		equ ((ptr_mus96-MusicIndex)/4)+bgm__First
-bgm_Granada:	equ ((ptr_mus97-MusicIndex)/4)+bgm__First
+bgm_TimeOver:	equ ((ptr_mus97-MusicIndex)/4)+bgm__First
 bgm_Options:	equ ((ptr_mus98-MusicIndex)/4)+bgm__First
 bgm_ToxicLandfill:	equ ((ptr_mus99-MusicIndex)/4)+bgm__First
 bgm_RRZ2:	equ ((ptr_mus9A-MusicIndex)/4)+bgm__First
@@ -448,10 +448,10 @@ fr_Balance2:	equ $73
 fr_Balance3:	equ $74
 fr_Balance4:	equ $75
 fr_GetAir2:		equ $76
-fr_Blank:		equ $77
-fr_VHang1:		equ $78
-fr_VHang2:		equ $79
-fr_VHang3:		equ $7A
+fr_VHang1:		equ $77
+fr_VHang2:		equ $78
+fr_Blank:		equ $79
+fr_Blank2:		equ $7A
 
 fr_Float1:	equ $7C
 fr_Float2:	equ $7E
