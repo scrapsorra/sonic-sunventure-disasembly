@@ -104,9 +104,8 @@ PSwapper_MainX:
 @jump:
 		btst	#0,obRender(a0)
 		bne.s	@jump2
-		;move.b	#$C,(v_top_solid_bit).w	; MJ: set collision to 1st
-		;move.b	#$D,(v_lrb_solid_bit).w	; MJ: set collision to 1st
 		move.b	#0,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_Sonic),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
@@ -115,9 +114,10 @@ PSwapper_MainX:
 
 		btst	#3,d0
 		beq.s	@jump2
-		;move.b	#$E,(v_top_solid_bit).w	; MJ: set collision to 2nd
-		;move.b	#$F,(v_lrb_solid_bit).w	; MJ: set collision to 2nd
+		
+
 		move.b	#1,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_LZSonWatr2),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
@@ -159,9 +159,11 @@ PSwapper_MainX_Alt:
 @jump:
 		btst	#0,obRender(a0)
 		bne.s	@jump2
-		;move.b	#$C,(v_top_solid_bit).w	; MJ: set collision to 1st
-		;move.b	#$D,(v_lrb_solid_bit).w	; MJ: set collision to 1st
+		
+
+
 		move.b	#0,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_Sonic),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
@@ -169,13 +171,14 @@ PSwapper_MainX_Alt:
 
 		btst	#4,d0
 		beq.s	@jump2
-		;move.b	#$E,(v_top_solid_bit).w	; MJ: set collision to 2nd
-		;move.b	#$F,(v_lrb_solid_bit).w	; MJ: set collision to 2nd
+		
 		move.b	#1,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_LZSonWatr2),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
 		;jsr	Palload_Loop
+
 @jump2:
 		andi.w	#$7FFF,obGfx(a1)
 		btst	#6,d0
@@ -219,9 +222,9 @@ PSwapper_MainY:
 @jump:
 		btst	#0,obRender(a0)
 		bne.s	@jump2
-		;move.b	#$C,(v_top_solid_bit).w	; MJ: set collision to 1st
-		;move.b	#$D,(v_lrb_solid_bit).w	; MJ: set collision to 1st
+		
 		move.b	#0,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_Sonic),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
@@ -229,13 +232,14 @@ PSwapper_MainY:
 
 		btst	#3,d0
 		beq.s	@jump2
-		;move.b	#$E,(v_top_solid_bit).w	; MJ: set collision to 2nd
-		;move.b	#$F,(v_lrb_solid_bit).w	; MJ: set collision to 2nd
+		
 		move.b	#1,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_LZSonWatr2),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
 		;jsr	Palload_Loop
+
 @jump2:
 		andi.w	#$7FFF,obGfx(a1)
 		btst	#5,d0
@@ -272,9 +276,9 @@ PSwapper_MainY_Alt:
 @jump:
 		btst	#0,obRender(a0)
 		bne.s	@jump2
-		;move.b	#$C,(v_top_solid_bit).w	; MJ: set collision to 1st
-		;move.b	#$D,(v_lrb_solid_bit).w	; MJ: set collision to 1st
+		
 		move.b	#0,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_Sonic),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
@@ -282,13 +286,15 @@ PSwapper_MainY_Alt:
 
 		btst	#4,d0
 		beq.s	@jump2
-		;move.b	#$E,(v_top_solid_bit).w	; MJ: set collision to 2nd
-		;move.b	#$F,(v_lrb_solid_bit).w	; MJ: set collision to 2nd
+
+		
 		move.b	#1,(v_tagwater).w	;TIS
+
 		;move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_LZSonWatr2),a1  ;Palette location
         	;lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
 		;jsr	Palload_Loop
+
 @jump2:
 		andi.w	#$7FFF,obGfx(a1)
 		btst	#6,d0

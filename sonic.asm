@@ -11,7 +11,7 @@
 	include	"Constants.asm"
 	include	"Variables.asm"
 	include	"Macros.asm"
-    include   "Debugger.asm"
+	include   "Debugger.asm"
 	
 EnableSRAM:	equ 0	; change to 1 to enable SRAM
 BackupSRAM:	equ 1
@@ -3189,8 +3189,6 @@ MusicList:
 ; ---------------------------------------------------------------------------
 
 GM_Level:
-		move.b	#0,(v_tagwater).w	;TIS - reset water state
-
 		bset	#7,(v_gamemode).w ; add $80 to screen mode (for pre level sequence)
 		tst.w	(f_demo).w
 		bmi.s	Level_NoMusicFade
@@ -3366,6 +3364,7 @@ Level_LoadObj:
 		move.w	d0,(v_rings).w	; clear rings
 		move.l	d0,(v_time).w	; clear time
 		move.b	d0,(v_lifecount).w ; clear lives counter
+		move.b	#0,(v_tagwater).w	;TIS - reset water state
 
 	Level_SkipClr:
 		move.b	d0,(f_timeover).w

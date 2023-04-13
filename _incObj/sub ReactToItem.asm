@@ -94,7 +94,6 @@ ReactToItem:
 ; ===========================================================================
 
 @outsidex:
-		bsr	React_ChkWaterTag	;TIS
 		cmp.w	d4,d0
 		bhi.w	@next
 
@@ -113,23 +112,12 @@ ReactToItem:
 ; ===========================================================================
 
 @outsidey:
-		bsr	React_ChkWaterTag	;TIS
 		cmp.w	d5,d0
 		bhi.w	@next
 
 @withiny:
 	@chktype:
-        	cmpi.b	#id_SYZ,(v_zone).w   ;TIS is level GHZZ?
-        	bne	NotGHZReact  ;TIS
-        	move.b	obColType(a1),d1 ;TIS load collision type
-        	cmpi.b	#$96,d1        ;TIS - is collision type $96?
-        	beq	React_WaterTag    ;TIS if yes, branch
-        	cmpi.b	#$94,d1        ;TIS - is collision type $94?
-        	beq	React_WaterTag    ;TIS if yes, branch
-        	cmpi.b	#$95,d1        ;TIS - is collision type $95?
-        	beq	React_WaterTag    ;TIS if yes, branch
-NotGHZReact:                      ;TIS
-		move.b	obColType(a1),d1 ; load collision type
+        	move.b	obColType(a1),d1 ; load collision type
 		andi.b	#$C0,d1        ; is obColType $40 or higher?
 		beq.w	React_Enemy    ; if not, branch
 		cmpi.b	#$C0,d1		; is obColType $C0 or higher?

@@ -356,7 +356,10 @@ v_init:		equ $FFFFFFFC	; 'init' text string (4 bytes)
 
 f_emeraldm:	equ $FFFFF5C3
 v_tagwater:    	equ $FFFFF5C4   ; TIS  
-v_watersplashpos:    equ $FFFFFF92    ; TIS  
+v_watersplashpos:    equ $FFFFFF92    ; TIS
+v_watersplashposlamp:    equ $FFFFFF94    ; TIS
+v_tagwaterlamp:	equ $FFFFFF96    ; TIS
+  
 f_spindash	= $39
 v_Saved_music:	equ $FFFFF5C6
 v_rshield:	equ $FFFFF5C8	; shield status (00 = no; 01 = yes)
