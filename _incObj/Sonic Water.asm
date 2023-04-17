@@ -12,7 +12,11 @@ Sonic_Water:
 		beq.s	Sonic_Water_LZ	; if yes, branch
 
 	Sonic_Water_Exit:
-		rts	
+		rts
+; ===========================================================================
+LoadGFXLUTWat:	;TIS Water Palette List
+        dc.l	Pal_SBZ3SonWat,Pal_SonWater2,Pal_SonWater3,Pal_SonWater4,Pal_SonWater5,Pal_SonWater6,Pal_SonWater7,Pal_SonWater8,Pal_SonWater9,Pal_SonWater10,Pal_SonWater11	
+
 ; ===========================================================================
 
 	Sonic_Water_LZ:
@@ -21,12 +25,18 @@ Sonic_Water:
 		bge.w	Abovewater	; if yes, branch
 		bra	WaterStatus
 	WaterTagforMZ:
-		cmpi.b	#0,(v_tagwater).w	;TIS Lava Tag?
+		cmpi.b	#0,(v_tagwater).w	;TIS
 		beq.w	Abovewater	; if yes, branch
-		;move.w #$F,d0             ;TIS Length ($F = full line)
+		
+		moveq	#0,d0
+		move.b	($FFFFFFBF).w,d0
+        add.w    d0,d0
+        add.w    d0,d0
+		movea.l    loadGFXLUTWat(pc,d0.w),a1  ;Load a separate list for water palettes
+		move.w #$7,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_LZSonWatr2),a1  ;Palette location
-    ;    	lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
-	;	jsr	Palload_Loop
+    	lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
+		jsr	Palload_Loop
 	WaterStatus:
 		bset	#6,obStatus(a0)
 		bne.w	Sonic_Water_Exit
@@ -50,15 +60,31 @@ Sonic_Water:
 		;move.w	(v_player+obY).w,(v_watersplashpos).w	;TIS copy y-pos
         	move.w    #$100,($FFFFD1DC).w    ; set the spin dash dust animation to splash
 		sfx	sfx_Splash,1,0,0	 ; play splash sound
-		cmpi.b	#0,(v_tagwater).w	;TIS Lava Tag?
+		cmpi.b	#0,(v_tagwater).w	;TIS 
 		bne.w	@return
 		
 		
 	@return:
 		rts
+
+; ===========================================================================
+
+LoadGFXLUT:	;TIS Dry Palette List
+        dc.l   Pal_Sonic,Pal_Sonic2,Pal_Sonic3,Pal_Sonic4,Pal_Sonic5,Pal_Sonic6,Pal_Sonic7,Pal_Sonic8,Pal_Sonic8,Pal_Sonic9,Pal_Sonic10,Pal_Sonic11
+
 ; ===========================================================================
 
 Abovewater:
+		moveq	#0,d0
+		move.b	($FFFFFFBF).w,d0
+		add.w    d0,d0
+        add.w    d0,d0
+		movea.l    loadGFXLUT(pc,d0.w),a1  ;Load a separate list for palettes
+
+		move.w #$7,d0             ;TIS Length ($F = full line)
+		;lea    (Pal_Sonic),a1  ;Palette location
+		lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
+		jsr	Palload_Loop
 		bclr	#6,obStatus(a0)
 		beq.w	Sonic_Water_Exit
 		bsr.w	ResumeMusic
@@ -83,3 +109,4 @@ Abovewater:
 	@belowmaxspeed:
 		sfx	sfx_Splash,1,0,0	 ; play splash sound
 ; End of function Sonic_Water
+
