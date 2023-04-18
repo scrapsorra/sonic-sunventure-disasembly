@@ -3,7 +3,6 @@
 -finished title screen sonic sprites
 -fix TM not appearing
 -unlockable super sonic for beating the game with all emeralds
--water palette bug fixes
 -emerald count in act results
 -more music
 -disable act count for robotic abyss
