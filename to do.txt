@@ -1,11 +1,16 @@
--complete layout for FBZ3
--layout improvements to FBZ1 & 2
--finished title screen sonic sprites
+-foreground art, gimmicks, and level design layouts for future bay 1, 2 and 3
+-finish title screen sonic sprites
 -fix TM not appearing
 -unlockable super sonic for beating the game with all emeralds
 -emerald count in act results
 -more music
+-replace all the mr joker ports (aka 90% of the soundtrack)
 -disable act count for robotic abyss
 -separate LZ4 from LZ art
 -cd style checkpoint animation
 -sonic 2 contextual animations (get up, balance 2)
+-implement ice zone over labyrinth (new foreground tiles, new background, level layout, gimmick set)
+-implement aero vortex zone over star light (new foreground tiles, new background, level layout, gimmick set)
+-new bosses?
+-metal sonic boss?
+-secret to reference the scrap ruins 3 collision oversight?
