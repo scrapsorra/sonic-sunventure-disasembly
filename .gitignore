@@ -6,3 +6,5 @@ sonic.lst
 errors.txt
 sunventure.bin
 sunventure.prev.bin
+*.lst
+*.sym

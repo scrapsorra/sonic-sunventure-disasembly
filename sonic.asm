@@ -11,10 +11,14 @@
 	include	"Constants.asm"
 	include	"Variables.asm"
 	include	"Macros.asm"
-	include   "Debugger.asm"
-	
+	include "Debugger.asm"
+
+; ===========================================================================
+; flags & shit
+; ===========================================================================
+GameIsPlayable:	equ 1	; =P
 SRAMEnabled:	equ 1	; change to 1 to enable SRAM
-BackupSRAM:	equ 1
+BackupSRAM:		equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
 
 ; Change to 0 to build the original version of the game, dubbed REV00
@@ -7946,8 +7950,10 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		;bsr.w	Sonic_Peelout
-		;bsr.w	Sonic_SpinDash
+		if (GameIsPlayable=1)
+		bsr.w	Sonic_Peelout
+		bsr.w	Sonic_SpinDash
+		endm
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
 		bsr.w	Sonic_Move
