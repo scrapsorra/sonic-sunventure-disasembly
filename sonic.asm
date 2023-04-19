@@ -2862,12 +2862,12 @@ LevSel_Level:
 
 PlayLevel:
 		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
+		move.b	#3,(v_lives).w	; set lives to 3
 		moveq	#0,d0
 		move.w	d0,(v_rings).w	; clear rings
 		move.l	d0,(v_time).w	; clear time
 
 		; Commented out so it doesn't mess with save data
-		;move.b	#3,(v_lives).w	; set lives to 3
 		;move.l	d0,(v_score).w	; clear score
 		;move.b	d0,(v_lastspecial).w ; clear special stage number
 		;move.b	d0,(v_emeralds).w ; clear emeralds
@@ -7828,12 +7828,7 @@ SaveGame:
 		cmp.l   (v_zone).w, d0
         beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
 
-@Save:
-		move.b 	(v_zone).w, SavedZone(a0)
-		move.b 	(v_emeralds).w, SavedEmeralds(a0)
-		move.l 	(v_emldlist).w, SavedEmeraldList(a0)
-		move.l 	(v_emldlist+4).w, SavedEmeraldList2(a0)
-		move.b 	(v_lives).w, SavedLives(a0)
+		move.b 	(v_zone), SavedZone(a0)
 
 @DoNotSave:
 		disableSRAM
@@ -7848,25 +7843,10 @@ LoadSavedGame:
 		bne.s   @HasSavedGame
 		
 		move.b 	#0, SavedZone(a0)
-		move.b 	#0, SavedEmeralds(a0)
-		move.l 	#0, SavedEmeraldList(a0)
-		move.l 	#0, SavedEmeraldList2(a0)
-		move.l 	#3, SavedLives(a0)
-
-		move.b 	#0, (v_zone).w
-		move.b 	#0, (v_act).w
-		move.b 	#0, (v_emeralds).w
-		move.b 	#0, (v_emldlist).w
-		move.b 	#0, (v_emldlist+4).w
-		move.b 	#3, (v_lives).w
 		bsr.s 	@Return
 
 @HasSavedGame:
 		move.b 	SavedZone(a0), (v_zone).w
-		move.b 	SavedEmeralds(a0), (v_emeralds).w
-		move.l 	SavedEmeraldList(a0), (v_emldlist).w
-		move.l 	SavedEmeraldList2(a0), (v_emldlist+4).w
-		move.b 	SavedLives(a0), (v_lives).w
 
 @Return:
         disableSRAM

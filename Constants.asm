@@ -507,5 +507,5 @@ SavedCamera:        equ $3
 SavedZone:          equ $6
 SavedEmeralds:      equ $8
 SavedEmeraldList:   equ $A
-SavedEmeraldList2:  equ $12
-SavedLives:         equ $14
+SavedEmeraldList2:  equ $11
+SavedLives:         equ $13
