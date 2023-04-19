@@ -502,6 +502,10 @@ fr_Transform8	equ	$A8
 fr_Transform9	equ	$A9
 
 ; SRAM Map
-SavedColor:     equ $1
-SavedCamera:    equ $3
-SavedZone:      equ $6
+SavedColor:         equ $1
+SavedCamera:        equ $3
+SavedZone:          equ $6
+SavedEmeralds:      equ $8
+SavedEmeraldList:   equ $A
+SavedEmeraldList2:  equ $12
+SavedLives:         equ $14
