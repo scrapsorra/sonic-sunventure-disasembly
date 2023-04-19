@@ -13,7 +13,7 @@
 	include	"Macros.asm"
 	include   "Debugger.asm"
 	
-EnableSRAM:	equ 0	; change to 1 to enable SRAM
+EnableSRAM:	equ 1	; change to 1 to enable SRAM
 BackupSRAM:	equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
 
@@ -124,12 +124,12 @@ RomEndLoc:	dc.l EndOfRom-1		; End address of ROM
 RamStartLoc:	dc.l $FF0000		; Start address of RAM
 RamEndLoc:	dc.l $FFFFFF		; End address of RAM
 SRAMSupport:	if EnableSRAM=1
-		dc.b $52, $41, $A0+(BackupSRAM<<6)+(AddressSRAM<<3), $20
+		dc.b 'RA',$F8,$20    ; SRAM type
 		else
 		dc.l $20202020
 		endc
-		dc.l $20202020		; SRAM start ($200001)
-		dc.l $20202020		; SRAM end ($20xxxx)
+		dc.l $200000		; SRAM start
+		dc.l $2001FF		; SRAM end
 Notes:		dc.b "                                                    " ; Notes (unused, anything can be put in this space, but it has to be 52 bytes.)
 Region:		dc.b "JUE             " ; Region (Country code)
 EndOfHeader:
@@ -149,7 +149,7 @@ EntryPoint:
 		tst.w	(z80_expansion_control).l ; test port C control register
 
 PortA_Ok:
-		bne.s	SkipSetup ; Skip the VDP and Z80 setup code if port A, B or C is ok...?
+		bne.w	SkipSetup ; Skip the VDP and Z80 setup code if port A, B or C is ok...?
 		lea	SetupValues(pc),a5	; Load setup values array address.
 		movem.w	(a5)+,d5-d7
 		movem.l	(a5)+,a0-a4
@@ -213,6 +213,33 @@ PSGInitLoop:
 		move.w	d0,(a2)
 		movem.l	(a6),d0-a6	; clear all registers
 		disable_ints
+
+InitSRAM: ; could have been done more cleanly
+        move.b  #1,($A130F1).l
+        lea ($200001).l,a0
+
+        movep.l $DD(a0),d0
+        move.l  #"FUCK",d1
+
+		cmp.l   d0,d1 ; reset SRAM if there's no "FUCK"
+        beq.s   @Continue
+
+		move.b 	#0, $1(a0)
+		move.b 	#0, $3(a0)
+
+        move.l  #" OUT",d2
+        move.l  #"TA M",d3
+        move.l  #"Y SR",d4
+        move.l  #"AM  ",d5
+
+        movep.l d1,$DD(a0)
+        movep.l d2,$E5(a0)
+        movep.l d3,$ED(a0)
+        movep.l d4,$F5(a0)
+        movep.l d5,$FD(a0)
+
+@Continue:
+        move.b    #0,($A130F1).l
 
 SkipSetup:
 		bra.s	GameProgram	; begin game
@@ -3264,7 +3291,11 @@ Level_ClrRam:
 		move.w	#$8720,(a6)		; set background colour (line 3; colour 0)
 		move.w	#$8A00+223,(v_hbla_hreg).w ; set palette change position (for water)
 		move.w	(v_hbla_hreg).w,(a6)
+
 		ResetDMAQueue	
+		
+		jsr 	LoadSRAMConfig
+
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
 		bne.s	Level_LoadPal	; if not, branch
 
@@ -7742,6 +7773,14 @@ LoadLifeIcon_Table:
 		dc.b	plcid_LifeIconF
 		dc.b	plcid_LifeIconF	
 		even
+
+LoadSRAMConfig:
+        move.b  #1,($A130F1).l
+        lea 	($200001).l,a0
+		move.b 	$1(a0), ($FFFFFFBF).w
+		move.b 	$3(a0), ($FFFFFF8B).w
+        move.b  #0,($A130F1).l
+		rts
 
 ; ---------------------------------------------------------------------------
 ; Object 01 - Sonic
