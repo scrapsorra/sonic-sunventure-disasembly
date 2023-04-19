@@ -153,7 +153,7 @@ Pow_ChkRings:
 Pow_ChkS:
 		cmpi.b	#7,d0		; does monitor contain 'S'?
 		bne.s	Pow_ChkSRing
-		
+
 		cmpi.b	#6,(v_emeralds).w ; do you have all the emeralds?
 		beq.s	PowS2	; if yes, branch
 		subi.b	#$3B,d4
@@ -176,6 +176,7 @@ PowS2:
 		beq.w	ExtraLife	
 
 PowSPlay:
+		jsr	WhiteFlash
 		sfx	sfx_GiantRing,1,0,0	; play giant ring sound
 
 		

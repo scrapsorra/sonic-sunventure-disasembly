@@ -13,7 +13,7 @@
 	include	"Macros.asm"
 	include   "Debugger.asm"
 	
-EnableSRAM:	equ 1	; change to 1 to enable SRAM
+SRAMEnabled:	equ 1	; change to 1 to enable SRAM
 BackupSRAM:	equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
 
@@ -123,7 +123,7 @@ RomStartLoc:	dc.l StartOfRom		; Start address of ROM
 RomEndLoc:	dc.l EndOfRom-1		; End address of ROM
 RamStartLoc:	dc.l $FF0000		; Start address of RAM
 RamEndLoc:	dc.l $FFFFFF		; End address of RAM
-SRAMSupport:	if EnableSRAM=1
+SRAMSupport:	if SRAMEnabled=1
 		dc.b 'RA',$F8,$20    ; SRAM type
 		else
 		dc.l $20202020
@@ -215,31 +215,31 @@ PSGInitLoop:
 		disable_ints
 
 InitSRAM: ; could have been done more cleanly
-        move.b  #1,($A130F1).l
+        enableSRAM
         lea ($200001).l,a0
 
-        movep.l $DD(a0),d0
+        movep.l $DD(a0),d0 ; where the "FUCK" should be
         move.l  #"FUCK",d1
 
 		cmp.l   d0,d1 ; reset SRAM if there's no "FUCK"
         beq.s   @Continue
 
-		move.b 	#0, $1(a0)
+		move.b 	#0, $1(a0) ; clear settings
 		move.b 	#0, $3(a0)
 
-        move.l  #" OUT",d2
+        move.l  #" OUT",d2 ; the rest of the string (lol)
         move.l  #"TA M",d3
         move.l  #"Y SR",d4
         move.l  #"AM  ",d5
 
-        movep.l d1,$DD(a0)
+        movep.l d1,$DD(a0) ; save the string
         movep.l d2,$E5(a0)
         movep.l d3,$ED(a0)
         movep.l d4,$F5(a0)
         movep.l d5,$FD(a0)
 
 @Continue:
-        move.b    #0,($A130F1).l
+        disableSRAM
 
 SkipSetup:
 		bra.s	GameProgram	; begin game
@@ -3520,6 +3520,23 @@ Level_MainLoop:
 		bne.w	GM_Level	; if yes, branch
 		else
 		endc
+
+		tst.b	(v_flashtimer).w ; is white flash counter empty?
+		beq.s	@Continue	; if yes, branch
+		
+		subq.b	#1,(v_flashtimer).w	; sub 1 from counter
+		cmpi.b	#1,(v_flashtimer).w	; sub 1 from counter
+		bge.s	@Continue	; is counter now empty? if not, branch
+		
+		lea	($FFFFFA80).w,a4	; load palette location to a4
+		lea	($FFFFCA00).w,a3	; load backed up palette to a3
+		move.w	#$007F,d5		; set d3 to $7F (+1 for the first run)
+
+@RestorePalette:
+		move.w	(a3)+,(a4)+		; set new palette palette
+		dbf	d5,@RestorePalette	; loop
+
+@Continue:
 		cmpi.b	#id_Level,(v_gamemode).w
 		beq.w	Level_MainLoop	; if mode is $C (level), branch
 		rts	
@@ -7775,11 +7792,35 @@ LoadLifeIcon_Table:
 		even
 
 LoadSRAMConfig:
-        move.b  #1,($A130F1).l
+        enableSRAM
+
         lea 	($200001).l,a0
 		move.b 	$1(a0), ($FFFFFFBF).w
 		move.b 	$3(a0), ($FFFFFF8B).w
-        move.b  #0,($A130F1).l
+
+        disableSRAM
+		rts
+
+WhiteFlash:
+		cmpi.l	#$0EEE0EEE,($FFFFFB00).w	; are the first two colors white?
+		beq.s	@Return			; if yes, assume white flashing is still in progress and therefore skip it
+		lea	($FFFFFA80).w,a3	; load palette location to a3
+		lea	($FFFFCA00).w,a4	; load backup location to a4
+		move.w	#$007F,d3		; set d3 to $7F (+1 for the first run)
+
+@BackupPal_Loop:
+		move.w	(a3)+,(a4)+		; backup palette
+		dbf	d3,@BackupPal_Loop	; loop
+
+		lea	($FFFFFA80).w,a1	; load palette location to a3
+		move.w	#$EEE,d1		; set colour to white
+		move.w	#$007F,d3		; set d3 to $7F (+1 for the first run)
+
+@MakeWhite_Loop:
+		move.w	d1,(a1)+		; set new color
+		dbf	d3,@MakeWhite_Loop	; loop
+		move.b	#5,(v_flashtimer).w	; Set flash timer
+@Return:
 		rts
 
 ; ---------------------------------------------------------------------------

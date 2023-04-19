@@ -375,3 +375,5 @@ Palette_timer =        $FFFFF5DE
 Palette_Frame_Count =        $FFFFF5CD
 Super_Sonic_frame_count =    $FFFFF670
 Super_Sonic_flag =        $FFFFFE19
+
+v_flashtimer:	equ $FFFFFFB1

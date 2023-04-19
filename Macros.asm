@@ -364,3 +364,11 @@ zonewarning:	macro loc,elementsize
 		inform 1,"Size of \loc ($%h) does not match ZoneCount ($\#ZoneCount).",(@end-loc)/elementsize
 		endc
 		endm
+
+enableSRAM:		macro
+	move.b  #1,($A130F1).l
+	endm
+
+disableSRAM:	macro
+	move.b  #0,($A130F1).l
+	endm
