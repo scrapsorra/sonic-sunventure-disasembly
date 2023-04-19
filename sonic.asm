@@ -7950,10 +7950,10 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		if (GameIsPlayable=1)
+		if (GameIsPlayable=2)
 		bsr.w	Sonic_Peelout
 		bsr.w	Sonic_SpinDash
-		endm
+		endif
 		bsr.w	Sonic_Jump
 		bsr.w	Sonic_SlopeResist
 		bsr.w	Sonic_Move
