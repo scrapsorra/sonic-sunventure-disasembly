@@ -16,7 +16,7 @@
 ; ===========================================================================
 ; flags & shit
 ; ===========================================================================
-GameIsPlayable:	equ 1	; =P
+GameIsPlayable:	equ 0	; =P
 SRAMEnabled:	equ 1	; change to 1 to enable SRAM
 BackupSRAM:		equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
@@ -2602,6 +2602,8 @@ GM_Title:
 		move.w	#0,($FFFFFFEA).w ; unused variable
 		move.w	#(id_GHZ<<8),(v_zone).w	; set level to GHZ (00)
 		move.w	#0,(v_pcyc_time).w ; disable palette cycling
+		
+		jsr 	LoadSRAMConfig
 		bsr.w	LevelSizeLoad
 		bsr.w	DeformLayers
 		lea	(v_16x16).w,a1
@@ -2762,7 +2764,7 @@ Tit_ChkLevSel:
 
 ; ===========================================================================
 Tit_Menu_Choice:
-		dc.w PlayLevel-Tit_Menu_Choice   ; 0
+		dc.w PlaySavedLevel-Tit_Menu_Choice   ; 0
 		dc.w Menu_Options-Tit_Menu_Choice  ; 2
 ; ===========================================================================
 
@@ -2864,18 +2866,23 @@ PlayLevel:
 		moveq	#0,d0
 		move.w	d0,(v_rings).w	; clear rings
 		move.l	d0,(v_time).w	; clear time
-		move.l	d0,(v_score).w	; clear score
-		move.b	d0,(v_lastspecial).w ; clear special stage number
-		move.b	d0,(v_emeralds).w ; clear emeralds
-		move.l	d0,(v_emldlist).w ; clear emeralds
-		move.l	d0,(v_emldlist+4).w ; clear emeralds
-		move.b	#1,(v_continues).w ; set continues to 1
+		; Commented out so it doesn't mess with save data
+		;move.l	d0,(v_score).w	; clear score
+		;move.b	d0,(v_lastspecial).w ; clear special stage number
+		;move.b	d0,(v_emeralds).w ; clear emeralds
+		;move.l	d0,(v_emldlist).w ; clear emeralds
+		;move.l	d0,(v_emldlist+4).w ; clear emeralds
+		;move.b	#1,(v_continues).w ; set continues to 1
 		if Revision=0
 		else
 			move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
 		endc
 		sfx	bgm_Fade,0,1,1 ; fade out music
 		rts	
+PlaySavedLevel:
+		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
+		jsr 	LoadSavedGame
+		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Level	select - level pointers
@@ -3298,7 +3305,7 @@ Level_ClrRam:
 
 		ResetDMAQueue	
 		
-		jsr 	LoadSRAMConfig
+		jsr 	SaveGame
 
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
 		bne.s	Level_LoadPal	; if not, branch
@@ -7795,15 +7802,55 @@ LoadLifeIcon_Table:
 		dc.b	plcid_LifeIconF	
 		even
 
+; ===========================================================================
+; SRAM FUCKERY
+; ===========================================================================
+
 LoadSRAMConfig:
         enableSRAM
 
-        lea 	($200001).l,a0
-		move.b 	$1(a0), ($FFFFFFBF).w
-		move.b 	$3(a0), ($FFFFFF8B).w
+        lea 	($200001).l, a0
+		move.b 	SavedColor(a0), ($FFFFFFBF).w
+		move.b 	SavedCamera(a0), ($FFFFFF8B).w
 
         disableSRAM
 		rts
+
+; ---------------------------------------------------------------------------
+
+SaveGame:
+		enableSRAM
+		lea 	($200001).l, a0
+		movep.l SavedZone(a0), d0
+
+		cmp.l   (v_zone).w, d0
+        beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
+
+		move.b 	(v_zone), SavedZone(a0)
+
+@DoNotSave:
+		disableSRAM
+		rts
+
+; ---------------------------------------------------------------------------
+
+LoadSavedGame:
+        enableSRAM
+        lea 	($200001).l, a0
+		cmp.b   #$FF, SavedZone(a0)
+		bne.s   @HasSavedGame
+		
+		move.b 	#0, SavedZone(a0)
+		bsr.s 	@Return
+
+@HasSavedGame:
+		move.b 	SavedZone(a0), (v_zone).w
+
+@Return:
+        disableSRAM
+		rts
+
+; ===========================================================================
 
 WhiteFlash:
 		cmpi.l	#$0EEE0EEE,($FFFFFB00).w	; are the first two colors white?
@@ -7827,6 +7874,7 @@ WhiteFlash:
 @Return:
 		rts
 
+; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Object 01 - Sonic
 ; ---------------------------------------------------------------------------
@@ -7950,7 +7998,7 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		if (GameIsPlayable=2)
+		if (GameIsPlayable=1)
 		bsr.w	Sonic_Peelout
 		bsr.w	Sonic_SpinDash
 		endif

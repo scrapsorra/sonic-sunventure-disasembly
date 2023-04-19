@@ -500,3 +500,8 @@ fr_Transform6	equ	$A6
 fr_Transform7	equ	$A7
 fr_Transform8	equ	$A8
 fr_Transform9	equ	$A9
+
+; SRAM Map
+SavedColor:     equ $1
+SavedCamera:    equ $3
+SavedZone:      equ $6

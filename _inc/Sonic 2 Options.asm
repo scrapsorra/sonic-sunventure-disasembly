@@ -124,12 +124,12 @@ OptionScreen_Select:
 		move.b	(Options_menu_box).w,d0
 		bne.s	OptionScreen_Select_Not1P
 		
-		move.b	#1,($A130F1).l			; enable SRAM
+		enableSRAM
 		lea		($200001).l,a1			; base of SRAM
 		
-		move.b	($FFFFFFBF).w, $1(a1)	; save sonic palette
-		move.b	($FFFFFF8B).w, $3(a1)	; save camera type
-		move.b	#0, ($A130F1).l			; disable SRAM
+		move.b	($FFFFFFBF).w, SavedColor(a1)	; save sonic palette
+		move.b	($FFFFFF8B).w, SavedCamera(a1)	; save camera type
+		disableSRAM
 
 		moveq	#0,d0
 		move.b	#id_Title,(v_gamemode).w ; => SegaScreen
