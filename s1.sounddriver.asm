@@ -122,16 +122,6 @@ UpdateMusic:
 @updateloop:
 		btst	#0,(z80_bus_request).l		; Is the z80 busy?
 		bne.s	@updateloop			; If so, wait
-
-		btst	#7,(z80_dac_status).l		; Is DAC accepting new samples?
-		beq.s	@driverinput			; Branch if yes
-		startZ80
-		nop	
-		nop	
-		nop	
-		nop	
-		nop	
-		bra.s	UpdateMusic
 ; ===========================================================================
 ; loc_71B82:
 @driverinput:
@@ -235,6 +225,10 @@ UpdateMusic:
 		jsr	PSGUpdateTrack(pc)
 ; loc_71C44:
 DoStartZ80:
+        move.b    ($A04000).l,d2
+        btst    #7,d2
+        bne.s    DoStartZ80
+        move.b    #$2A,($A04000).l
 		startZ80
 		btst #6,(v_megadrive).w ; is Megadrive PAL?
 		beq.s @end ; if not, branch
@@ -290,8 +284,6 @@ DACUpdateTrack:
 		move.b	TrackSavedDAC(a5),d0	; Get sample
 		cmpi.b	#$80,d0			; Is it a rest?
 		beq.s	@locret			; Return if yes
-		btst	#3,d0			; Is bit 3 set (samples between $88-$8F)?
-		bne.s	@timpani		; Various timpani
 		move.b	d0,(z80_dac_sample).l
 ; locret_71CAA:
 @locret:
@@ -562,6 +554,7 @@ PauseMusic:
 		dbf	d3,@noteoffloop
 
 		jsr	PSGSilenceAll(pc)
+		move.b    #$7F,($A01FFF).l; pause DAC
 		bra.w	DoStartZ80
 ; ===========================================================================
 ; loc_71E94:
@@ -597,17 +590,20 @@ PauseMusic:
 		jsr	WriteFMIorII(pc)
 ; loc_71EDC:
 @sfxfmnext:
-		adda.w	d3,a5
-		dbf	d4,@sfxfmloop
-
-		lea	v_spcsfx_track_ram(a6),a5
-		btst	#7,(a5)			; Is track playing? (TrackPlaybackControl)
-		beq.s	@unpausedallfm		; Branch if not
-		btst	#2,(a5)			; Is track being overridden? (TrackPlaybackControl)
-		bne.s	@unpausedallfm		; Branch if yes
-		move.b	#$B4,d0			; Command to set AMS/FMS/panning
-		move.b	TrackAMSFMSPan(a5),d1	; Get value from track RAM
-		jsr	WriteFMIorII(pc)
+		adda.w    d3,a5
+        dbf    d4,@sfxfmloop
+ 
+        lea    $340(a6),a5
+        btst    #7,(a5)
+        beq.s    @UnpauseDAC
+        btst    #2,(a5)
+        bne.s    @UnpauseDAC
+        move.b    #-$4C,d0
+        move.b    $A(a5),d1
+        jsr    WriteFMIorII(pc)
+ 
+@UnpauseDAC:
+        move.b    #0,($A01FFF).l    ; unpause DAC
 ; loc_71EFE:
 @unpausedallfm:
 		bra.w	DoStartZ80
@@ -709,9 +705,28 @@ ptr_flgend
 ; ---------------------------------------------------------------------------
 ; Sound_E1: PlaySega:
 PlaySegaSound:
-		move.b	#$88,(z80_dac_sample).l	; Queue Sega PCM
-		startZ80
-		move.w	#$11,d1
+		move.b    #$B6, d0    ; Register: FM3/6 Panning
+        move.b    #$C0, d1    ; Value: Enable both channels
+        jsr    WriteFMII(pc)    ; Write to YM2612 Port 1 (for FM6) [sub_72764]
+    ;Mercury Sega Sound Fix
+        lea    (SegaPCM).l,a2            ; Load the SEGA PCM sample into a2. It's important that we use a2 since a0 and a1 are going to be used up ahead when reading the joypad ports 
+        move.l    #$6978,d3            ; Load the size of the SEGA PCM sample into d3 
+        move.b    #$2A,($A04000).l        ; $A04000 = $2A -> Write to DAC channel
+PlayPCM_Loop:
+        move.b    (a2)+,($A04001).l        ; Write the PCM data (contained in a2) to $A04001 (YM2612 register D0) 
+        move.w    #$2,d0                ; Write the pitch ($2 in this case) to d0 
+        dbf    d0,*                ; Decrement d0; jump to itself if not 0. (for pitch control, avoids playing the sample too fast)
+        sub.l    #1,d3                ; Subtract 1 from the PCM sample size 
+        beq.s    return_PlayPCM            ; If d3 = 0, we finished playing the PCM sample, so stop playing, leave this loop, and unfreeze the 68K 
+        lea    (v_jpadhold1).w,a0        ; address where JoyPad states are written 
+        lea    ($A10003).l,a1            ; address where JoyPad states are read from 
+        jsr    (ReadJoypads).w            ; Read only the first joypad port. It's important that we do NOT do the two ports, we don't have the cycles for that 
+        btst    #btnStart,(v_jpadhold1).w    ; Check for Start button 
+        bne.s    return_PlayPCM            ; If start is pressed, stop playing, leave this loop, and unfreeze the 68K 
+        bra.s    PlayPCM_Loop            ; Otherwise, continue playing PCM sample 
+return_PlayPCM: 
+        addq.w    #4,sp 
+        rts
 ; loc_71FC0:
 @busyloop_outer:
 		move.w	#-1,d0
@@ -1463,6 +1478,7 @@ StopAllSound:
 
 		move.b	#$80,v_sound_id(a6)	; set music to $80 (silence)
 		jsr	FMSilenceAll(pc)
+		move.b    #$80,($A01FFF).l ; stop DAC playback
 		bra.w	PSGSilenceAll
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
@@ -2537,18 +2553,7 @@ cfOpF9:
 		move.b	#$F,d1		; Loaded with fixed value (max RR, 1TL)
 		bra.w	WriteFMI
 ; ===========================================================================
-
-Kos_Z80:
-		incbin	"sound\z80.bin", 0, $15
-		dc.b ((SegaPCM&$FF8000)/$8000)&1						; Least bit of bank ID (bit 15 of address)
-		incbin	"sound\z80.bin", $16, 6
-		dc.b ((SegaPCM&$FF8000)/$8000)>>1						; ... the remaining bits of bank ID (bits 16-23)
-		incbin	"sound\z80.bin", $1D, $93
-		dc.w ((SegaPCM&$FF)<<8)+((SegaPCM&$7F00)>>8)|$80				; Pointer to Sega PCM, relative to start of ROM bank (i.e., little_endian($8000 + SegaPCM&$7FFF)
-		incbin	"sound\z80.bin", $B2, 1
-		dc.w (((SegaPCM_End-SegaPCM)&$FF)<<8)+(((SegaPCM_End-SegaPCM)&$FF00)>>8)	; ... the size of the Sega PCM (little endian)
-		incbin	"sound\z80.bin", $B5, $16AB
-		even
+	include    'MegaPCM.asm'
 
 Music81:	incbin	"sound/music/Mus81 - GHZ.bin"
 		even
