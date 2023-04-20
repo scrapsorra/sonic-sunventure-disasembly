@@ -198,11 +198,28 @@ sTone_27	EQU	$03
 ; DAC Equates
 dKick equ $81
 dSnare equ $82
-dCrashCymbal equ $85
+dKickS3 equ $83
+dSnareS3 equ $84
+dClapS3 equ $85
+dCrashCymbal equ $86
+dMuffledSnare equ $87
 dHiTimpani equ $88
 dMidTimpani equ $89
 dLowTimpani equ $8A
 dFloorTimpani equ $8B
+dElectricHighTom equ $8C
+dElectricMidTom equ $8D
+dElectricLowTom equ $8E
+dElectricFloorTom equ $8F
+dHighTom equ $90
+dMidTomS3 equ $91
+dLowTomS3 equ $92
+dFloorTomS3 equ $93
+dMidTom equ $94
+dLowTom equ $95
+dFloorTom equ $96
+dBeat equ $97
+dSnareSC equ $98
 ; ---------------------------------------------------------------------------------------------
 ; Channel IDs for SFX
 cPSG1				EQU $80

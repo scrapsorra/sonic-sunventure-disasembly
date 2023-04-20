@@ -9,6 +9,7 @@ konrad - mozzietron ported to sonic 1
 yami - after-image object
 vladikcomper - advanced error handler
 flamewing - flamewing's DMA transfer
+valleybell/mrtakmis - grc2mid + socket ports
 
 testing:
 deltawooloo, giovanni

@@ -55,18 +55,30 @@ MegaPCM:
 ; DAC Samples Table
 ; ---------------------------------------------------------------
 
-	DAC_Entry	$08, Kick, dpcm			; $81	- Kick
-	DAC_Entry	$08, Snare, dpcm		; $82	- Snare
-	DAC_Entry	$1B, Timpani, dpcm		; $83	- Timpani
-	dc.l	0,0					; $84	- <Free>
-	dc.l	0,0					; $85	- <Free>
-	dc.l	0,0					; $86	- <Free>
-	dc.l	0,0					; $87	- <Free>
-	DAC_Entry	$12, Timpani, dpcm		; $88	- Hi-Timpani
-	DAC_Entry	$15, Timpani, dpcm		; $89	- Mid-Timpani
-	DAC_Entry	$1B, Timpani, dpcm		; $8A	- Mid-Low-Timpani
-	DAC_Entry	$1D, Timpani, dpcm		; $8B	- Low-Timpani
-
+	DAC_Entry	$18,	Kick, pcm			; $81 - Kick (Sonic 2)
+    DAC_Entry	$09, 	Snare, pcm			; $82 - Snare (Sonic 2) (lower pitched)
+	DAC_Entry   $04+2, 	KickS3, dpcm 		; $83 - Kick (Sonic 3K)
+    DAC_Entry   $04+2, 	SnareS3, dpcm 		; $84 - Snare (Sonic 3K)
+	DAC_Entry   $08+2, 	ClapS3, dpcm 		; $85 - Clap (Sonic 3K)	
+	DAC_Entry   $06+2, 	CrashCymbalS3, dpcm	; $86 - Crash Cymbal (Sonic 3K)
+    DAC_Entry   $04+2, 	KickSnare, dpcm 	; $87 - Muffled Snare (Sonic 3K)
+	DAC_Entry	$12, 	Timpani, dpcm		; $88 - Hi-Timpani (Sonic 2)
+	DAC_Entry	$15, 	Timpani, dpcm		; $89 - Mid-Timpani (Sonic 2)
+	DAC_Entry	$1B, 	Timpani, dpcm		; $8A - Mid-Low-Timpani (Sonic 2)
+	DAC_Entry	$1D, 	Timpani, dpcm		; $8B - Low-Timpani (Sonic 2)
+    DAC_Entry   $03+2,	ElectricTom, dpcm 	; $8C - Electric High-Tom (Sonic 3K)
+    DAC_Entry   $07+2,	ElectricTom, dpcm 	; $8D - Electric Mid-Tom (Sonic 3K)
+    DAC_Entry   $0A+2,	ElectricTom, dpcm 	; $8E - Electric Low-Tom (Sonic 3K)
+    DAC_Entry	$0E+2, 	ElectricTom, dpcm 	; $8F - Electric Floor Tom (Sonic 3K)
+	DAC_Entry   $0E+2, 	TomS3, dpcm			; $90 - High-Tom (Sonic 3K)
+	DAC_Entry   $14+2, 	TomS3, dpcm			; $91 - Mid-Tom (Sonic 3K)
+	DAC_Entry   $1A+2, 	TomS3, dpcm			; $92 - Low-Tom (Sonic 3K)
+	DAC_Entry   $20+2, 	TomS3, dpcm			; $93 - Floor Tom (Sonic 3K)
+    DAC_Entry	$04,	TomS2, pcm        	; $94 - Mid-Tom (Sonic 2)
+    DAC_Entry	$07, 	TomS2, pcm        	; $95 - Low-Tom (Sonic 2)
+    DAC_Entry	$0A, 	TomS2, pcm        	; $96 - Floor-Tom (Sonic 2)	
+	DAC_Entry   $04+2, 	Beat, dpcm	 		; $86 - Beat (Sonic Crackers)
+    DAC_Entry   $04+2, 	SnareSC, dpcm 		; $87 - Snare (Sonic Crackers)	
 MegaPCM_End:
 
 ; ---------------------------------------------------------------
@@ -76,5 +88,15 @@ MegaPCM_End:
 	IncludeDAC	Kick, bin
 	IncludeDAC	Snare, bin
 	IncludeDAC	Timpani, bin
+	IncludeDAC	KickS3, bin
+	IncludeDAC	SnareS3, bin
+	IncludeDAC	ClapS3, bin
+	IncludeDAC	Beat, bin
+	IncludeDAC	SnareSC, bin
+	IncludeDAC	ElectricTom, bin	
+	IncludeDAC	TomS3, bin		
+	IncludeDAC	TomS2, bin	
+	IncludeDAC	CrashCymbalS3, bin		
+	IncludeDAC	KickSnare, bin		
 	even
 

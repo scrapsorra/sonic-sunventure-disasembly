@@ -2595,7 +2595,7 @@ Music93:	incbin	"sound/music/Mus93 - Get Emerald.bin"
 		even
 Music94:	incbin	"sound/music/Mus94 - Final Boss Pinch.bin"
 		even
-Music95:		incbin	"sound/music/Mus95 - Seaside Front.bin"
+Music95:		include	"sound/music/Mus95 - Emerald Forest.asm"
 		even
 Music96:		incbin	"sound/music/Mus96 - Big Water.bin"
 		even
