@@ -155,44 +155,44 @@ fTone_0B	EQU	$05
 fTone_0C	EQU	$00
 ;fTone_0D	EQU	$00
 sTone_01	EQU	$02
-sTone_02	EQU	$02
+sTone_02	EQU	$0E
 sTone_03	EQU	$05
-sTone_04	EQU	$03
-sTone_05	EQU	$01
+sTone_04	EQU	$0B
+sTone_05	EQU	$10
 sTone_06	EQU	$03
 sTone_07	EQU	$00	; SFX envelope, probably unused in S3K
 sTone_08	EQU	$09
 sTone_09	EQU	$05
-sTone_0A	EQU	$07
+sTone_0A	EQU	$11
 sTone_0B	EQU	$00	; For FM volume envelopes
 sTone_0C	EQU	$09
 sTone_0D	EQU	$00	; This time it matches 100%
 sTone_0E	EQU	$02	; Duplicate of 01
-sTone_0F	EQU	$02	; Duplicate of 02
+sTone_0F	EQU	$0E	; Duplicate of 02
 sTone_10	EQU	$00
-sTone_11	EQU	$06
-sTone_12	EQU	$01	; Duplicate of 05
+sTone_11	EQU	$0F
+sTone_12	EQU	$10	; Duplicate of 05
 sTone_13	EQU	$03	; Duplicate of 06
 sTone_14	EQU	$00	; SFX envelope, probably unused in S3K
 sTone_15	EQU	$09	; Duplicate of 08
 sTone_16	EQU	$05	; Duplicate of 09
-sTone_17	EQU	$07	; Duplicate of 0A
+sTone_17	EQU	$11	; Duplicate of 0A
 sTone_18	EQU	$00	; For FM volume envelopes
 sTone_19	EQU	$09	; Duplicate of 0C
 sTone_1A	EQU	$02
 sTone_1B	EQU	$09	; Duplicate of 0C
 sTone_1C	EQU	$06
-sTone_1D	EQU	$07
+sTone_1D	EQU	$0A
 sTone_1E	EQU	$02
 sTone_1F	EQU	$04
 sTone_20	EQU	$00	; This time it matches 100%
 sTone_21	EQU	$09
 sTone_22	EQU	$04
-sTone_23	EQU	$07
+sTone_23	EQU	$0C
 sTone_24	EQU	$02
 sTone_25	EQU	$09
-sTone_26	EQU	$07
-sTone_27	EQU	$03
+sTone_26	EQU	$0D
+sTone_27	EQU	$0E
 ;sTone_28	EQU	$09
 ; ---------------------------------------------------------------------------------------------
 ; DAC Equates
@@ -220,6 +220,10 @@ dLowTom equ $95
 dFloorTom equ $96
 dBeat equ $97
 dSnareSC equ $98
+dTightSnare equ $99
+dMidpitchSnare equ $9A
+dLooseSnare equ $9B
+dLooserSnare equ $9C
 ; ---------------------------------------------------------------------------------------------
 ; Channel IDs for SFX
 cPSG1				EQU $80

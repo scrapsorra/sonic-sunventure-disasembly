@@ -77,8 +77,12 @@ MegaPCM:
     DAC_Entry	$04,	TomS2, pcm        	; $94 - Mid-Tom (Sonic 2)
     DAC_Entry	$07, 	TomS2, pcm        	; $95 - Low-Tom (Sonic 2)
     DAC_Entry	$0A, 	TomS2, pcm        	; $96 - Floor-Tom (Sonic 2)	
-	DAC_Entry   $04+2, 	Beat, dpcm	 		; $86 - Beat (Sonic Crackers)
-    DAC_Entry   $04+2, 	SnareSC, dpcm 		; $87 - Snare (Sonic Crackers)	
+	DAC_Entry   $04+2, 	Beat, dpcm	 		; $97 - Beat (Sonic Crackers)
+    DAC_Entry   $04+2, 	SnareSC, dpcm 		; $98 - Snare (Sonic Crackers)	
+    DAC_Entry   $06+2, 	TightSnare, dpcm 	; $99 - Tight Snare (Sonic 3K)
+    DAC_Entry   $0A+2, 	TightSnare, dpcm 	; $9A - Mid-pitch Snare (Sonic 3K)
+    DAC_Entry   $0D+2, 	TightSnare, dpcm 	; $9B - Loose Snare (Sonic 3K)
+    DAC_Entry   $12+2, 	TightSnare, dpcm 	; $9C - Looser Snare (Sonic 3K)
 MegaPCM_End:
 
 ; ---------------------------------------------------------------
@@ -98,5 +102,6 @@ MegaPCM_End:
 	IncludeDAC	TomS2, bin	
 	IncludeDAC	CrashCymbalS3, bin		
 	IncludeDAC	KickSnare, bin		
+	IncludeDAC	TightSnare, bin			
 	even
 

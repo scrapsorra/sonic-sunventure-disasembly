@@ -17,15 +17,26 @@ PSG_Index:
 		dc.l PSG1, PSG2, PSG3
 		dc.l PSG4, PSG5, PSG6
 		dc.l PSG7, PSG8, PSG9
-PSG1:		incbin	"sound/psg/psg1.bin"
-PSG2:		incbin	"sound/psg/psg2.bin"
-PSG3:		incbin	"sound/psg/psg3.bin"
-PSG4:		incbin	"sound/psg/psg4.bin"
-PSG6:		incbin	"sound/psg/psg6.bin"
-PSG5:		incbin	"sound/psg/psg5.bin"
-PSG7:		incbin	"sound/psg/psg7.bin"
-PSG8:		incbin	"sound/psg/psg8.bin"
-PSG9:		incbin	"sound/psg/psg9.bin"
+		dc.l S3PSG1D, S3PSG4, S3PSG23
+		dc.l S3PSG26, S3PSG2, S3PSG11
+		dc.l S3PSG05, S3PSG0A		
+PSG1:		incbin	"sound/psg/PSG 1.bin"
+PSG2:		incbin	"sound/psg/PSG 2.bin"
+PSG3:		incbin	"sound/psg/PSG 3.bin"
+PSG4:		incbin	"sound/psg/PSG 4.bin"
+PSG6:		incbin	"sound/psg/PSG 5.bin"
+PSG5:		incbin	"sound/psg/PSG 6.bin"
+PSG7:		incbin	"sound/psg/PSG 7.bin"
+PSG8:		incbin	"sound/psg/PSG 8.bin"
+PSG9:		incbin	"sound/psg/PSG 9.bin"
+S3PSG1D:	incbin	"sound/psg/Sonic 3K/PSG 1D.bin"
+S3PSG4:		incbin	"sound/psg/Sonic 3K/PSG 4 (S3D).bin"
+S3PSG23:	incbin	"sound/psg/Sonic 3K/PSG 23.bin"
+S3PSG26:	incbin	"sound/psg/Sonic 3K/PSG 26 (SK, S3D).bin"
+S3PSG2:		incbin	"sound/psg/Sonic 3K/PSG 2.bin"
+S3PSG11:	incbin	"sound/psg/Sonic 3K/PSG 11.bin"
+S3PSG05:	incbin	"sound/psg/Sonic 3K/PSG 5.bin"
+S3PSG0A:	incbin	"sound/psg/Sonic 3K/PSG A.bin"
 ; ---------------------------------------------------------------------------
 ; New tempos for songs during speed shoes
 ; ---------------------------------------------------------------------------
@@ -104,6 +115,7 @@ SoundPriorities:
 		dc.b $60,$70,$70,$70,$70,$70,$70,$70,$70,$70,$70,$70,$70,$70,$70,$70	; $C0
 		dc.b $80,$80,$80,$80,$80,$80,$80,$80,$80,$80,$80,$80,$80,$80,$80,$80	; $D0
 		dc.b $90,$90,$90,$90,$90                                            	; $E0
+		even
 
 ; ---------------------------------------------------------------------------
 ; Subroutine to update music more than once per frame
@@ -1898,28 +1910,30 @@ PSGUpdateVolFX:
 		tst.b	TrackVoiceIndex(a5)	; Test PSG tone
 		beq.w	locret_7298A		; Return if it is zero
 ; loc_7292E:
-PSGDoVolFX:	; This can actually be made a bit more efficient, see the comments for more
+PSGDoVolFX:
 		move.b	TrackVolume(a5),d6	; Get volume
 		moveq	#0,d0
 		move.b	TrackVoiceIndex(a5),d0	; Get PSG tone
 		beq.s	SetPSGVolume
-		movea.l	(Go_PSGIndex).l,a0
+		movea.l	Go_PSGIndex(pc),a0
 		subq.w	#1,d0
 		lsl.w	#2,d0
 		movea.l	(a0,d0.w),a0
-		move.b	TrackVolEnvIndex(a5),d0	; Get volume envelope index		; move.b	TrackVolEnvIndex(a5),d0
-		move.b	(a0,d0.w),d0			; Volume envelope value			; addq.b	#1,TrackVolEnvIndex(a5)
-		addq.b	#1,TrackVolEnvIndex(a5)	; Increment volume envelope index	; move.b	(a0,d0.w),d0
-		btst	#7,d0				; Is volume envelope value negative?	; <-- makes this line redundant
-		beq.s	@gotflutter			; Branch if not				; but you gotta make this one a bpl
-		cmpi.b	#$80,d0				; Is it the terminator?			; Since this is the only check, you can take the optimisation a step further:
-		beq.s	VolEnvHold			; If so, branch				; Change the previous beq (bpl) to a bmi and make it branch to VolEnvHold to make these last two lines redundant
+
+PSGDoVolFX_Loop:
+		move.b	TrackVolEnvIndex(a5),d0	; Get volume envelope index
+		addq.b	#1,TrackVolEnvIndex(a5)			; Volume envelope value
+		move.b	(a0,d0.w),d0	; Increment volume envelope index
+		bpl.s	.gotflutter			; Branch if not
+		cmpi.b	#$81,d0
+		beq.s	VolEnvHold
+		cmpi.b	#$80,d0
+		beq.s	VolEnvLoop
+		cmpi.b	#$83,d0
+		beq.s	VolEnvSilence
 ; loc_72960:
-@gotflutter:
+.gotflutter:
 		add.w	d0,d6		; Add volume envelope value to volume
-		cmpi.b	#$10,d6		; Is volume $10 or higher?
-		blo.s	SetPSGVolume	; Branch if not
-		moveq	#$F,d6		; Limit to silence and fall through
 ; End of function PSGUpdateVolFX
 
 
@@ -1935,12 +1949,17 @@ SetPSGVolume:
 		bne.s	PSGCheckNoteTimeout ; Branch if yes
 ; loc_7297C:
 PSGSendVolume:
+        cmpi.b  #$10,d6    ; Is volume $10 or higher?
+        blo.s   .psgsendvol    ; Branch if not
+        moveq   #$F,d6     ; Limit to silence and fall through
+
+	.psgsendvol:
 		or.b	TrackVoiceControl(a5),d6 ; Add in track selector bits
 		addi.b	#$10,d6			; Mark it as a volume command
 		move.b	d6,(psg_input).l
 
 locret_7298A:
-		rts	
+		rts
 ; ===========================================================================
 ; loc_7298C: PSGCheckNoteFill:
 PSGCheckNoteTimeout:
@@ -1948,14 +1967,22 @@ PSGCheckNoteTimeout:
 		beq.s	PSGSendVolume			; Branch if not
 		tst.b	TrackNoteTimeout(a5)		; Has note timeout expired?
 		bne.s	PSGSendVolume			; Branch if not
-		rts	
+		rts
 ; End of function SetPSGVolume
 
 ; ===========================================================================
 ; loc_7299A: FlutterDone:
 VolEnvHold:
-		subq.b	#1,TrackVolEnvIndex(a5)	; Decrement volume envelope index
-		rts	
+		subq.b	#2,TrackVolEnvIndex(a5)	; Decrement volume envelope index
+		bra.s	PSGDoVolFX_Loop
+
+VolEnvLoop:
+		clr.b	TrackVolEnvIndex(a5)
+		bra.w	PSGDoVolFX
+
+VolEnvSilence:
+		subq.b	#2,TrackVolEnvIndex(a5)
+		bset	#1,TrackPlaybackControl(a5)
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
@@ -2559,13 +2586,13 @@ Music81:	incbin	"sound/music/Mus81 - GHZ.bin"
 		even
 Music82:	incbin	"sound/music/Mus82 - LZ.bin"
 		even
-Music83:	incbin	"sound/music/Mus83 - MZ.bin"
+Music83:	include	"sound/music/Mus83 - MZ.asm"
 		even
 Music84:	incbin	"sound/music/Mus84 - SLZ.bin"
 		even
 Music85:	incbin	"sound/music/Mus85 - SYZ.bin"
 		even
-Music86:	incbin	"sound/music/Mus86 - SBZ.bin"
+Music86:	include	"sound/music/Mus86 - MZ2.asm"
 		even
 Music87:	incbin	"sound/music/Mus87 - Invincibility.bin"
 		even
