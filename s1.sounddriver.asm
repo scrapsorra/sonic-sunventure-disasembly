@@ -64,7 +64,7 @@ SpeedUpIndex:
 		;dc.b ?		; Credits
 		;dc.b ?		; Drowning
 		;dc.b ?		; Get Emerald
-
+		even
 ; ---------------------------------------------------------------------------
 ; Music	Pointers
 ; ---------------------------------------------------------------------------
@@ -127,9 +127,6 @@ SoundPriorities:
 ; sub_71B4C:
 UpdateMusic:
 		stopZ80
-		nop	
-		nop	
-		nop	
 ; loc_71B5A:
 @updateloop:
 		btst	#0,(z80_bus_request).l		; Is the z80 busy?
