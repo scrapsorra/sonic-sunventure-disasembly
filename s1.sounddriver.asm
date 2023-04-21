@@ -2269,7 +2269,9 @@ cfSetVoice:
 		moveq	#0,d0
 		move.b	(a4)+,d0		; Get new voice
 		move.b	d0,TrackVoiceIndex(a5)	; Store it
-		btst	#2,(a5)			; Is SFX overriding this track? (TrackPlaybackControl)
+		tst.b	TrackVoiceControl(a5)	; Is this a PSG track?
+		bmi.s	locret_72CAA	; Return if yes	
+		btst	#2,TrackPlaybackControl(a5)			; Is SFX overriding this track? (TrackPlaybackControl)
 		bne.w	locret_72CAA		; Return if yes
 		movea.l	v_voice_ptr(a6),a1	; Music voice pointer
 		tst.b	f_voice_selector(a6)	; Are we updating a music track?
@@ -2532,8 +2534,13 @@ cfDisableModulation:
 ; ===========================================================================
 ; loc_72E26:
 cfSetPSGTone:
-		move.b	(a4)+,TrackVoiceIndex(a5)	; Set current PSG tone
-		rts	
+		move.b	(a4)+,d0	; Set current PSG tone
+		tst.b	TrackVoiceControl(a5)	; Is this a PSG track?
+		bpl.s	@cont			; Return if not
+		move.b	d0,TrackVoiceIndex(a5)	; Set current PSG tone
+		
+	@cont:	
+		rts
 ; ===========================================================================
 ; loc_72E2C:
 cfJumpTo:
