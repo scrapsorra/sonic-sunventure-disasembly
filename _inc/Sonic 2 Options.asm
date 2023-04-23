@@ -125,7 +125,7 @@ OptionScreen_Select:
 		bne.s	OptionScreen_Select_Not1P
 		
 		enableSRAM
-		lea		($200001).l,a1			; base of SRAM
+		lea		($200000).l,a1			; base of SRAM
 		
 		move.b	($FFFFFFBF).w, SavedColor(a1)	; save sonic palette
 		move.b	($FFFFFF8B).w, SavedCamera(a1)	; save camera type

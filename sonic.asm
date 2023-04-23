@@ -220,7 +220,7 @@ PSGInitLoop:
 
 InitSRAM: ; could have been done more cleanly
         enableSRAM
-        lea ($200001).l,a0
+        lea ($200000).l,a0
 
         movep.l $DD(a0),d0 ; where the "FUCK" should be
         move.l  #"FUCK",d1
@@ -7816,7 +7816,7 @@ LoadLifeIcon_Table:
 LoadSRAMConfig:
         enableSRAM
 
-        lea 	($200001).l, a0
+        lea 	($200000).l, a0
 		move.b 	SavedColor(a0), ($FFFFFFBF).w
 		move.b 	SavedCamera(a0), ($FFFFFF8B).w
 
@@ -7827,7 +7827,7 @@ LoadSRAMConfig:
 
 SaveGame:
 		enableSRAM
-		lea 	($200001).l, a0
+		lea 	($200000).l, a0
 		movep.l SavedZone(a0), d0
 
 		cmp.l   (v_zone).w, d0
@@ -7843,7 +7843,7 @@ SaveGame:
 
 LoadSavedGame:
         enableSRAM
-        lea 	($200001).l, a0
+        lea 	($200000).l, a0
 		cmp.b   #$FF, SavedZone(a0)
 		bne.s   @HasSavedGame
 		
