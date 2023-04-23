@@ -391,15 +391,23 @@ RLoss_Bounce:	; Routine 2
 		move.b	#id_Rings,0(a0)
 		
 	@skip:		
-        lea     v_spritequeue+$180,a1
-        adda.w  #$80,a1
-        cmpi.w  #$7E,(a1)
-        bcc.s   @cont
-        addq.w  #2,(a1)
-        adda.w  (a1),a1
-        move.w  a0,(a1)
+		tst.b	obDelayAni(a0)
+		bmi.s	@noflicker		; if $80 or higher, branch
+	;	cmpi.b	#$40,obDelayAni(a0)	; if you want more specific numbers
+	;	bhs.s	@noflicker
+		btst	#0,obDelayAni(a0)	; flicker every other frame
+		bne.s	@end
+	@noflicker:
+	lea     v_spritequeue+$200,a1
+;	adda.w  #$80,a1	; $180 + $80
+	cmpi.w  #$7E,(a1)
+	bcc.s   @cont
+	addq.w  #2,(a1)
+	adda.w  (a1),a1
+	move.w  a0,(a1)
 		
 	@cont:
+	@end:
         rts		
 ; ===========================================================================
 
