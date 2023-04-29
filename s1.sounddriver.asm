@@ -138,9 +138,7 @@ UpdateMusic:
 		clr.b	f_voice_selector(a6)
 		tst.b	f_pausemusic(a6)		; is music paused?
 		bne.w	PauseMusic			; if yes, branch
-		subq.b	#1,v_main_tempo_timeout(a6)	; Has main tempo timer expired?
-		bne.s	@skipdelay
-		jsr	TempoWait(pc)
+        jsr    TempoWait(pc)	
 ; loc_71B9E:
 @skipdelay:
 		move.b	v_fadeout_counter(a6),d0
@@ -812,7 +810,7 @@ Sound_PlayBGM:
 ; loc_72068:
 ;@nospeedshoes:
 		move.b	d0,v_main_tempo(a6)
-		move.b	d0,v_main_tempo_timeout(a6)
+		move.b	d1,v_main_tempo_timeout(a6)	; Clownacy | Cleared to avoid unintended overflow on first frame of playback
 		moveq	#0,d1
 		movea.l	a4,a3
 		addq.w	#6,a4			; Point past header
@@ -1549,18 +1547,22 @@ InitMusicPlayback:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 ; sub_7260C:
-TempoWait:
-		move.b	v_main_tempo(a6),v_main_tempo_timeout(a6)	; Reset main tempo timeout
-		lea	v_music_track_ram+TrackDurationTimeout(a6),a0	; note timeout
-		moveq	#TrackSz,d0
-		moveq	#((v_music_track_ram_end-v_music_track_ram)/TrackSz)-1,d1		; 1 DAC + 6 FM + 3 PSG tracks
-; loc_7261A:
-@tempoloop:
-		addq.b	#1,(a0)	; Delay note by 1 frame
-		adda.w	d0,a0	; Advance to next track
-		dbf	d1,@tempoloop
+TempoWait:	; Clownacy | Ported straight from S3K's Z80 driver
+		move.b	v_main_tempo(a6),d0		; Get current tempo value
+		add.b	d0,v_main_tempo_timeout(a6)
+		bcc.s	@skipdelay							; If the addition did not overflow, return
 
-		rts	
+		lea	v_music_track_ram+TrackDurationTimeout(a6),a0	; Duration timeout of first track
+		moveq	#((v_music_track_ram_end-v_music_track_ram)/TrackSz)-1,d0					; Number of tracks (1x DAC + 6x FM + 3x PSG)
+		moveq	#TrackSz,d1
+
+@delayloop:
+		addq.b	#1,(a0)			; Delay notes another frame
+		adda.l	d1,a0			; Advance to next track
+		dbf	d0,@delayloop		; Loop for all tracks
+; loc_71B9E:
+@skipdelay:
+		rts
 ; End of function TempoWait
 
 ; ===========================================================================
@@ -2598,7 +2600,7 @@ Music85:	incbin	"sound/music/Mus85 - SYZ.bin"
 		even
 Music86:	include	"sound/music/Mus86 - MZ2.asm"
 		even
-Music87:	incbin	"sound/music/Mus87 - Invincibility.bin"
+Music87:	include	"sound/music/SurgingPower.asm"
 		even
 Music88:	include	"sound/music/Mus88 - Extra Life.asm"
 		even

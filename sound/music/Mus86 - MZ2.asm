@@ -2,7 +2,7 @@ Snd_VVZ2_Header:
 	smpsHeaderStartSong 3
 	smpsHeaderVoice     Snd_VVZ2_Voices
 	smpsHeaderChan      $06, $03
-	smpsHeaderTempo     $01, $06
+	smpsHeaderTempo     $01, $29
 
 	smpsHeaderDAC       Snd_VVZ2_DAC
 	smpsHeaderFM        Snd_VVZ2_FM1,	$00, $14

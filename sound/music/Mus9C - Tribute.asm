@@ -2,7 +2,7 @@ Tribute_Header:
 	smpsHeaderStartSong 3
 	smpsHeaderVoice     Tribute_Voices
 	smpsHeaderChan      $06, $03
-	smpsHeaderTempo     $01, $06
+	smpsHeaderTempo     $01, $2B
 
 	smpsHeaderDAC       Tribute_DAC,	$00, $BB
 	smpsHeaderFM        Tribute_FM1,	$00, $0D
@@ -25,7 +25,7 @@ Tribute_FM1:
 	smpsCall            Tribute_Call05
 	dc.b	smpsNoAttack, $12, nD2, $06, nRst, $24, nD2, $06, nRst, nRst, nD2, nRst
 	dc.b	nG1
-	smpsSetTempoMod     $09
+	smpsSetTempoMod     $1C
 	dc.b	smpsNoAttack, $60, smpsNoAttack, $48, nRst, $18
 
 Tribute_Loop05:

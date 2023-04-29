@@ -2,7 +2,7 @@ ToxicLandfill_Header:
 	smpsHeaderStartSong 1
 	smpsHeaderVoice     ToxicLandfill_Voices
 	smpsHeaderChan      $06, $03
-	smpsHeaderTempo     $02, $08
+	smpsHeaderTempo     $02, $20
 
 	smpsHeaderDAC       ToxicLandfill_DAC
 	smpsHeaderFM        ToxicLandfill_FM1,	$00, $0A

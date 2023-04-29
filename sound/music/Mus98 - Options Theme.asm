@@ -2,7 +2,7 @@ PasswordEntry_Header:
 	smpsHeaderStartSong 3
 	smpsHeaderVoice     PasswordEntry_Voices
 	smpsHeaderChan      $06, $03
-	smpsHeaderTempo     $01, $05
+	smpsHeaderTempo     $01, $33
 
 	smpsHeaderDAC       PasswordEntry_DAC,	$00, $01
 	smpsHeaderFM        PasswordEntry_FM1,	$00, $13
