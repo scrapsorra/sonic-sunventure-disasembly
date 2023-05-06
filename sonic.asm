@@ -228,8 +228,10 @@ InitSRAM: ; could have been done more cleanly
 		cmp.l   d0,d1 ; reset SRAM if there's no "FUCK"
         beq.s   @Continue
 
-		move.b 	#0, $1(a0) ; clear settings
-		move.b 	#0, $3(a0)
+		move.b 	#0,SavedColor(a0)	; clear settings
+		move.b 	#0,SavedCamera(a0)
+		move.b	#$FF,SavedZone(a0)
+		move.b	#3,SavedLives(a0)
 
         move.l  #" OUT",d2 ; the rest of the string (lol)
         move.l  #"TA M",d3
@@ -3265,7 +3267,7 @@ GM_Level:
 loc_37FC:
 		moveq	#plcid_Main2,d0
 		bsr.w	AddPLC		; load standard	patterns
-		jsr		LoadLifeIcon
+		jsr	LoadLifeIcon
 		
 Level_ClrRam:
 		lea	(v_objspace).w,a1
@@ -7772,12 +7774,11 @@ LoadPlayerWaterPal:
 
 LoadLifeIcon:
 		moveq	#0,d0
-		move.w	(v_zone).w,d0	
+		move.w	(v_zone).w,d0
 		ror.b	#2,d0
-        lsr.w 	#6,d0		
-		move.b	LoadLifeIcon_Table(pc,d0.w),d0	
-		jsr		AddPLC	
-		rts
+		lsr.w 	#6,d0
+		move.b	LoadLifeIcon_Table(pc,d0.w),d0
+		jmp	(AddPLC).l
 
 LoadLifeIcon_Table:
 		; GHZ
@@ -7831,12 +7832,11 @@ LoadSRAMConfig:
 SaveGame:
 		enableSRAM
 		lea 	($200000).l, a0
-		movep.l SavedZone(a0), d0
-
-		cmp.l   (v_zone).w, d0
-        beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
-
-		move.b 	(v_zone), SavedZone(a0)
+	;	move.b	SavedZone(a0), d0
+	;	cmp.b	(v_zone).w, d0
+	;	beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
+		move.b 	(v_zone),SavedZone(a0)
+		move.b	(v_lives),SavedLives(a0)
 
 @DoNotSave:
 		disableSRAM
@@ -7851,12 +7851,18 @@ LoadSavedGame:
 		bne.s   @HasSavedGame
 		
 		move.b 	#0, SavedZone(a0)
-		bsr.s 	@Return
+		bra.s	@Return
 
 @HasSavedGame:
 		move.b 	SavedZone(a0), (v_zone).w
 
 @Return:
+		move.b	SavedLives(a0),d0
+		bne.s	@LivesNotZero
+		moveq	#3,d0		; if zero, reset lives counter
+		move.b	d0,SavedLives(a0)
+@LivesNotZero:
+		move.b	d0,(v_lives)
         disableSRAM
 		rts
 
