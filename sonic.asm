@@ -2638,6 +2638,9 @@ GM_Title:
 		locVRAM	0
 		lea	(Nem_TS_1st).l,a0 ; load title screen patterns
 		bsr.w	NemDec
+		locVRAM	$F000
+		lea	(Nem_TitleTM).l,a0 ; load title screen patterns
+		bsr.w	NemDec
 		moveq	#palid_Title,d0	; load title screen palette
 		bsr.w	PalLoad1
 		sfx		bgm_Title,0,1,1	; play title screen music

@@ -28,7 +28,7 @@ PSB_Main:	; Routine 0
 		cmpi.b	#3,obFrame(a0)	; is the object	"TM"?
 		bne.s	PSB_Exit	; if not, branch
 
-		move.w	#$2510,obGfx(a0) ; "TM" specific code
+		move.w	#$2780,obGfx(a0) ; "TM" specific code
 		move.w	#$170,obX(a0)
 		move.w	#$F8,obScreenY(a0)
 
@@ -40,13 +40,12 @@ PSB_PrsStart:	; Routine 2
 		btst   #7,(v_jpadpress1).w   ; check if Start is pressed
 		beq.s   PSB_PrsStart_Show   ; if not, branch
 		addq.b   #4,obRoutine(a0)      ; go to Menu in next frame
-		move.w   #$A1,d0 
-		jsr   PlaySound_Special
 		move.w   #$56F,obGfx(a0)
 		move.l   #Map_TitleMenu,obMap(a0) 
 		move.w	#$F8,obX(a0)
 		move.w	#$150,obScreenY(a0)
-		rts
+		move.w	#$A1,d0 
+		jmp	PlaySound_Special
 
 PSB_PrsStart_Show:
 		lea	(Ani_PSBTM).l,a1
