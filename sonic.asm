@@ -3562,7 +3562,7 @@ Level_MainLoop:
 @Continue:
 		cmpi.b	#id_Level,(v_gamemode).w
 		beq.w	Level_MainLoop	; if mode is $C (level), branch
-		rts	
+		jmp	SaveGame	; this saves sram when you exit the game mode, fixing an issues with saved lives
 ; ===========================================================================
 
 Level_ChkDemo:
