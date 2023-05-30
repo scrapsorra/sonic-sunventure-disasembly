@@ -360,14 +360,14 @@ GameInit:
 	@clearRAM:
 		move.l	d7,(a6)+
 		dbf	d6,@clearRAM	; clear RAM ($0000-$FDFF)
-        jsr	(InitDMAQueue).l	
+        	bsr.w	InitDMAQueue
 		bsr.w	VDPSetupGame
 		bsr.w	SoundDriverLoad
 		bsr.w	JoypadInit
 		move.b	#id_Sega,(v_gamemode).w ; set Game Mode to Sega Screen
 
 MainGameLoop:
-		jsr		ReadJoypads
+		bsr.w	ReadJoypads
 		move.b	(v_gamemode).w,d0 ; load Game Mode
 		andi.w	#$7C,d0	; limit Game Mode value to $1C max (change to a maximum of 7C to add more game modes)
 		movea.l	GameModeArray(pc,d0.w),a0 ; jump to apt location in ROM
@@ -521,7 +521,7 @@ ErrorWaitForC:
 		bsr.w	ReadJoypads
 		cmpi.b	#btnC,(v_jpadpress1).w ; is button C pressed?
 		bne.w	ErrorWaitForC	; if not, branch
-		rts	
+		rts
 ; End of function ErrorWaitForC
 
 ; ===========================================================================
@@ -537,7 +537,6 @@ VBlank:
 		movem.l	d0-a6,-(sp)
 		tst.b	(v_vbla_routine).w
 		beq.s	VBla_00
-		move.w	(vdp_control_port).l,d0
 		move.l	#$40000010,(vdp_control_port).l
 		move.l	(v_scrposy_dup).w,(vdp_data_port).l ; send screen y-axis pos. to VSRAM
 		btst	#6,(v_megadrive).w ; is Megadrive PAL?
@@ -561,7 +560,7 @@ VBla_Music:
 VBla_Exit:
 		addq.l	#1,(v_vbla_count).w
 		movem.l	(sp)+,d0-a6
-		rte	
+		rte
 ; ===========================================================================
 VBla_Index:	dc.w VBla_00-VBla_Index, VBla_02-VBla_Index
 		dc.w VBla_04-VBla_Index, VBla_06-VBla_Index
@@ -576,11 +575,11 @@ VBla_00:
 		cmpi.b	#$80+id_Level,(v_gamemode).w
 		beq.s	@islevel
 		cmpi.b	#id_Level,(v_gamemode).w ; is game on a level?
-		bne.w	VBla_Music	; if not, branch
+		bne.s	VBla_Music	; if not, branch
 
 	@islevel:
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ ?
-		bne.w	VBla_Music	; if not, branch
+		bne.s	VBla_Music	; if not, branch
 
 		move.w	(vdp_control_port).l,d0
 		btst	#6,(v_megadrive).w ; is Megadrive PAL?
@@ -592,8 +591,6 @@ VBla_00:
 
 	@notPAL:
 		move.w	#1,(f_hbla_pal).w ; set HBlank flag
-		stopZ80
-		waitZ80
 		tst.b	(f_wtr_state).w	; is water above top of screen?
 		bne.s	@waterabove 	; if yes, branch
 
@@ -605,7 +602,6 @@ VBla_00:
 
 	@waterbelow:
 		move.w	(v_hbla_hreg).w,(a5)
-		startZ80
 		bra.w	VBla_Music
 ; ===========================================================================
 
@@ -614,29 +610,29 @@ VBla_02:
 
 VBla_14:
 		tst.w	(v_demolength).w
-		beq.w	@end
+		beq.s	@end
 		subq.w	#1,(v_demolength).w
 
 	@end:
-		rts	
+		rts
 ; ===========================================================================
 
 VBla_04:
 		bsr.w	sub_106E
 		bsr.w	LoadTilesAsYouMove_BGOnly
-		jsr 	ProcessDMAQueue		
+		bsr.w 	ProcessDMAQueue
 		bsr.w	sub_1642
 		tst.w	(v_demolength).w
-		beq.w	@end
+		beq.s	@end
 		subq.w	#1,(v_demolength).w
 
 	@end:
-		rts	
+		rts
 ; ===========================================================================
 
 VBla_06:
 		bsr.w	sub_106E
-		rts	
+		rts
 ; ===========================================================================
 
 VBla_10:
@@ -644,8 +640,6 @@ VBla_10:
 		beq.w	VBla_0A		; if yes, branch
 
 VBla_08:
-		stopZ80
-		waitZ80
 		bsr.w	ReadJoypads
 		tst.b	(f_wtr_state).w
 		bne.s	@waterabove
@@ -661,10 +655,9 @@ VBla_08:
 
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
-		jsr	(ProcessDMAQueue).l
+		bsr.w	ProcessDMAQueue
 
 	@nochg:
-		startZ80
 		movem.l	(v_screenposx).w,d0-d7
 		movem.l	d0-d7,(v_screenposx_dup).w
 		movem.l	(v_fg_scroll_flags).w,d0-d1
@@ -688,38 +681,33 @@ Demo_Time:
 		jsr	(HUD_Update).l
 		bsr.w	ProcessDPLC2
 		tst.w	(v_demolength).w ; is there time left on the demo?
-		beq.w	@end		; if not, branch
+		beq.s	@end		; if not, branch
 		subq.w	#1,(v_demolength).w ; subtract 1 from time left
 
 	@end:
-		rts	
+		rts
 ; End of function Demo_Time
 
 ; ===========================================================================
 
 VBla_0A:
-		stopZ80
-		waitZ80
 		bsr.w	ReadJoypads
 		writeCRAM	v_pal_dry,$80,0
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		startZ80
 		bsr.w	PalCycle_SS
-		jsr	(ProcessDMAQueue).l
+		bsr.w	ProcessDMAQueue
 
 	@nochg:
 		tst.w	(v_demolength).w	; is there time left on the demo?
-		beq.w	@end	; if not, return
+		beq.s	@end	; if not, return
 		subq.w	#1,(v_demolength).w	; subtract 1 from time left in demo
 
 	@end:
-		rts	
+		rts
 ; ===========================================================================
 
 VBla_0C:
-		stopZ80
-		waitZ80
 		bsr.w	ReadJoypads
 		tst.b	(f_wtr_state).w
 		bne.s	@waterabove
@@ -734,10 +722,9 @@ VBla_0C:
 		move.w	(v_hbla_hreg).w,(a5)
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
-		jsr	(ProcessDMAQueue).l
+		bsr.w	ProcessDMAQueue
 
 	@nochg:
-		startZ80
 		movem.l	(v_screenposx).w,d0-d7
 		movem.l	d0-d7,(v_screenposx_dup).w
 		movem.l	(v_fg_scroll_flags).w,d0-d1
@@ -745,15 +732,14 @@ VBla_0C:
 		bsr.w	LoadTilesAsYouMove
 		jsr	(AnimateLevelGfx).l
 		jsr	(HUD_Update).l
-		bsr.w	sub_1642
-		rts	
+		bra.w	sub_1642
 ; ===========================================================================
 
 VBla_0E:
 		bsr.w	sub_106E
 		addq.b	#1,($FFFFF628).w
 		move.b	#$E,(v_vbla_routine).w
-		rts	
+		rts
 ; ===========================================================================
 
 VBla_12:
@@ -763,28 +749,23 @@ VBla_12:
 ; ===========================================================================
 
 VBla_16:
-		stopZ80
-		waitZ80
 		bsr.w	ReadJoypads
 		writeCRAM	v_pal_dry,$80,0
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		startZ80
-		jsr	(ProcessDMAQueue).l
+		bsr.w	ProcessDMAQueue
 	@nochg:
 		tst.w	(v_demolength).w
-		beq.w	@end
+		beq.s	@end
 		subq.w	#1,(v_demolength).w
 
 	@end:
-		rts	
+		rts
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
 sub_106E:
-		stopZ80
-		waitZ80
 		bsr.w	ReadJoypads
 		tst.b	(f_wtr_state).w ; is water above top of screen?
 		bne.s	@waterabove	; if yes, branch
@@ -797,8 +778,7 @@ sub_106E:
 	@waterbelow:
 		writeVRAM	v_spritetablebuffer,$280,vram_sprites
 		writeVRAM	v_hscrolltablebuffer,$380,vram_hscroll
-		startZ80
-		rts	
+		rts
 ; End of function sub_106E
 
 ; ---------------------------------------------------------------------------
@@ -855,7 +835,7 @@ HBlank:
 		bne.s	loc_119E
 
 	@nochg:
-		rte	
+		rte
 ; ===========================================================================
 
 loc_119E:
@@ -864,7 +844,7 @@ loc_119E:
 		bsr.w	Demo_Time
 		jsr	(UpdateMusic).l
 		movem.l	(sp)+,d0-a6
-		rte	
+		rte
 ; End of function HBlank
 
 ; ---------------------------------------------------------------------------
@@ -875,14 +855,11 @@ loc_119E:
 
 
 JoypadInit:
-		stopZ80
-		waitZ80
 		moveq	#$40,d0
 		move.b	d0,($A10009).l	; init port 1 (joypad 1)
 		move.b	d0,($A1000B).l	; init port 2 (joypad 2)
 		move.b	d0,($A1000D).l	; init port 3 (expansion/extra)
-		startZ80
-		rts	
+		rts
 ; End of function JoypadInit
 
 ; ---------------------------------------------------------------------------
@@ -899,14 +876,14 @@ ReadJoypads:
 
 	@read:
 		move.b	#0,(a1)
-		nop	
-		nop	
+		nop
+		nop
 		move.b	(a1),d0
 		lsl.b	#2,d0
 		andi.b	#$C0,d0
 		move.b	#$40,(a1)
-		nop	
-		nop	
+		nop
+		nop
 		move.b	(a1),d1
 		andi.b	#$3F,d1
 		or.b	d1,d0
@@ -916,7 +893,7 @@ ReadJoypads:
 		move.b	d0,(a0)+
 		and.b	d0,d1
 		move.b	d1,(a0)+
-		rts	
+		rts
 ; End of function ReadJoypads
 
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
@@ -955,7 +932,7 @@ VDPSetupGame:
 
 		move.w	#$8F02,(a5)	; set VDP increment size
 		move.l	(sp)+,d1
-		rts	
+		rts
 ; End of function VDPSetupGame
 
 ; ===========================================================================
@@ -1026,7 +1003,7 @@ ClearScreen:
 	@clearhscroll:
 		move.l	d0,(a1)+
 		dbf	d1,@clearhscroll ; clear hscroll table (in RAM)
-		rts	
+		rts
 ; End of function ClearScreen
 
 ; ---------------------------------------------------------------------------
@@ -1037,22 +1014,17 @@ ClearScreen:
 
 
 SoundDriverLoad:            ; XREF: GameClrRAM; TitleScreen
-		nop
 		move.w    #$100,d0
 		move.w    d0,($A11100).l
 		move.w    d0,($A11200).l
 		lea    (MegaPCM).l,a0
  		lea    ($A00000).l,a1
  		move.w    #(MegaPCM_End-MegaPCM)-1,d1
- 
+
     	@Load:    move.b    (a0)+,(a1)+
         	dbf    d1,@Load
         	moveq    #0,d1
         	move.w    d1,($A11200).l
- 		nop
-		nop
-		nop
-		nop
         	move.w    d0,($A11200).l
         	move.w    d1,($A11100).l
 		rts
@@ -1087,12 +1059,12 @@ TilemapToVRAM:
 		dbf	d3,Tilemap_Cell	; next tile
 		add.l	d4,d0		; goto next line
 		dbf	d2,Tilemap_Line	; next line
-		rts	
+		rts
 ; End of function TilemapToVRAM
 
 		include	"_inc\Nemesis Decompression.asm"
 
-  
+
     pusho	; buffer local label symbol config
     opt ws+  ; change local label symbol to '.'
 
@@ -3268,7 +3240,7 @@ loc_37FC:
 		moveq	#plcid_Main2,d0
 		bsr.w	AddPLC		; load standard	patterns
 		jsr	LoadLifeIcon
-		
+
 Level_ClrRam:
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
@@ -3280,7 +3252,7 @@ Level_ClrRam:
 
 		lea	($FFFFF628).w,a1
 		moveq	#0,d0
-		move.w	#$15,d1
+		moveq	#$15,d1
 
 	Level_ClrVars1:
 		move.l	d0,(a1)+
@@ -3288,7 +3260,7 @@ Level_ClrRam:
 
 		lea	(v_screenposx).w,a1
 		moveq	#0,d0
-		move.w	#$3F,d1
+		moveq	#$3F,d1
 
 	Level_ClrVars2:
 		move.l	d0,(a1)+
@@ -3296,7 +3268,7 @@ Level_ClrRam:
 
 		lea	(v_oscillate+2).w,a1
 		moveq	#0,d0
-		move.w	#$47,d1
+		moveq	#$47,d1
 
 	Level_ClrVars3:
 		move.l	d0,(a1)+
@@ -3315,8 +3287,8 @@ Level_ClrRam:
 		move.w	#$8A00+223,(v_hbla_hreg).w ; set palette change position (for water)
 		move.w	(v_hbla_hreg).w,(a6)
 
-		ResetDMAQueue	
-		
+		ResetDMAQueue
+
 		jsr 	SaveGame
 
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
@@ -3326,13 +3298,14 @@ Level_ClrRam:
 		moveq	#0,d0
 		move.b	(v_act).w,d0
 		add.w	d0,d0
-		lea	(WaterHeight).l,a1 ; load water	height array
+		lea	WaterHeight(pc),a1 ; load water	height array
 		move.w	(a1,d0.w),d0
 		move.w	d0,(v_waterpos1).w ; set water heights
 		move.w	d0,(v_waterpos2).w
 		move.w	d0,(v_waterpos3).w
-		clr.b	(v_wtr_routine).w ; clear water routine counter
-		clr.b	(f_wtr_state).w	; clear	water state
+		moveq	#0,d0
+                move.b	d0,(v_wtr_routine).w ; clear water routine counter
+		move.b	d0,(f_wtr_state).w	; clear	water state
 		move.b	#1,(f_water).w	; enable water
 
 Level_LoadPal:
@@ -3399,8 +3372,9 @@ Level_ChkDebug:
 		move.b	#1,(f_debugmode).w ; enable debug mode
 
 Level_ChkWater:
-		move.w	#0,(v_jpadhold2).w
-		move.w	#0,(v_jpadhold1).w
+		moveq	#0,d0
+                move.w	d0,(v_jpadhold2).w
+		move.w	d0,(v_jpadhold1).w
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
 		bne.s	Level_LoadObj	; if not, branch
 		move.b	#id_WaterSurface,(v_objspace+$780).w ; load water surface object
@@ -3433,9 +3407,10 @@ Level_LoadObj:
 		move.w	d0,(f_restart).w
 		move.w	d0,(v_framecount).w
 		bsr.w	OscillateNumInit
-		move.b	#1,(f_scorecount).w ; update score counter
-		move.b	#1,(f_ringcount).w ; update rings counter
-		move.b	#1,(f_timecount).w ; update time counter
+		moveq	#1,d0
+                move.b	d0,(f_scorecount).w ; update score counter
+		move.b	d0,(f_ringcount).w ; update rings counter
+		move.b	d0,(f_timecount).w ; update time counter
 		move.w	#0,(v_btnpushtime1).w
 		lea	(DemoDataPtr).l,a1 ; load demo data
 		moveq	#0,d0
@@ -3473,7 +3448,7 @@ Level_ChkWaterPal:
 		bsr.w	PalLoad4_Water
 
 Level_Delay:
-		move.w	#3,d1
+		moveq	#3,d1
 
 	Level_DelayLoop:
 		move.b	#8,(v_vbla_routine).w
@@ -5637,14 +5612,13 @@ LevelDataLoad:
 		addq.l	#4,a2
 		movea.l	(a2)+,a0
 		lea	(v_16x16).w,a1	; RAM address for 16x16 mappings
-		move.w	#0,d0
+		moveq	#0,d0
 		bsr.w	EniDec
 		movea.l	(a2)+,a0
 		lea	(v_256x256).l,a1 ; RAM address for 256x256 mappings
 		bsr.w	KosDec
-		bsr.w	LevelLayoutLoad
-		move.w	(a2)+,d0
-		move.w	(a2),d0
+		bsr.s	LevelLayoutLoad
+		move.l	(a2),d0
 		andi.w	#$FF,d0
 		cmpi.w	#(id_LZ<<8)+3,(v_zone).w ; is level SBZ3 (LZ4) ?
 		bne.s	@notSBZ3	; if not, branch
@@ -5666,10 +5640,10 @@ LevelDataLoad:
 		moveq	#0,d0
 		move.b	(a2),d0
 		beq.s	@skipPLC	; if 2nd PLC is 0 (i.e. the ending sequence), branch
-		bsr.w	AddPLC		; load pattern load cues
+		bra.w	AddPLC		; load pattern load cues
 
 	@skipPLC:
-		rts	
+		rts
 ; End of function LevelDataLoad
 
 ; ---------------------------------------------------------------------------
@@ -5680,17 +5654,9 @@ LevelDataLoad:
 
 
 LevelLayoutLoad:
-		lea	(v_lvllayout).w,a3
-		move.w	#$1FF,d1
-		moveq	#0,d0
-
-LevLoad_ClrRam:
-		move.l	d0,(a3)+
-		dbf	d1,LevLoad_ClrRam ; clear the RAM ($A400-A7FF)
-
 		lea	(v_lvllayout).w,a3 ; RAM address for level layout
 		moveq	#0,d1
-		bsr.w	LevelLayoutLoad2 ; load	level layout into RAM
+		bsr.s	LevelLayoutLoad2 ; load	level layout into RAM
 		lea	(v_lvllayout+$40).w,a3 ; RAM address for background layout
 		moveq	#2,d1
 ; End of function LevelLayoutLoad
@@ -5725,7 +5691,7 @@ LevLoad_Row:
 		dbf	d0,LevLoad_Row	; load 1 row
 		lea	$80(a3),a3	; do next row
 		dbf	d2,LevLoad_NumRows ; repeat for	number of rows
-		rts	
+		rts
 ; End of function LevelLayoutLoad2
 
 		include	"_inc\DynamicLevelEvents.asm"
@@ -5971,7 +5937,7 @@ Ledge_Fragment:
 		move.b	#0,ledge_collapse_flag(a0)
 
 loc_847A:
-		lea	(CFlo_Data1).l,a4
+		lea	CFlo_Data1(pc),a4
 		moveq	#$18,d1
 		addq.b	#2,obFrame(a0)
 
@@ -5983,13 +5949,11 @@ loc_8486:
 		adda.w	(a3,d0.w),a3
 		addq.w	#1,a3
 		bset	#5,obRender(a0)
-		move.b	0(a0),d4
-		move.b	obRender(a0),d5
 		movea.l	a0,a1
 		move.b	#6,obRoutine(a1)
-		move.b	d4,0(a1)
+		move.b	(a0),(a1)
 		move.l	a3,obMap(a1)
-		move.b	d5,obRender(a1)
+		move.b	obRender(a0),obRender(a1)
 		move.w	obX(a0),obX(a1)
 		move.w	obY(a0),obY(a1)
 		move.w	obGfx(a0),obGfx(a1)
@@ -5998,23 +5962,23 @@ loc_8486:
 		move.b	(a4)+,ledge_timedelay(a1)
 		subq.w	#1,d1
 		lea		(v_lvlobjspace).w,a1
-		move.w	#$5F,d0
+		moveq	#$5F,d0
 ; ===========================================================================
 
 loc_84AA:
 		tst.b	(a1)
-		beq.s	@cont		
+		beq.s	@cont
 		lea		$40(a1),a1
-		dbf		d0,loc_84AA	
-		bne.s	loc_84F2	
+		dbf		d0,loc_84AA
+		bne.s	loc_84F2
 	@cont:
 		addq.w	#5,a3
 
 loc_84B2:
 		move.b	#6,obRoutine(a1)
-		move.b	d4,0(a1)
+		move.b	(a0),(a1)
 		move.l	a3,obMap(a1)
-		move.b	d5,obRender(a1)
+		move.b	obRender(a0),obRender(a1)
 		move.w	obX(a0),obX(a1)
 		move.w	obY(a0),obY(a1)
 		move.w	obGfx(a0),obGfx(a1)
