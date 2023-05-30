@@ -1600,15 +1600,14 @@ RunPLC:
 		tst.w	(f_plc_execute).w
 		bne.s	Rplc_Exit
 		movea.l	(v_plc_buffer).w,a0
-		lea	(NemPCD_WriteRowToVDP).l,a3
+		lea	NemPCD_WriteRowToVDP(pc),a3
 		lea	(v_ngfx_buffer).w,a1
 		move.w	(a0)+,d2
 		bpl.s	loc_160E
-		adda.w	#$A,a3
+		lea	NemPCD_WriteRowToVDP_XOR-NemPCD_WriteRowToVDP(a3),a3
 
 loc_160E:
 		andi.w	#$7FFF,d2
-		move.w	d2,(f_plc_execute).w
 		bsr.w	NemDec_BuildCodeTable
 		move.b	(a0)+,d5
 		asl.w	#8,d5
@@ -1622,9 +1621,10 @@ loc_160E:
 		move.l	d0,($FFFFF6EC).w
 		move.l	d5,($FFFFF6F0).w
 		move.l	d6,($FFFFF6F4).w
+		move.w	d2,(f_plc_execute).w
 
 Rplc_Exit:
-		rts	
+		rts
 ; End of function RunPLC
 
 
@@ -1633,7 +1633,7 @@ Rplc_Exit:
 
 sub_1642:
 		tst.w	(f_plc_execute).w
-		beq.w	locret_16DA
+		beq.s	Rplc_Exit
 		move.w	#9,($FFFFF6FA).w
 		moveq	#0,d0
 		move.w	($FFFFF684).w,d0
@@ -1687,7 +1687,7 @@ loc_16AA:
 		move.l	d6,($FFFFF6F4).w
 
 locret_16DA:
-		rts	
+		rts
 ; ===========================================================================
 
 loc_16DC:
@@ -1697,7 +1697,7 @@ loc_16DC:
 loc_16E2:
 		move.l	6(a0),(a0)+
 		dbf	d0,loc_16E2
-		rts	
+		rts
 ; End of function ProcessDPLC2
 
 ; ---------------------------------------------------------------------------
@@ -1725,7 +1725,7 @@ QuickPLC:
 		move.l	d0,(vdp_control_port).l ; converted VRAM address to VDP format
 		bsr.w	NemDec		; decompress
 		dbf	d1,Qplc_Loop	; repeat for length of PLC
-		rts	
+		rts
 ; End of function QuickPLC
 
 		include	"_inc\Enigma Decompression.asm"
@@ -1789,7 +1789,7 @@ PalFadeIn_Alt:				; start position and size are already set
 		bsr.s	FadeIn_FromBlack
 		bsr.w	RunPLC
 		dbf	d4,@mainloop
-		rts	
+		rts
 ; End of function PaletteFadeIn
 
 
