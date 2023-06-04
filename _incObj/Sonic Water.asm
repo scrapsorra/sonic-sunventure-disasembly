@@ -15,7 +15,7 @@ Sonic_Water:
 		rts
 ; ===========================================================================
 LoadGFXLUTWat:	;TIS Water Palette List
-        dc.l	Pal_LZWater,Pal_SonWater2,Pal_SonWater3,Pal_SonWater4,Pal_SonWater5,Pal_SonWater6,Pal_SonWater7,Pal_SonWater8,Pal_SonWater9,Pal_SonWater10,Pal_SonWater11	
+        dc.l	Pal_LZSonWater,Pal_SonWater2,Pal_SonWater3,Pal_SonWater4,Pal_SonWater5,Pal_SonWater6,Pal_SonWater7,Pal_SonWater8,Pal_SonWater9,Pal_SonWater10,Pal_SonWater11	
 
 ; ===========================================================================
 
