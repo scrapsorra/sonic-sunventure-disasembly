@@ -8044,14 +8044,16 @@ loc_12EA6:
 		include	"_incObj\Sonic HomingAttack.asm"
 
 Sonic_AirRoll:
+	cmpi.b  #id_walk,$1C(a0)      ; is sonic in the walk animation?
+	beq.s   AirRoll_CheckBtn   ; if yes, advance
 	cmpi.b  #id_spring,$1C(a0)      ; is sonic in the spring animation?
-        bne.s   AirRoll_Return   ; if not, return
+	bne.s   AirRoll_Return   ; if not, return
 
 AirRoll_CheckBtn:
         move.b	($FFFFF603).w,d0 ; Move $FFFFF603 to d0
         andi.b	#btnABC,d0 ; Has A/B/C been pressed?
         beq.s	AirRoll_Return
-	move.b	#id_roll,$1C(a0) ; Set Sonic's animation to rolling.
+		move.b	#id_roll,$1C(a0) ; Set Sonic's animation to rolling.
        ; move.w	#$BC,d0
        ; jsr	(PlaySound_Special).l ;    play Sonic rolling sound
 

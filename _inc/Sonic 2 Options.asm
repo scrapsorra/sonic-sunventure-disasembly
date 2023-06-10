@@ -379,7 +379,7 @@ TextOptScr_Original:			asc	"    ORIGINAL   "	; byte_980C:
 TextOptScr_Beta:			asc	"    CLASSIC     "	; byte_981C:
 TextOptScr_Midnight:			asc	"    MIDNIGHT    "
 TextOptScr_C2:			asc	"    VIBRANT    "
-TextOptScr_Clackers:			asc	"    CRACKERS    "
+TextOptScr_Clackers:			asc	"    CLACKERS    "
 TextOptScr_RHS:			asc	"    RED HOT    "
 TextOptScr_Socket:			asc	"    TIDES    "
 TextOptScr_Cringe:			asc	"    GREEN    "
@@ -387,7 +387,7 @@ TextOptScr_Dark:			asc	"    DARKER    "
 TextOptScr_DeltaWooloo:			asc	"   DELTAWOOLOO "
 TextOptScr_LivesSystem:		asc	"*  CAMERA TYPE   *"	; byte_982C:
 TextOptScr_On:				asc	"    DEFAULT     "	; byte_984E:
-TextOptScr_Off:				asc	"    SONIC CD    "	; byte_984E:
+TextOptScr_Off:				asc	"    EXTENDED    "	; byte_984E:
 ; ============================================================================
 		even
 Sonic_Miles_Spr:	incbin  "artunc/Sonic and Miles text.bin"

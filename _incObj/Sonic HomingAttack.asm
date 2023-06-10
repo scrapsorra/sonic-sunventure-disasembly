@@ -128,8 +128,8 @@ Sonic_HomingAttack:
 ; ---------------------------------------------------------------------------
 
 @Homing_ObjectList:
-		dc.b	$1E, $1F, $22, $26, $2B, $2C, $2D, $40, $42, $43
-		dc.b	$50, $55, $60, $78
+		dc.b	$06, $1E, $1F, $22, $26, $2B, $2C, $2D, $40, $42
+		dc.b	$43, $4F, $50, $55, $60, $78
 		dc.b	-1	; mark end of list
 		even
 
@@ -178,7 +178,7 @@ BounceJD:
 		bne.s	BounceJD_End	; if not, branch
 		clr.b	(v_homingattack).w	; if yes, clear HA flag (allow Sonic to HA again)
 		clr.w	obVelX(a0)		; clear X-velocity (stop sonic)
-		move.b	#id_Roll,obAnim(a0) ; use "rolling" animation
+		move.b	#id_Roll2,obAnim(a0) ; use "rolling" animation
 		move.w	#-$F0,d0
 		btst	#0,obStatus(a0)		; is Sonic faced left?
 		bne.s	@MoveAhead		; if not, we can't move right
