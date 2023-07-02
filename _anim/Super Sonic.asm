@@ -41,7 +41,7 @@ ptr_SuperBlink:	dc.w SuperSonAni_Blink-Ani_SuperSonic
 ptr_SuperSit:	dc.w SuperSonAni_Sit-Ani_Sonic
 ptr_SuperPeelout:	dc.w SuperSonAni_Peelout-Ani_SuperSonic
 ptr_SuperHang2:	dc.w SuperSonAni_Hang2-Ani_SuperSonic
-
+ptr_SuperTransform:	dc.w SonAni_Transform-Ani_SuperSonic
 
 SuperSonAni_Walk:	dc.b $FF, fr_walk13, fr_walk14,	fr_walk15, fr_walk16, fr_walk17, fr_walk18, fr_walk11, fr_walk12, afEnd, afEnd, afEnd, afEnd
 		even

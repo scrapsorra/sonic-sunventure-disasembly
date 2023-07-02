@@ -114,13 +114,7 @@ Sonic_Animatecont:
 
 	@nomodspeed:
 		tst.b	(Super_Sonic_flag).w		; is sonic super?
-		beq.s	@cont		; if not, branch
-		lea	(SuperSonAni_Run).l,a1 ; use	running	animation
-		cmpi.w	#$600,d2	; is Sonic at running speed?
-		bcc.s	@running	; if yes, branch
-		lea	(SuperSonAni_Walk).l,a1 ; use walking animation
-	
-	@cont:	
+		bne.s	@nomodspeedsuper		; if not, branch
 		lea	(SonAni_MaxRun).l,a1 ; use Dashing animation
 		cmpi.w	#$A00,d2	; is Sonic at Dashing speed?
 		bcc.s	@maxrunning	; if yes, branch
@@ -155,6 +149,47 @@ Sonic_Animatecont:
 		bsr.w	@loadframe
 		add.b	d3,obFrame(a0)	; modify frame number
 		rts	
+
+	@nomodspeedsuper:
+		lea	(SuperSonAni_Run).l,a1	; use fast animation
+		cmpi.w	#$800,d2		; is Sonic moving fast?
+		bcc.s	@superrun		; if yes, branch
+		lea	(SuperSonAni_Walk).l,a1	; use slower animation
+		move.b	d0,d1
+		lsr.b	#1,d1
+		add.b	d1,d0
+; ---------------------------------------------------------------------------
+
+	@superrun:
+		add.b	d0,d0
+
+	@superwalk:
+		move.b	d0,d3
+		moveq	#0,d1
+		move.b	obAniFrame(a0),d1
+		move.b	1(a1,d1.w),d0
+		cmpi.b	#-1,d0
+		bne.s	@cont2
+		move.b	#0,obAniFrame(a0)
+		move.b	1(a1),d0
+
+	@cont2:
+		move.b	d0,obFrame(a0)
+		add.b	d3,obFrame(a0)
+		subq.b	#1,obTimeFrame(a0)
+		bpl.s	@ret2
+		neg.w	d2
+		addi.w	#$800,d2
+		bpl.s	@cont3
+		moveq	#0,d2
+
+	@cont3:
+		lsr.w	#8,d2
+		move.b	d2,obTimeFrame(a0)
+		addq.b	#1,obAniFrame(a0)
+
+	@ret2:
+		rts			
 ; ===========================================================================
 
 @rolljump:
