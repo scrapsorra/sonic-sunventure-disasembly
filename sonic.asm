@@ -3174,7 +3174,7 @@ LevelMenuText:	if Revision=0
 ; ---------------------------------------------------------------------------
 MusicList:
 			dc.b bgm_GHZ    ; GHZ1
-        	dc.b bgm_Seaside    ; GHZ2
+        	dc.b bgm_LZ    ; GHZ2
         	dc.b bgm_Seaside   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
         	dc.b bgm_LZ    ; LZ1
@@ -3182,7 +3182,7 @@ MusicList:
         	dc.b bgm_LZ    ; LZ3
         	dc.b bgm_SBZ3    ; LZ4
         	dc.b bgm_MZ    ; MZ1
-        	dc.b bgm_RRZ2   ; MZ2
+        	dc.b bgm_SBZ   ; MZ2
         	dc.b bgm_RRZ2   ; MZ3
         	dc.b bgm_SBZ    ; MZ4
         	dc.b bgm_LZ    ; SLZ1
@@ -3190,8 +3190,8 @@ MusicList:
         	dc.b bgm_LZ    ; SLZ3
         	dc.b bgm_LZ    ; SLZ4
         	dc.b bgm_SYZ    ; SYZ1
-        	dc.b bgm_SYZ    ; SYZ2
-        	dc.b bgm_SYZ    ; SYZ3
+        	dc.b bgm_SLZ    ; SYZ2
+        	dc.b bgm_Seaside    ; SYZ3
         	dc.b bgm_SYZ    ; SYZ4
         	dc.b bgm_SBZ    ; SBZ1
         	dc.b bgm_SBZ    ; SBZ2
@@ -7977,7 +7977,7 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		if (GameIsPlayable=0)
+		if (GameIsPlayable=69)
 		bsr.w	Sonic_Peelout
 		bsr.w	Sonic_SpinDash
 		endif
@@ -8094,27 +8094,7 @@ locret_13302:
 		include	"_incObj\Sonic LoadGfx.asm"
 
 		include	"_incObj\0A Drowning Countdown.asm"
-
-
-ResumeMusic:
-		move.b	(v_Saved_music),d0
-		tst.b	(v_invinc).w ; is Sonic invincible?
-		beq.s	@notinvinc ; if not, branch
-		move.w	#bgm_Invincible,d0
-		tst.b	(v_shoes).w ; is Sonic speed shoes?
-		beq.s	@notinvinc	; if not, branch
-		move.w	#bgm_Ending,d0
-
-	@notinvinc:
-		tst.b	(f_lockscreen).w ; is Sonic at a boss?
-		beq.s	@playselected ; if not, branch
-		move.w	#bgm_Boss,d0
-
-	@playselected:
-		jsr	(PlaySound).l
-
-;End of function ResumeAir
-
+		
 ; ---------------------------------------------------------------------------
 ; Subroutine to	play music for LZ/SBZ3 after a countdown
 ; ---------------------------------------------------------------------------
@@ -8122,7 +8102,7 @@ ResumeMusic:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-ResumeAir:
+ResumeMusic:
 		;cmpi.w	#12,(v_air).w	; more than 12 seconds of air left?
 		;bhi.s	@over12		; if yes, branch
 		;move.b	(v_Saved_music),d0
@@ -8146,7 +8126,7 @@ ResumeAir:
 		clr.b	(v_objspace+$340+$32).w
 		rts	
 
-;End of function ResumeAir
+;End of function ResumeMusic
 
 ; ===========================================================================
 
