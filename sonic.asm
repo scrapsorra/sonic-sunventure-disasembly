@@ -2848,18 +2848,19 @@ PlayLevel:
 		moveq	#0,d0
 		move.w	d0,(v_rings).w	; clear rings
 		move.l	d0,(v_time).w	; clear time
-		; Commented out so it doesn't mess with save data
 		move.l	d0,(v_score).w	; clear score
-		move.b	#1,(v_continues).w ; set continues to 1
-		;move.b	d0,(v_lastspecial).w ; clear special stage number
+		move.b	d0,(v_lastspecial).w ; clear special stage number
 		move.b	d0,(v_emeralds).w ; clear emeralds
-		;move.l	d0,(v_emldlist).w ; clear emeralds
-		;move.l	d0,(v_emldlist+4).w ; clear emeralds
+		move.l	d0,(v_emldlist).w ; clear emeralds
+		move.l	d0,(v_emldlist+4).w ; clear emeralds
+		;move.b	#1,(v_continues).w ; set continues to 1
 		
-		;move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
+		;if Revision=0
+		;else
+		;	move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
+		;endc
 		sfx	bgm_Fade,0,1,1 ; fade out music
 		rts	
-		
 PlaySavedLevel:
 		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
 		jsr 	LoadSavedGame
@@ -3173,15 +3174,15 @@ LevelMenuText:	if Revision=0
 ; ---------------------------------------------------------------------------
 MusicList:
 			dc.b bgm_GHZ    ; GHZ1
-        	dc.b bgm_LZ    ; GHZ2
+        	dc.b bgm_Seaside    ; GHZ2
         	dc.b bgm_Seaside   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
-        	dc.b bgm_Stop    ; LZ1
-        	dc.b bgm_Stop   ; LZ2
-        	dc.b bgm_Stop    ; LZ3
+        	dc.b bgm_LZ    ; LZ1
+        	dc.b bgm_LZ   ; LZ2
+        	dc.b bgm_LZ    ; LZ3
         	dc.b bgm_SBZ3    ; LZ4
         	dc.b bgm_MZ    ; MZ1
-        	dc.b bgm_SBZ    ; MZ2
+        	dc.b bgm_RRZ2   ; MZ2
         	dc.b bgm_RRZ2   ; MZ3
         	dc.b bgm_SBZ    ; MZ4
         	dc.b bgm_LZ    ; SLZ1
@@ -3189,9 +3190,9 @@ MusicList:
         	dc.b bgm_LZ    ; SLZ3
         	dc.b bgm_LZ    ; SLZ4
         	dc.b bgm_SYZ    ; SYZ1
-        	dc.b bgm_SLZ    ; SYZ2
-        	dc.b bgm_SLZ    ; SYZ3
-        	dc.b bgm_SLZ    ; SYZ4
+        	dc.b bgm_SYZ    ; SYZ2
+        	dc.b bgm_SYZ    ; SYZ3
+        	dc.b bgm_SYZ    ; SYZ4
         	dc.b bgm_SBZ    ; SBZ1
         	dc.b bgm_SBZ    ; SBZ2
         	dc.b bgm_FZ		; SBZ3
@@ -4541,6 +4542,7 @@ Map_ESth:	include	"_maps\Ending Sequence STH.asm"
 ; ---------------------------------------------------------------------------
 
 GM_Credits:
+		
 		bsr.w	ClearPLC
 		bsr.w	PaletteFadeOut
 		lea	(vdp_control_port).l,a6
@@ -7795,8 +7797,8 @@ SaveGame:
 	;	move.b	SavedZone(a0), d0
 	;	cmp.b	(v_zone).w, d0
 	;	beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
-		;move.b 	(v_zone),SavedZone(a0)
-		;move.b	(v_lives),SavedLives(a0)
+	;	move.b 	(v_zone),SavedZone(a0)
+;		move.b	(v_lives),SavedLives(a0)
 
 @DoNotSave:
 		disableSRAM
@@ -7805,9 +7807,9 @@ SaveGame:
 ; ---------------------------------------------------------------------------
 
 LoadSavedGame:
-		move.l	d0,(v_score).w	; clear score
         enableSRAM
         lea 	($200000).l, a0
+		move.l	d0,(v_score).w	; clear score
 		cmp.b   #$FF, SavedZone(a0)
 		bne.s   @HasSavedGame
 		
@@ -7822,7 +7824,6 @@ LoadSavedGame:
 		bne.s	@LivesNotZero
 		moveq	#3,d0		; if zero, reset lives counter
 		move.b	d0,SavedLives(a0)
-		
 @LivesNotZero:
 		move.b	d0,(v_lives)
         disableSRAM
@@ -7976,7 +7977,7 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		if (GameIsPlayable=69)
+		if (GameIsPlayable=0)
 		bsr.w	Sonic_Peelout
 		bsr.w	Sonic_SpinDash
 		endif
@@ -8095,6 +8096,25 @@ locret_13302:
 		include	"_incObj\0A Drowning Countdown.asm"
 
 
+ResumeMusic:
+		move.b	(v_Saved_music),d0
+		tst.b	(v_invinc).w ; is Sonic invincible?
+		beq.s	@notinvinc ; if not, branch
+		move.w	#bgm_Invincible,d0
+		tst.b	(v_shoes).w ; is Sonic speed shoes?
+		beq.s	@notinvinc	; if not, branch
+		move.w	#bgm_Ending,d0
+
+	@notinvinc:
+		tst.b	(f_lockscreen).w ; is Sonic at a boss?
+		beq.s	@playselected ; if not, branch
+		move.w	#bgm_Boss,d0
+
+	@playselected:
+		jsr	(PlaySound).l
+
+;End of function ResumeAir
+
 ; ---------------------------------------------------------------------------
 ; Subroutine to	play music for LZ/SBZ3 after a countdown
 ; ---------------------------------------------------------------------------
@@ -8102,7 +8122,7 @@ locret_13302:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 
-ResumeMusic:
+ResumeAir:
 		;cmpi.w	#12,(v_air).w	; more than 12 seconds of air left?
 		;bhi.s	@over12		; if yes, branch
 		;move.b	(v_Saved_music),d0
@@ -8126,7 +8146,7 @@ ResumeMusic:
 		clr.b	(v_objspace+$340+$32).w
 		rts	
 
-;End of function ResumeMusic
+;End of function ResumeAir
 
 ; ===========================================================================
 

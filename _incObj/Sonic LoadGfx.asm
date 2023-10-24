@@ -11,7 +11,7 @@ Sonic_LoadGfx:			; XREF: Obj01_Control; et al
 		cmp.b	($FFFFF766).w,d0
 		beq.s	locret_13C96
 		move.b	d0,($FFFFF766).w
-		lea	(SonicDynPLC).l,a2				
+		lea	(SonicDynPLC).l,a2
 		add.w	d0,d0
 		adda.w	(a2,d0.w),a2
 		moveq	#0,d5
