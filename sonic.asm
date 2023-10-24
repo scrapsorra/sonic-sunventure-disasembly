@@ -16,7 +16,7 @@
 ; ===========================================================================
 ; flags & shit
 ; ===========================================================================
-GameIsPlayable:	equ 1	; =P
+GameIsPlayable:	equ 0	; =P
 SRAMEnabled:	equ 1	; change to 1 to enable SRAM
 BackupSRAM:		equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
@@ -2848,21 +2848,18 @@ PlayLevel:
 		moveq	#0,d0
 		move.w	d0,(v_rings).w	; clear rings
 		move.l	d0,(v_time).w	; clear time
-
 		; Commented out so it doesn't mess with save data
-		;move.l	d0,(v_score).w	; clear score
+		move.l	d0,(v_score).w	; clear score
+		move.b	#1,(v_continues).w ; set continues to 1
 		;move.b	d0,(v_lastspecial).w ; clear special stage number
-		;move.b	d0,(v_emeralds).w ; clear emeralds
+		move.b	d0,(v_emeralds).w ; clear emeralds
 		;move.l	d0,(v_emldlist).w ; clear emeralds
 		;move.l	d0,(v_emldlist+4).w ; clear emeralds
-		;move.b	#1,(v_continues).w ; set continues to 1
 		
-		if Revision=0
-		else
-			move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
-		endc
+		;move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
 		sfx	bgm_Fade,0,1,1 ; fade out music
 		rts	
+		
 PlaySavedLevel:
 		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
 		jsr 	LoadSavedGame
@@ -4544,7 +4541,6 @@ Map_ESth:	include	"_maps\Ending Sequence STH.asm"
 ; ---------------------------------------------------------------------------
 
 GM_Credits:
-		
 		bsr.w	ClearPLC
 		bsr.w	PaletteFadeOut
 		lea	(vdp_control_port).l,a6
@@ -7799,8 +7795,8 @@ SaveGame:
 	;	move.b	SavedZone(a0), d0
 	;	cmp.b	(v_zone).w, d0
 	;	beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
-		move.b 	(v_zone),SavedZone(a0)
-		move.b	(v_lives),SavedLives(a0)
+		;move.b 	(v_zone),SavedZone(a0)
+		;move.b	(v_lives),SavedLives(a0)
 
 @DoNotSave:
 		disableSRAM
@@ -7809,6 +7805,7 @@ SaveGame:
 ; ---------------------------------------------------------------------------
 
 LoadSavedGame:
+		move.l	d0,(v_score).w	; clear score
         enableSRAM
         lea 	($200000).l, a0
 		cmp.b   #$FF, SavedZone(a0)
@@ -7825,6 +7822,7 @@ LoadSavedGame:
 		bne.s	@LivesNotZero
 		moveq	#3,d0		; if zero, reset lives counter
 		move.b	d0,SavedLives(a0)
+		
 @LivesNotZero:
 		move.b	d0,(v_lives)
         disableSRAM
@@ -7978,7 +7976,7 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		if (GameIsPlayable=1)
+		if (GameIsPlayable=69)
 		bsr.w	Sonic_Peelout
 		bsr.w	Sonic_SpinDash
 		endif

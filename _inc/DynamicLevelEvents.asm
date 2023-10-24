@@ -133,16 +133,16 @@ DLE_GHZ3main:
 		move.w	#$300,(v_limitbtm1).w
 		cmpi.w	#$380,(v_screenposx).w
 		bcs.s	locret_6E96
-		move.w	#$310,(v_limitbtm1).w
-		cmpi.w	#$860,(v_screenposx).w
+		move.w	#$300,(v_limitbtm1).w
+		cmpi.w	#$1000,(v_screenposx).w
 		bcs.s	locret_6E96
 		cmpi.w	#$280,(v_screenposy).w
 		bcs.s	loc_6E98
 		move.w	#$400,(v_limitbtm1).w
 		cmpi.w	#$1380,(v_screenposx).w
 		bcc.s	loc_6E8E
-		move.w	#$4C0,(v_limitbtm1).w
-		move.w	#$4C0,(v_limitbtm2).w
+		move.w	#$300,(v_limitbtm1).w
+		move.w	#$300,(v_limitbtm2).w
 
 loc_6E8E:
 		cmpi.w	#$1300,(v_screenposx).w

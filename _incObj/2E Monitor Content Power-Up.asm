@@ -154,7 +154,7 @@ Pow_ChkS:
 		cmpi.b	#7,d0		; does monitor contain 'S'?
 		bne.s	Pow_ChkSRing
 
-		cmpi.b	#6,(v_emeralds).w ; do you have all the emeralds?
+		cmpi.b	#7,(v_emeralds).w ; do you have all the emeralds?
 		beq.s	PowS2	; if yes, branch
 		subi.b	#$3B,d4
 		moveq	#0,d0
