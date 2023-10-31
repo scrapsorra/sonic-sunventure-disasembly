@@ -180,6 +180,6 @@ id_GetUp:	equ (ptr_GetUp-Ani_Sonic)/2	; $22
 id_Blink:	equ (ptr_Blink-Ani_Sonic)/2	; $23
 id_Sit:		equ (ptr_Sit-Ani_Sonic)/2	; $24
 id_Peelout:	equ (ptr_Peelout-Ani_Sonic)/2	; $25
-id_Hang2:		equ	(ptr_Hang2-Ani_Sonic)/2	; $26
-id_GetAir2:	equ (ptr_GetAir2-Ani_Sonic)/2	; $27
-id_Transform:		equ	(ptr_Transform-Ani_Sonic)/2	; $28
+id_Hang2:		equ	(ptr_Hang2-Ani_Sonic)/2
+id_GetAir2:	equ (ptr_GetAir2-Ani_Sonic)/2
+id_Transform:		equ	(ptr_Transform-Ani_Sonic)/2

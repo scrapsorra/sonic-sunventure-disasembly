@@ -50,7 +50,7 @@ locret_134D2:
 Sonic_CheckGoSuper:
 		tst.b	(Super_Sonic_flag).w	; is Sonic already Super?
 		bne.w	Sonic_RevertToNormal			; if yes, branch	
-		cmpi.w	#50,(v_rings).w	; does Sonic have at least 50 rings?
+		cmpi.w	#5000,(v_rings).w	; does Sonic have at least 50 rings?
 		bcs.s	return_1ABA4		; if not, branch	
 		move.b	#1,(Super_Sonic_palette).w
 		move.b	#$F,(Palette_timer).w

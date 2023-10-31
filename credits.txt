@@ -1,7 +1,7 @@
 inferno - air roll guide
 luigixhero - sonic cd art test peelout & skid sfx
 deltawooloo - coding, music and sfx porting
-projectfm - coding help
+projectfm - coding assistance
 theinvisiblesun - coding
 naoto - cd extended camera guide
 konrad - mozzietron ported to sonic 1
@@ -9,6 +9,7 @@ yami - after-image object
 vladikcomper - advanced error handler
 flamewing - flamewing's DMA transfer
 valleybell/mrtakmis - grc2mid + socket ports
+fuzzy - coding
 
 testing:
 deltawooloo, giovanni

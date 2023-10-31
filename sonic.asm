@@ -16,7 +16,7 @@
 ; ===========================================================================
 ; flags & shit
 ; ===========================================================================
-GameIsPlayable:	equ 1	; =P
+GameIsPlayable:	equ 0	; =P
 SRAMEnabled:	equ 1	; change to 1 to enable SRAM
 BackupSRAM:		equ 1
 AddressSRAM:	equ 3	; 0 = odd+even; 2 = even only; 3 = odd only
@@ -2848,19 +2848,17 @@ PlayLevel:
 		moveq	#0,d0
 		move.w	d0,(v_rings).w	; clear rings
 		move.l	d0,(v_time).w	; clear time
-
-		; Commented out so it doesn't mess with save data
-		;move.l	d0,(v_score).w	; clear score
-		;move.b	d0,(v_lastspecial).w ; clear special stage number
-		;move.b	d0,(v_emeralds).w ; clear emeralds
-		;move.l	d0,(v_emldlist).w ; clear emeralds
-		;move.l	d0,(v_emldlist+4).w ; clear emeralds
+		move.l	d0,(v_score).w	; clear score
+		move.b	d0,(v_lastspecial).w ; clear special stage number
+		move.b	d0,(v_emeralds).w ; clear emeralds
+		move.l	d0,(v_emldlist).w ; clear emeralds
+		move.l	d0,(v_emldlist+4).w ; clear emeralds
 		;move.b	#1,(v_continues).w ; set continues to 1
 		
-		if Revision=0
-		else
-			move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
-		endc
+		;if Revision=0
+		;else
+		;	move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
+		;endc
 		sfx	bgm_Fade,0,1,1 ; fade out music
 		rts	
 PlaySavedLevel:
@@ -3179,12 +3177,12 @@ MusicList:
         	dc.b bgm_LZ    ; GHZ2
         	dc.b bgm_Seaside   ; GHZ3
         	dc.b bgm_LZ    ; GHZ4
-        	dc.b bgm_Stop    ; LZ1
-        	dc.b bgm_Stop   ; LZ2
-        	dc.b bgm_Stop    ; LZ3
+        	dc.b bgm_LZ    ; LZ1
+        	dc.b bgm_LZ   ; LZ2
+        	dc.b bgm_LZ    ; LZ3
         	dc.b bgm_SBZ3    ; LZ4
         	dc.b bgm_MZ    ; MZ1
-        	dc.b bgm_SBZ    ; MZ2
+        	dc.b bgm_SBZ   ; MZ2
         	dc.b bgm_RRZ2   ; MZ3
         	dc.b bgm_SBZ    ; MZ4
         	dc.b bgm_LZ    ; SLZ1
@@ -3193,8 +3191,8 @@ MusicList:
         	dc.b bgm_LZ    ; SLZ4
         	dc.b bgm_SYZ    ; SYZ1
         	dc.b bgm_SLZ    ; SYZ2
-        	dc.b bgm_SLZ    ; SYZ3
-        	dc.b bgm_SLZ    ; SYZ4
+        	dc.b bgm_Seaside    ; SYZ3
+        	dc.b bgm_SYZ    ; SYZ4
         	dc.b bgm_SBZ    ; SBZ1
         	dc.b bgm_SBZ    ; SBZ2
         	dc.b bgm_FZ		; SBZ3
@@ -7799,8 +7797,8 @@ SaveGame:
 	;	move.b	SavedZone(a0), d0
 	;	cmp.b	(v_zone).w, d0
 	;	beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
-		move.b 	(v_zone),SavedZone(a0)
-		move.b	(v_lives),SavedLives(a0)
+	;	move.b 	(v_zone),SavedZone(a0)
+;		move.b	(v_lives),SavedLives(a0)
 
 @DoNotSave:
 		disableSRAM
@@ -7811,6 +7809,7 @@ SaveGame:
 LoadSavedGame:
         enableSRAM
         lea 	($200000).l, a0
+		move.l	d0,(v_score).w	; clear score
 		cmp.b   #$FF, SavedZone(a0)
 		bne.s   @HasSavedGame
 		
@@ -7978,7 +7977,7 @@ MusicList2:
 ; ---------------------------------------------------------------------------
 
 Sonic_MdNormal:
-		if (GameIsPlayable=1)
+		if (GameIsPlayable=69)
 		bsr.w	Sonic_Peelout
 		bsr.w	Sonic_SpinDash
 		endif
@@ -8095,8 +8094,7 @@ locret_13302:
 		include	"_incObj\Sonic LoadGfx.asm"
 
 		include	"_incObj\0A Drowning Countdown.asm"
-
-
+		
 ; ---------------------------------------------------------------------------
 ; Subroutine to	play music for LZ/SBZ3 after a countdown
 ; ---------------------------------------------------------------------------
