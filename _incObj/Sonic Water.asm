@@ -6,8 +6,8 @@
 
 
 Sonic_Water:
-		cmpi.b	#id_LZ,(v_zone).w	;TIS is level LZ?
-		bne.s	WaterTagforMZ	; if no, branch
+		cmpi.b	#id_SYZ,(v_zone).w	;TIS is level LZ?
+		beq.s	WaterTagforMZ	; if no, branch
 		cmpi.b	#id_LZ,(v_zone).w	; is level LZ?
 		beq.s	Sonic_Water_LZ	; if yes, branch
 
@@ -70,7 +70,7 @@ LoadGFXLUTWat:	;TIS Water Palette List
 ; ===========================================================================
 
 LoadGFXLUT:	;TIS Dry Palette List
-        dc.l   Pal_Sonic,Pal_Sonic2,Pal_Sonic3,Pal_Sonic4,Pal_Sonic5,Pal_Sonic6,Pal_Sonic7,Pal_Sonic8,Pal_Sonic8,Pal_Sonic9,Pal_Sonic10,Pal_Sonic11
+        dc.l   Pal_Sonic,Pal_Sonic2,Pal_Sonic3,Pal_Sonic4,Pal_Sonic5,Pal_Sonic6,Pal_Sonic7,Pal_Sonic8,Pal_Sonic9,Pal_Sonic10,Pal_Sonic11
 
 ; ===========================================================================
 
@@ -81,7 +81,7 @@ Abovewater:
         add.w    d0,d0
 		movea.l    loadGFXLUT(pc,d0.w),a1  ;Load a separate list for palettes
 
-		move.w #$7,d0             ;TIS Length ($F = full line)
+		move.w #$F,d0             ;TIS Length ($F = full line)
 		;lea    (Pal_Sonic),a1  ;Palette location
 		lea    ($FFFFFB00),a2        ;RAM location ($FB00 = line 1)
 		jsr	Palload_Loop
