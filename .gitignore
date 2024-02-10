@@ -12,3 +12,4 @@ sunventure.debug.bin
 *.log
 
 .build/log/*
+!.build/log/.gitkeep
