@@ -29,7 +29,7 @@ LoadGFXLUTWat:	;TIS Water Palette List
 		beq.w	Abovewater	; if yes, branch
 		
 		moveq	#0,d0
-		move.b	($FFFFFFBF).w,d0
+		move.b	(v_playerpal).w,d0
         add.w    d0,d0
         add.w    d0,d0
 		movea.l    loadGFXLUTWat(pc,d0.w),a1  ;Load a separate list for water palettes
@@ -76,7 +76,7 @@ LoadGFXLUT:	;TIS Dry Palette List
 
 Abovewater:
 		moveq	#0,d0
-		move.b	($FFFFFFBF).w,d0
+		move.b	(v_playerpal).w,d0
 		add.w    d0,d0
         add.w    d0,d0
 		movea.l    loadGFXLUT(pc,d0.w),a1  ;Load a separate list for palettes

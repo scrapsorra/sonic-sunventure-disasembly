@@ -6,5 +6,9 @@ sonic.lst
 errors.txt
 sunventure.bin
 sunventure.prev.bin
+sunventure.debug.bin
 *.lst
 *.sym
+*.log
+
+.build/log/*

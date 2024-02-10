@@ -365,13 +365,34 @@ zonewarning:	macro loc,elementsize
 		endc
 		endm
 
-enableSRAM:		macro
+; ---------------------------------------------------------------------------
+; bankswitch between SRAM and ROM
+; (remember to enable SRAM in the header first!)
+; ---------------------------------------------------------------------------
+
+EnableSRAM:		macro
 	move.b  #1,($A130F1).l
 	endm
 
-disableSRAM:	macro
+DisableSRAM:	macro
 	move.b  #0,($A130F1).l
 	endm
+
+; ---------------------------------------------------------------------------
+; Template macros for SRAM-related routines
+; ---------------------------------------------------------------------------
+OperateInSRAM:	macro
+		move.w	sr, -(sp)
+		move	#$2700, sr
+		stopZ80
+		EnableSRAM
+		endm
+
+ExitSRAM:		macro
+		DisableSRAM
+		startZ80
+		move.w	(sp)+, sr
+		endm
 	
 
 stopZ80        macro

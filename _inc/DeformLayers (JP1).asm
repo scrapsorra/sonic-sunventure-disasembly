@@ -687,7 +687,7 @@ ScrollHoriz:
 ; ||||||||||||||| S U B	R O U T	I N E |||||||||||||||||||||||||||||||||||||||
 
 MoveScreenHoriz:
-		tst.b	($FFFFFF8B).w
+		tst.b	(v_extendedcam).w
 		beq.w	@cont		
 		jmp	MoveScreenHorizEXT
 		

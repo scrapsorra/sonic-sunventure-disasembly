@@ -49,7 +49,7 @@ MenuScreen_ClrObjRam:
 
 		copyTilemap	$FF0000,$E000,$27,$1B
 
-		jsr 	LoadSRAMConfig
+		jsr 	LoadSRAM
 		bsr.w	MenuScreen_Options	; if yes, branch
 
 ; ||||||||||||||| S U B R O U T I N E |||||||||||||||||||||||||||||||||||||||
@@ -124,12 +124,7 @@ OptionScreen_Select:
 		move.b	(Options_menu_box).w,d0
 		bne.s	OptionScreen_Select_Not1P
 		
-		enableSRAM
-		lea		($200000).l,a1			; base of SRAM
-		
-		move.b	($FFFFFFBF).w, SavedColor(a1)	; save sonic palette
-		move.b	($FFFFFF8B).w, SavedCamera(a1)	; save camera type
-		disableSRAM
+		jsr 	SaveSRAM
 
 		moveq	#0,d0
 		move.b	#id_Title,(v_gamemode).w ; => SegaScreen

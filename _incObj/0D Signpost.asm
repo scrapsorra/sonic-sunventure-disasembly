@@ -50,7 +50,6 @@ Sign_Touch:	; Routine 2
 	@normal:
 		tst.b	(f_emeraldm).w
 		beq.s	@notouch
-		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
 		sfx		bgm_Emerald,1,0,0 ;	play emerald music
 
 	@notouch:

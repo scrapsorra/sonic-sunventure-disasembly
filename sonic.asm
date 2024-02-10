@@ -30,6 +30,8 @@ ZoneCount:	equ 6	; discrete zones are: GHZ, MZ, SYZ, LZ, SLZ, and SBZ
 
 OptimiseSound:	equ 0	; change to 1 to optimise sound queuing
 
+Version: equ "SRM0" ; 4-character version string for SRAM
+
 ; ===========================================================================
 
 StartOfRom:
@@ -132,8 +134,8 @@ SRAMSupport:	if SRAMEnabled=1
 		else
 		dc.l $20202020
 		endc
-		dc.l $200000		; SRAM start
-		dc.l $2001FF		; SRAM end
+		dc.l $200001		; SRAM start ($200001)
+		dc.l $2003FF		; SRAM end ($20xxxx)
 Notes:		dc.b "                                                    " ; Notes (unused, anything can be put in this space, but it has to be 52 bytes.)
 Region:		dc.b "JUE             " ; Region (Country code)
 EndOfHeader:
@@ -217,35 +219,6 @@ PSGInitLoop:
 		move.w	d0,(a2)
 		movem.l	(a6),d0-a6	; clear all registers
 		disable_ints
-
-InitSRAM: ; could have been done more cleanly
-        enableSRAM
-        lea ($200000).l,a0
-
-        movep.l $DD(a0),d0 ; where the "FUCK" should be
-        move.l  #"FUCK",d1
-
-		cmp.l   d0,d1 ; reset SRAM if there's no "FUCK"
-        beq.s   @Continue
-
-		move.b 	#0,SavedColor(a0)	; clear settings
-		move.b 	#0,SavedCamera(a0)
-		move.b	#$FF,SavedZone(a0)
-		move.b	#3,SavedLives(a0)
-
-        move.l  #" OUT",d2 ; the rest of the string (lol)
-        move.l  #"TA M",d3
-        move.l  #"Y SR",d4
-        move.l  #"AM  ",d5
-
-        movep.l d1,$DD(a0) ; save the string
-        movep.l d2,$E5(a0)
-        movep.l d3,$ED(a0)
-        movep.l d4,$F5(a0)
-        movep.l d5,$FD(a0)
-
-@Continue:
-        disableSRAM
 
 SkipSetup:
 		bra.s	GameProgram	; begin game
@@ -363,6 +336,7 @@ GameInit:
         	bsr.w	InitDMAQueue
 		bsr.w	VDPSetupGame
 		bsr.w	SoundDriverLoad
+		jsr 	InitSRAM
 		bsr.w	JoypadInit
 		move.b	#id_Sega,(v_gamemode).w ; set Game Mode to Sega Screen
 
@@ -2582,7 +2556,8 @@ GM_Title:
 		move.w	#(id_GHZ<<8),(v_zone).w	; set level to GHZ (00)
 		move.w	#0,(v_pcyc_time).w ; disable palette cycling
 		
-		jsr 	LoadSRAMConfig
+		jsr 	LoadSRAM
+		move.w 	#$0000, (v_zone).w
 		bsr.w	LevelSizeLoad
 		bsr.w	DeformLayers
 		lea	(v_16x16).w,a1
@@ -2863,7 +2838,7 @@ PlayLevel:
 		rts	
 PlaySavedLevel:
 		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
-		jsr 	LoadSavedGame
+		jsr 	LoadSRAM
 		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
@@ -3287,8 +3262,6 @@ Level_ClrRam:
 
 		ResetDMAQueue
 
-		jsr 	SaveGame
-
 		cmpi.b	#id_LZ,(v_zone).w ; is level LZ?
 		bne.s	Level_LoadPal	; if not, branch
 
@@ -3474,6 +3447,7 @@ Level_ClrCardArt:
 
 Level_StartGame:
 		bclr	#7,(v_gamemode).w ; subtract $80 from mode to end pre-level stuff
+		jsr 	SaveSRAM
 
 ; ---------------------------------------------------------------------------
 ; Main level loop (when	all title card and loading sequences are finished)
@@ -3535,7 +3509,6 @@ Level_MainLoop:
 @Continue:
 		cmpi.b	#id_Level,(v_gamemode).w
 		beq.w	Level_MainLoop	; if mode is $C (level), branch
-		jmp	SaveGame	; this saves sram when you exit the game mode, fixing an issues with saved lives
 ; ===========================================================================
 
 Level_ChkDemo:
@@ -7714,7 +7687,7 @@ word_1E0EC:	dc 1
 
 LoadPlayerPal:
 		moveq	#0,d0
-		move.b	($FFFFFFBF).w,d0
+		move.b	(v_playerpal).w,d0
 		move.b	@palLUT(pc,d0.w),d0
 		rts
 
@@ -7725,7 +7698,7 @@ LoadPlayerPal:
 
 LoadPlayerWaterPal:
 		moveq	#0,d0
-		move.b	($FFFFFFBF).w,d0
+		move.b	(v_playerpal).w,d0
 		move.b	@palLUT(pc,d0.w),d0
 		rts
 
@@ -7775,59 +7748,7 @@ LoadLifeIcon_Table:
 		dc.b	plcid_LifeIconF	
 		even
 
-; ===========================================================================
-; SRAM FUCKERY
-; ===========================================================================
-
-LoadSRAMConfig:
-        enableSRAM
-
-        lea 	($200000).l, a0
-		move.b 	SavedColor(a0), ($FFFFFFBF).w
-		move.b 	SavedCamera(a0), ($FFFFFF8B).w
-
-        disableSRAM
-		rts
-
-; ---------------------------------------------------------------------------
-
-SaveGame:
-		enableSRAM
-		lea 	($200000).l, a0
-	;	move.b	SavedZone(a0), d0
-	;	cmp.b	(v_zone).w, d0
-	;	beq.s   @DoNotSave 		; don't write zone number if it's the same in SRAM 
-	;	move.b 	(v_zone),SavedZone(a0)
-;		move.b	(v_lives),SavedLives(a0)
-
-@DoNotSave:
-		disableSRAM
-		rts
-
-; ---------------------------------------------------------------------------
-
-LoadSavedGame:
-        enableSRAM
-        lea 	($200000).l, a0
-		move.l	d0,(v_score).w	; clear score
-		cmp.b   #$FF, SavedZone(a0)
-		bne.s   @HasSavedGame
-		
-		move.b 	#0, SavedZone(a0)
-		bra.s	@Return
-
-@HasSavedGame:
-		move.b 	SavedZone(a0), (v_zone).w
-
-@Return:
-		move.b	SavedLives(a0),d0
-		bne.s	@LivesNotZero
-		moveq	#3,d0		; if zero, reset lives counter
-		move.b	d0,SavedLives(a0)
-@LivesNotZero:
-		move.b	d0,(v_lives)
-        disableSRAM
-		rts
+		include	"_inc/SRAM.asm"
 
 ; ===========================================================================
 
@@ -7894,7 +7815,7 @@ Sonic_Main:	; Routine 0
 		move.b	#0,(Super_Sonic_flag).w
 		
 Sonic_Control:    ; Routine 2
- 		tst.b	($FFFFFF8B).w
+ 		tst.b	(v_extendedcam).w
 		beq.w	@cont    
 		bsr.s    Sonic_PanCamera    ; ++add this++
  
@@ -7969,6 +7890,7 @@ MusicList2:
 		include	"_incObj\Sonic Display.asm"
 		include	"_incObj\Sonic RecordPosition.asm"
 		include	"_incObj\Sonic Water.asm"
+		include "_incObj\02 Chaos Emerald.asm"
 		include "_incObj\03 Hangable Sprite.asm"
 
 ; ===========================================================================

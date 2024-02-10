@@ -121,6 +121,7 @@ bitDn:		equ 1
 bitUp:		equ 0
 
 ; Object variables
+obId:       equ 0   ; object id
 obRender:	equ 1	; bitfield for x/y flip, display mode
 obGfx:		equ 2	; palette line & VRAM setting (2 bytes)
 obMap:		equ 4	; mappings address (4 bytes)
@@ -502,10 +503,11 @@ fr_Transform8	equ	$A8
 fr_Transform9	equ	$A9
 
 ; SRAM Map
-SavedColor:         equ $1
-SavedCamera:        equ $3
-SavedZone:          equ $5
-SavedEmeralds:      equ $7
-SavedEmeraldList:   equ $9
-SavedEmeraldList2:  equ $B
-SavedLives:         equ $D
+	rsset	0
+InitSting:          rs.w 4
+SavedColor:         rs.w 1
+SavedCamera:        rs.w 1
+SavedZone:          rs.w 1
+SavedEmeralds:      rs.w 1
+SavedEmeraldList:   rs.w 1
+SavedLives:         rs.w 1
