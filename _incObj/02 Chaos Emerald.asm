@@ -29,7 +29,7 @@ ChaosEmerald:
 
         move.l  #Map_Emerald, obMap(a0)
         move.w  #$7BC, obGfx(a0)
-        move.b  #$45, obColType(a0) ; sets routine counter to 4 on touch
+        move.b  #$47, obColType(a0) ; sets routine counter to 4 on touch
         move.b	#4, obRender(a0)
         move.b  obY(a0), @BaseY(a0)
         addq.b  #2, obRoutine(a0)
@@ -47,11 +47,14 @@ ChaosEmerald:
 
         ; add to sine timer
         addq.b	#3, @SineTimer(a0)
-        rts
+
+        ; remember state
+        bra.w	RememberState
 
 @Collect:
         move.b  #2, obId(a0)
         move.b  #2, obRoutine(a0)
+        move.b  obSubtype(a0), d0
 
         bset    d0, (v_emldlist).w  ; add emerald to list
         add.b   #1, (v_emeralds)    ; add 1 to emerald counter
