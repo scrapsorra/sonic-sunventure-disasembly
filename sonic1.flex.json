@@ -76,8 +76,8 @@
                     },
                     "dplcs": {
                         "enabled": false,
-                        "path": "",
-                        "label": ""
+                        "path": "dplcs\\Ring.asm",
+                        "label": "DPLC_Ring"
                     },
                     "uuid": "2ab9f363-55e6-4ee3-a83f-d70d6d9cd886"
                 },

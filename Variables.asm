@@ -12,6 +12,9 @@ v_spritequeue:	equ $FFFFAC00	; sprite display queue, in order of priority ($400 
 v_16x16:		equ $FFFFB000	; 16x16 tile mappings
 VDP_Command_Buffer:	equ $FFFFC800
 
+v_draw_buffer_ram:	equ $FFFFC800	; VDP Draw Buffer RAM ($2E0 bytes)
+v_draw_buffer_ram_end:	equ v_draw_buffer_ram+$2E0
+
 VDP_Command_Buffer_Slot:equ VDP_Command_Buffer+7*$12*2
 v_sgfx_buffer:	equ $FFFFC800	; buffered Sonic graphics ($17 cells) ($2E0 bytes)
 v_tracksonic:	equ $FFFFCB00	; position tracking data for Sonic ($100 bytes)

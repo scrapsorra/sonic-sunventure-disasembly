@@ -56,7 +56,6 @@ PLC_Main:	dc.w ((PLC_Mainend-PLC_Main-2)/6)-1
 		plcm	Nem_Hud, $D940		; HUD
 		plcm	Nem_Ring, $F300		; rings		
 		plcm	Nem_Points, $ADA0 	; points from enemy
-		plcm	Nem_Emerald, $571*$20 	; chaos emeralds
 	PLC_Mainend:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - standard block 2
@@ -69,6 +68,7 @@ PLC_Main2:	dc.w ((PLC_Main2end-PLC_Main2-2)/6)-1
 ; ---------------------------------------------------------------------------
 PLC_Explode:	dc.w ((PLC_Explodeend-PLC_Explode-2)/6)-1
 		plcm	Nem_Explode, $B400	; explosion
+		plcm	Nem_Emerald, $7BC*$20 	; chaos emeralds
 	PLC_Explodeend:
 ; ---------------------------------------------------------------------------
 ; Pattern load cues - game/time	over

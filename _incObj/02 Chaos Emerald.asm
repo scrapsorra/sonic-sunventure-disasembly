@@ -10,7 +10,8 @@ ChaosEmerald:
         jmp     DisplaySprite
 
 ; ===========================================================================
-@BaseY:     equ $38
+@BaseY:         equ $38
+@BlinkCounter:  equ $3A
 @SineTimer:     equ $3F
 
 @Index: dc.w @Init-@Index
@@ -20,25 +21,23 @@ ChaosEmerald:
 ; ===========================================================================
 
 @Init:
+        move.b  obSubtype(a0), d0
+        move.b  (v_emldlist).w, d1
+
+        btst    d0, d1              ; do you have this emerald?
+        bne.s   @Destroy            ; if not, break
+
         move.l  #Map_Emerald, obMap(a0)
-        move.w  #$571, obGfx(a0)
+        move.w  #$7BC, obGfx(a0)
         move.b  #$45, obColType(a0) ; sets routine counter to 4 on touch
         move.b	#4, obRender(a0)
         move.b  obY(a0), @BaseY(a0)
         addq.b  #2, obRoutine(a0)
 
-        move.b  obSubtype(a0), d0
-        move.b  (v_emldlist).w, d1
-
-        btst    d0, d1              ; already got this emerald?
-        beq.s   @Hover              ; if not, don't change graphics and do hovering animation
-
-        move.b  #1, obFrame(a0)
-
 @Hover:
         ; calculate sine based on timer
         move.b	@SineTimer(a0),d0
-        jsr	    (CalcSine).l
+        jsr	(CalcSine).l
         asr.w	#7, d0
 
         ; add our base y position to the sine and apply position
@@ -54,12 +53,6 @@ ChaosEmerald:
         move.b  #2, obId(a0)
         move.b  #2, obRoutine(a0)
 
-        move.b  obSubtype(a0), d0
-        move.b  (v_emldlist).w, d1
-
-        btst    d0, d1              ; do you have this emerald?
-        bne.s   @Break              ; if not, break
-
         bset    d0, (v_emldlist).w  ; add emerald to list
         add.b   #1, (v_emeralds)    ; add 1 to emerald counter
         move.b	#1, (f_emeraldm).w  ; set emerald collected flag
@@ -67,15 +60,10 @@ ChaosEmerald:
         
         move.b  #sfx_GiantRing, d0
         jsr     PlaySound_Special
-        jsr	    WhiteFlash
+        jsr     WhiteFlash
 
 @Destroy:
         jmp     DeleteObject
-
-@Break:
-        move.b	#id_ExplosionItem, obId(a0)
-        move.b	#0, obRoutine(a0)
-        rts
 
 ; ===========================================================================
 
