@@ -158,8 +158,8 @@ loc_183DE:
 ; ===========================================================================
 
 loc_183E6:
-		move.w	#$200,obVelX(a0)
-		move.w	#$100,obVelY(a0)
+		move.w	#$300,obVelX(a0)
+		move.w	#$200,obVelY(a0)
 		btst	#0,obStatus(a0)
 		bne.s	loc_183FE
 		neg.w	obVelX(a0)

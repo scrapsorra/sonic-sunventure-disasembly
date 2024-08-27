@@ -47,10 +47,10 @@ Sign_Touch:	; Routine 2
 		;beq.s	@normal
 		;move.b  #1,($FFFFF5C2).w ; Set victory animation flag
 
-	@normal:
-		tst.b	(f_emeraldm).w
-		beq.s	@notouch
-		sfx		bgm_Emerald,1,0,0 ;	play emerald music
+	;@normal:
+		;tst.b	(f_emeraldm).w
+		;beq.s	@notouch
+		;sfx		bgm_Emerald,1,0,0 ;	play emerald music
 
 	@notouch:
 		rts	

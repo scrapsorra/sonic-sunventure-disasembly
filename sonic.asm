@@ -2721,7 +2721,7 @@ Tit_ChkLevSel:
 
 ; ===========================================================================
 Tit_Menu_Choice:
-		dc.w PlaySavedLevel-Tit_Menu_Choice   ; 0
+		dc.w PlayLevel-Tit_Menu_Choice   ; 0
 		dc.w Menu_Options-Tit_Menu_Choice  ; 2
 ; ===========================================================================
 
@@ -2830,16 +2830,16 @@ PlayLevel:
 		move.l	d0,(v_emldlist+4).w ; clear emeralds
 		;move.b	#1,(v_continues).w ; set continues to 1
 		
-		;if Revision=0
-		;else
-		;	move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
-		;endc
+		;;if Revision=0
+		;;else
+		;;	move.l	#5000,(v_scorelife).w ; extra life is awarded at 50000 points
+		;;endc
 		sfx	bgm_Fade,0,1,1 ; fade out music
 		rts	
-PlaySavedLevel:
-		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
-		jsr 	LoadSRAM
-		rts
+;;PlaySavedLevel:
+;;		move.b	#id_Level,(v_gamemode).w ; set screen mode to $0C (level)
+;;		jsr 	LoadSRAM
+;;		rts
 ; ===========================================================================
 ; ---------------------------------------------------------------------------
 ; Level	select - level pointers
@@ -2887,7 +2887,7 @@ LevSel_Ptrs:	if Revision=0
 		dc.b id_LZ, 3
 		dc.b id_SBZ, 2
 		endc
-		dc.b id_SS, 0		; Special Stage
+		dc.b id_Ending, 0		; Special Stage
 		dc.w $8000		; Sound Test
 		even
 ; ---------------------------------------------------------------------------

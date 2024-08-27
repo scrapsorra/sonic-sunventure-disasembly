@@ -173,7 +173,7 @@ loc_6EB0:
 		move.w	#$280,obY(a1)
 
 loc_6ED0:
-		music	bgm_Boss,0,1,0	; play boss music
+		music	bgm_Pinch,0,1,0	; play boss music
 		move.b	#1,(f_lockscreen).w ; lock screen
 		addq.b	#2,(v_dle_routine).w
 		moveq	#plcid_Boss,d0
@@ -230,7 +230,7 @@ loc_6F28:
 		move.b	#id_BossLabyrinth,0(a1) ; load LZ boss object
 
 loc_6F4A:
-		music	bgm_Boss,0,1,0	; play boss music
+		music	bgm_Pinch,0,1,0	; play boss music
 		move.b	#1,(f_lockscreen).w ; lock screen
 		addq.b	#2,(v_dle_routine).w
 		moveq	#plcid_Boss,d0
@@ -328,7 +328,7 @@ DLE_MZ3boss:
 		move.w	#$22C,obY(a1)
 
 loc_70D0:
-		music	bgm_Boss,0,1,0	; play boss music
+		music	bgm_Pinch,0,1,0	; play boss music
 		move.b	#1,(f_lockscreen).w ; lock screen
 		addq.b	#2,(v_dle_routine).w
 		moveq	#plcid_Boss,d0
@@ -361,7 +361,7 @@ DLE_MZ3boss2:
 		bne.s	loc_72C0
 		move.b	#id_ScrapEggman,(a1) ; load SBZ2 Eggman object
 		addq.b	#2,(v_dle_routine).w
-		music	bgm_Boss,0,1,0	; play boss music
+		music	bgm_Pinch,0,1,0	; play boss music
 
 loc_72C0:
 		move.b	#1,(f_lockscreen).w ; lock screen
@@ -431,7 +431,7 @@ DLE_SLZ3boss:
 		move.b	#id_BossStarLight,(a1) ; load SLZ boss object
 
 loc_7144:
-		music	bgm_Boss,0,1,0	; play boss music
+		music	bgm_Pinch,0,1,0	; play boss music
 		move.b	#1,(f_lockscreen).w ; lock screen
 		addq.b	#2,(v_dle_routine).w
 		moveq	#plcid_Boss,d0
@@ -517,7 +517,7 @@ DLE_SYZ3boss:
 		addq.b	#2,(v_dle_routine).w
 
 loc_71EC:
-		music	bgm_Boss,0,1,0	; play boss music
+		music	bgm_Pinch,0,1,0	; play boss music
 		move.b	#1,(f_lockscreen).w ; lock screen
 		moveq	#plcid_Boss,d0
 		bra.w	AddPLC		; load boss patterns

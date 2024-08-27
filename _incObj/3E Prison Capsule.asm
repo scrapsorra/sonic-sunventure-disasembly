@@ -103,11 +103,7 @@ Pri_Switched:	; Routine 4
 		clr.b	ob2ndRout(a0)
 		bclr	#3,(v_player+obStatus).w
 		bset	#1,(v_player+obStatus).w
-		tst.b	(f_emeraldm).w
-		beq.s	@open2
-		addq.b	#1,(v_emeralds).w ; add 1 to number of emeralds
-		sfx		bgm_Emerald,1,0,0 ;	play emerald music
-
+		
 	@open2:
 		rts	
 ; ===========================================================================
