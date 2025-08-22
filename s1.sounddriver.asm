@@ -2588,7 +2588,7 @@ Music95:		include	"sound/music/Mus95 - Emerald Forest.asm"
 		even
 Music96:		incbin	"sound/music/Mus96 - Big Water.bin"
 		even
-Music97:		incbin	"sound/music/Mus97 - Granada Game Over.bin"
+Music97:		incbin	"sound/music/(Sonic 1) GHZ.bin"
 		even
 Music98:		include	"sound/music/Mus98 - Options Theme.asm"
 		even	
@@ -2596,7 +2596,7 @@ Music99:		include	"sound/music/Mus99 - Toxic Landfill.asm"
 		even			
 Music9A:		include	"sound/music/Mus9A - RRZ2.asm"
 		even				
-Music9B:		incbin	"sound/music/Mus9B - TTZ BF US.bin"
+Music9B:		incbin	"sound/music/(Sonic 1) GHZ.bin"
 		even
 Music9C:		include	"sound/music/Mus9C - Tribute.asm"
 		even		
