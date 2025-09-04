@@ -2552,7 +2552,7 @@ Music83:	include	"sound/music/Mus83 - MZ.asm"
 		even
 Music84:	incbin	"sound/music/Mus84 - SLZ.bin"
 		even
-Music85:	incbin	"sound/music/Mus85 - SYZ.bin"
+Music85:	incbin	"sound/music/Mus85 - SYZ.bin"	
 		even
 Music86:	include	"sound/music/Mus86 - MZ2.asm"
 		even
@@ -2578,7 +2578,7 @@ Music90:	incbin	"sound/music/Mus90 - Continue Screen.bin"
 		even
 Music91:	incbin	"sound/music/Mus91 - Credits.bin"
 		even
-Music92:	incbin	"sound/music/Mus92 - Drowning.bin"
+Music92:	incbin	"sound/music/Mus8E - Sonic Got Through.bin"
 		even
 Music93:	incbin	"sound/music/Mus93 - Get Emerald.bin"
 		even
