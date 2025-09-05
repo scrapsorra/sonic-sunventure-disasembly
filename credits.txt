@@ -1,18 +1,35 @@
 inferno - air roll guide
+
 luigixhero - sonic cd art test peelout & skid sfx
+
 deltawooloo - coding, music and sfx porting, porting sonic 2 options, super sonic
+
 projectfm - coding assistance
+
 theinvisiblesun - coding, robotic abyss bgm, water tag swappers
+
 naoto - cd extended camera guide
+
 konrad - mozzietron ported to sonic 1
+
 yami - after-image object
-vladikcomper - advanced error handler
+
+vladikcomper - advanced error handler, homing attack
+
 flamewing - flamewing's DMA transfer
+
 valleybell/mrtakmis - grc2mid + socket ports
+
 fuzzy - coding, SRAM, chaos emerald object
-scrapsorra: all level design, all visuals
 
-various art assets taken from Sonic 1, Sonic 2, Sonic 3, Sonic Mania, Ecco the Dolphin, Ecco: The Tides of Time, and Knuckles' Chaotix
+mrJoker - music
 
-testing:
-deltawooloo, giovanni, raspmary
+scrapsorra - level design, palettes, imported art
+
+sonic 1 development team - sonic 1
+
+various contributors (sonic retro) - sonic 1 disassembly (github) 
+
+various art assets both taken directly and modified from: Sonic 1, Sonic 2, Sonic 3, Sonic Mania, Ecco the Dolphin, Ecco: The Tides of Time, and Knuckles' Chaotix
+
+playtesting - deltawooloo, giovanni, raspmary

@@ -7,9 +7,10 @@ The game has an unfinished SRAM feature (by FuzzyBit) and an unfinished port of 
 
 Please credit EVERYONE named in the credits.txt file if you use ANYTHING they're individually creditted for.
 
-You DO NOT have to directly credit "Scrap Sorra" for using this disassembly. Simply credit the Sonic Sunventure Disassembly and the origins of all content used.
+If you use any of the game's music, please credit those listed in song credits.txt for the tracks used.
 
-== Sound IDs 81, 82, 84, 85, 8F, 90, 92, 97, and 9B should NOT be used in any circumstance as they were ported by a bad actor that you DO NOT to associate with. They only remain in the game because Scrap Sorra was unable to replace them. ==
+You DO NOT have to directly credit "Scrap Sorra" for simply using this disassembly. Simply credit the Sonic Sunventure Disassembly and the origins of all content used.
+
 
 
 DISCLAIMER:
