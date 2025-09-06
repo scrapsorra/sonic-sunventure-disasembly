@@ -592,4 +592,6 @@ PinchMode:
 		jsr	(PlaySound_Special).l
 		move.w	#$E2,d0
 		jsr	(PlaySound).l
+		move.w	#$AC,d0
+		jsr	(PlaySound_Special).l
 		rts		

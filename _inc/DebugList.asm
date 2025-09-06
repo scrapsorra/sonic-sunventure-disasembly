@@ -21,7 +21,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@GHZend-@GHZ-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug 	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug 	Map_Ring,	id_Rings,	0,	0,	$2798
 	dbug	Map_Monitor,	id_Monitor,	0,	0,	$680
 	dbug	Map_Crab,	id_Crabmeat,	0,	0,	$400
 	dbug	Map_Buzz,	id_BuzzBomber,	0,	0,	$444
@@ -42,7 +42,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@LZend-@LZ-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug	Map_Ring,	id_Rings,	0,	0,	$2798
 	dbug	Map_Monitor,	id_Monitor,	0,	0,	$680
 	dbug	Map_Spring,	id_Springs,	0,	0,	$523
 	dbug	Map_Jaws,	id_Jaws,	8,	0,	$2486
@@ -73,7 +73,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@MZend-@MZ-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug	Map_Ring,	id_Rings,	0,	0,	$2798
 	dbug	Map_Monitor,	id_Monitor,	0,	0,	$680
 	dbug	Map_Buzz,	id_BuzzBomber,	0,	0,	$444
 	dbug	Map_Spike,	id_Spikes,	0,	0,	$51B
@@ -97,7 +97,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@SLZend-@SLZ-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug	Map_Ring,	id_Rings,	0,	0,	$2798
 	dbug	Map_Monitor,	id_Monitor,	0,	0,	$680
 	dbug	Map_Elev,	id_Elevator,	0,	0,	$4000
 	dbug	Map_CFlo,	id_CollapseFloor, 0,	2,	$44E0
@@ -118,7 +118,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@SYZend-@SYZ-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug	Map_Ring,	id_Rings,	0,	0,	$2798
 	dbug	Map_Monitor,	id_Monitor,	0,	0,	$680
 	dbug	Map_Spike,	id_Spikes,	0,	0,	$51B
 	dbug	Map_Spring,	id_Springs,	0,	0,	$523
@@ -139,7 +139,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@SBZend-@SBZ-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug	Map_Ring,	id_Rings,	0,	0,	$2798
 	dbug	Map_Monitor,	id_Monitor,	0,	0,	$680
 	dbug	Map_Bomb,	id_Bomb,	0,	0,	$400
 	dbug	Map_Orb,	id_Orbinaut,	0,	0,	$429
@@ -174,7 +174,7 @@ dbug:	macro map,object,subtype,frame,vram
 	dc.w (@Endingend-@Ending-2)/8
 
 ;		mappings	object		subtype	frame	VRAM setting
-	dbug	Map_Ring,	id_Rings,	0,	0,	$27B2
+	dbug	Map_Ring,	id_Rings,	0,	0,	$2798
 	if Revision=0
 	dbug	Map_Bump,	id_Bumper,	0,	0,	$380
 	dbug	Map_Animal2,	id_Animals,	$A,	0,	$5A0

@@ -2572,13 +2572,13 @@ Music8D:	incbin	"sound/music/Mus8D - FZ.bin"
 		even
 Music8E:	incbin	"sound/music/Mus8E - Sonic Got Through.bin"
 		even
-Music8F:	incbin	"sound/music/Mus8F - Game Over.bin"
+Music8F:	include	"sound/music/Mus8F - Game Over.asm"
 		even
 Music90:	incbin	"sound/music/Mus90 - Continue Screen.bin"
 		even
 Music91:	incbin	"sound/music/Mus91 - Credits.bin"
 		even
-Music92:	incbin	"sound/music/Mus8E - Sonic Got Through.bin"
+Music92:	include	"sound/music/Mus92 - Boss Clear.asm"
 		even
 Music93:	incbin	"sound/music/Mus93 - Get Emerald.bin"
 		even

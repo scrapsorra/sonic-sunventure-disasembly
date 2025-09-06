@@ -4,7 +4,7 @@ luigixhero - sonic cd art test peelout & skid sfx
 
 deltawooloo - coding, music and sfx porting, porting sonic 2 options, super sonic
 
-projectfm - coding assistance
+projectfm - coding assistance, music
 
 theinvisiblesun - coding, robotic abyss bgm, water tag swappers
 
