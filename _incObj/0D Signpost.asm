@@ -127,6 +127,8 @@ Sign_SonicRun:	; Routine 6
 
 
 GotThroughAct:
+		cmpi.w	#(id_MZ<<8)+2,(v_zone).w
+		beq.w	GotThroughAct1
 		tst.b	(v_objspace+$5C0).w
 		bne.w	locret_ECEE
 		move.w	(v_limitright2).w,(v_limitleft2).w
@@ -155,14 +157,7 @@ GotThroughAct:
 		move.w	(v_rings).w,d0	; load number of rings
 		mulu.w	#10,d0		; multiply by 10
 		move.w	d0,(v_ringbonus).w ; set ring bonus
-		
-		cmpi.w	#(id_MZ<<8)+2,(v_zone).w ; is level MZ3?
-		bne.s	@NormalsMusic
 		sfx	bgm_GotThrough,0,0,0	; play "Sonic got through" music
-		move.b	#1,(f_ringcount).w ; update rings counter
-		
-@NormalsMusic
-		sfx	bgm_Drowning,0,0,0	; play "Boss Clear" music
 		move.b	#1,(f_ringcount).w ; update rings counter
 
 locret_ECEE:

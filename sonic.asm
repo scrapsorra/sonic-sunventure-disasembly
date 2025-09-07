@@ -2519,7 +2519,7 @@ GM_Title:
 		move.w	#$8720,(a6)	; set background colour (palette line 2, entry 0)
 		clr.b	(f_wtr_state).w
 		bsr.w	ClearScreen
-		;jsr		SHC2022 
+		jsr		SHC
 
 		lea	(v_objspace).w,a1
 		moveq	#0,d0
@@ -10255,7 +10255,7 @@ SoundDriver:	include "s1.sounddriver.asm"
 
 			include "_inc\Sonic 2 Options.asm"
 
-SHC2022:    incbin "SHC22_Full_Sonic12.bin"
+SHC:    incbin "SHC_Splash.bin"
             even
 
 Art_Dust:	incbin	artunc\spindust.bin
