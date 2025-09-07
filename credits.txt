@@ -22,6 +22,8 @@ valleybell/mrtakmis - grc2mid + socket ports
 
 fuzzy - coding, SRAM, chaos emerald object
 
+KGL - green hill parallax
+
 mrJoker - music
 
 scrapsorra - level design, palettes, imported art
